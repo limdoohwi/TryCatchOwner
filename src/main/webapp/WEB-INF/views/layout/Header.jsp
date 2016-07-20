@@ -111,6 +111,7 @@
       </div>
     </nav>
   </header>
+  <!-- 왼쪽 상단 접속한 점장 정보 -->
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar" style="background-color: #18bc9c">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -118,11 +119,11 @@
       <!-- Sidebar Owner panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="/owner/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+         <i class="fa fa-user fa-3x" aria-hidden="true"></i>
         </div>
         <div class="pull-left info">
         	<!-- Owner Name -->
-          <p>점장1</p>
+          <p>${member_dto.member_name}</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
