@@ -1,4 +1,4 @@
-package com.trycatch.owner.domain;
+package com.trycatch.owner.main.domain;
 
 public class MemberDTO {
 	private int member_no;

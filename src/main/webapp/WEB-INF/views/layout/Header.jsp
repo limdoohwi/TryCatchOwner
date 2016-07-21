@@ -134,7 +134,7 @@
       <li class="header">MAIN</li>
         <!-- 공지 사항 Menu -->
         <li>
-          <a href="Notice.jsp">
+          <a href="/owner/notice.owner">
             <i class="fa fa-newspaper-o"></i> <span>공지 사항</span> <i class="fa fa-angle-left pull-right"></i>
           </a>
         </li>

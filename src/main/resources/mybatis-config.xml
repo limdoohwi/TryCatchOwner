@@ -6,6 +6,6 @@
   
 <configuration>
 	<typeAliases>
-		<package name="com.trycatch.owner.domain" />
+		<package name="com.trycatch.owner.main.domain" />
 	</typeAliases>
 </configuration>
