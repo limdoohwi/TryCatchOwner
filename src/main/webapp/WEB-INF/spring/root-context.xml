@@ -29,5 +29,4 @@
 	  <property name="maxUploadSize" value="10000000000"/>
  	</bean>
  	
- 	<mvc:resources mapping="/favicon.ico" location="/favicon.ico" />
 </beans>

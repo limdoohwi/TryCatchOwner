@@ -25,6 +25,7 @@ import com.trycatch.owner.service.MemberService;
 public class HomeController {
 	@Inject
 	private MemberService service;
+	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	
@@ -34,10 +35,12 @@ public class HomeController {
 	public String login(Model model, HttpServletRequest req, RedirectAttributes rttr) throws Exception {
 			String member_email = req.getParameter("member_email");
 			String member_pw = req.getParameter("member_pw");
+			System.out.println(member_email+member_pw);
 			MemberDTO member_dto =service.login(member_email, member_pw);
+			
 			if(member_dto==null){
 				rttr.addFlashAttribute("login_success", false);
-				return "redirect:/login.member";
+				return "redirect:/";
 			}
 			else{
 				rttr.addFlashAttribute("login_success", true);
