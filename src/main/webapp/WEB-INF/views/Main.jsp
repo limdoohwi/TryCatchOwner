@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -167,6 +168,30 @@
         </section>
       </div>
   </div>
+ <!-- ./wrapper -->
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+	<!-- jQuery 2.2.0 -->
+	<script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+  $(function(){
+	  //New-Order-List-Show-Btn Click Show Modal
+	  $(".New-Order-List-Show-Btn").click(function(){
+		  var index = $(".New-Order-List-Show-Btn").index(this);
+		  var btn = $(".New-Order-List-Show-Btn").eq(index);
+		$(".New-Order-List-Modal").eq(index).slideDown(400);
+	  });
+	  //Hide-New-Order-List-Modal-Btn Click Hide Modal
+	  $(".Hide-New-Order-List-Modal-Btn").click(function(){
+		  var index = $(".Hide-New-Order-List-Modal-Btn ").index(this);
+		  var modal = $(".New-Order-List-Modal").eq(index);
+		  $(modal).slideUp(400);
+	  });
+  })
+</script>
+
   <!-- Footer -->
   <jsp:include page="layout/Footer.jsp" />
 
@@ -363,25 +388,5 @@
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
-
-<!-- ./wrapper -->
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-  $(function(){
-	  //New-Order-List-Show-Btn Click Show Modal
-	  $(".New-Order-List-Show-Btn").click(function(){
-		  var index = $(".New-Order-List-Show-Btn").index(this);
-		  var btn = $(".New-Order-List-Show-Btn").eq(index);
-		$(".New-Order-List-Modal").eq(index).slideDown(400);
-	  });
-	  //Hide-New-Order-List-Modal-Btn Click Hide Modal
-	  $(".Hide-New-Order-List-Modal-Btn").click(function(){
-		  var index = $(".Hide-New-Order-List-Modal-Btn ").index(this);
-		  var modal = $(".New-Order-List-Modal").eq(index);
-		  $(modal).slideUp(400);
-	  });
-  })
-</script>
 </body>
 </html>

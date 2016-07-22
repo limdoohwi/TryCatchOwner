@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -44,7 +45,7 @@
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
-
+	
 		<!-- 페이지 우측상단 menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav" style="margin-right: 50px">
@@ -147,11 +148,26 @@
             <span>My Store</span>
             <span class="label label-primary pull-right">4</span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="/owner/resources/pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> 인천점</a></li>
-            <li><a href="/owner/resources/pages/layout/boxed.html"><i class="fa fa-circle-o"></i> 연수점</a></li>
-            <li><a href="/owner/resources/pages/layout/fixed.html"><i class="fa fa-circle-o"></i> 창동점</a></li>
-            <li><a href="/owner/resources/pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> 의정부점</a></li>
+          <ul id="My-Store-Ul" class="treeview-menu">
+          	<c:forEach var="store_dto" items="${storeList}" varStatus="storeIndex">
+          		 	<c:if test="${storeIndex.count == 1}">
+		          		 <li>
+		          		 	<a href="/owner/resources/pages/layout/top-nav.html">
+		          		 		<i style="color: red; text-shadow: 1px 1px 1px #ccc;" class="fa fa-circle-o">${store_dto.store_name}</i>
+		          		 		<input type="hidden" value="${store_dto.store_no}" />
+		          		 	</a>
+		          		 </li>
+          		 	</c:if>
+          		 	<c:if test="${storeIndex.count != 1}">
+		          		 <li>
+		          		 	<a href="/owner/resources/pages/layout/top-nav.html">
+		          		 		<i class="fa fa-circle-o">${store_dto.store_name}</i>
+		          		 		<input type="hidden" value="${store_dto.store_no}" />
+		          		 	</a>
+		          		 </li>
+          		 	</c:if>
+          	</c:forEach>
+          	
           </ul>
         </li>
         <!-- Community Menu -->
@@ -208,7 +224,7 @@
     <section class="content-header">
       <!-- 접속한 점장의 매장명 -->
       <h1>
-                   종각점
+      	<span id="Main-Store-Name"></span>
         <small>반갑습니다.</small>
       </h1>
       <ol class="breadcrumb">

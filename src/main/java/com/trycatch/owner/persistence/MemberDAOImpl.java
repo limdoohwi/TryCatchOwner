@@ -53,6 +53,7 @@ public class MemberDAOImpl implements MemberDAO {
 			return sqlSession.selectOne("getMember_WithPW",map);
 		}
 		catch(Exception err){
+			err.printStackTrace();
 			return null;
 		}
 	}
