@@ -1,4 +1,4 @@
-package com.trycatch.owner.main.service;
+package com.trycatch.owner.service;
 
 import java.net.URLEncoder;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
-import com.trycatch.owner.main.domain.MemberDTO;
-import com.trycatch.owner.main.persistence.MemberDAO;
+import com.trycatch.owner.domain.MemberDTO;
+import com.trycatch.owner.persistence.MemberDAO;
 
 @Service
 public class MemberServiceImpl implements MemberService {

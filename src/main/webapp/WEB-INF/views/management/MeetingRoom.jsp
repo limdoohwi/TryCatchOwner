@@ -4,13 +4,14 @@
 <html>
 <head>
 <!-- fullCalendar 2.2.5-->
-<link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.min.css">
+<link rel="stylesheet" href="/owner/resources/plugins/fullcalendar/fullcalendar.min.css">
 <link rel="stylesheet"
-	href="plugins/fullcalendar/fullcalendar.print.css" media="print">
+		href="/owner/resources/plugins/fullcalendar/fullcalendar.print.css" media="print">
 <style>
 .main-sidebar span {
 	color: white;
 }
+
 </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -61,12 +62,14 @@
 			</div>
 		</section>
 	</div>
-	<!-- Footer -->
-	<jsp:include page="../layout/Footer.jsp" />
+		<!-- jQuery 2.2.0 -->
+	<script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 	<!-- fullCalendar 2.2.5 -->
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-	<script src="plugins/fullcalendar/fullcalendar.min.js"></script>
+	<script src="/owner/resources/plugins/fullcalendar/fullcalendar.min.js"></script>
 	<!-- Page specific script -->
 	<script>
   $(function () {
@@ -198,5 +201,7 @@
     });
   });
 </script>
+<!-- Footer -->
+	<jsp:include page="../layout/Footer.jsp" />
 </body>
 </html>

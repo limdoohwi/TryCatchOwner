@@ -3,7 +3,280 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- Google Chart -->
+<style>
+.main-sidebar span {
+	color: white;
+}
+
+.Select-Profit {
+	margin-right: 10px;
+}
+</style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<!-- Header -->
+		<jsp:include page="../layout/Header.jsp" />
+
+		<!-- 점장이 원하는 연도 혹은 월별을 선택하는 Panel -->
+		<div class="panel panel-default panel-table">
+			<div class="panel-heading" style="background-color: #18bc9c">
+				<div class="row">
+					<div class="col col-xs-6">
+						<h3 class="panel-title">매출액</h3>
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				<!-- Member Info Panel -->
+				<div class="row" style="padding-left: 15px">
+					<form id="Select-Profit-Form" class="form-inline">
+						<div class="form-group Select-Profit">
+							<label for="Select-Year-Profit">연도 입력</label> <input type="text"
+								class="form-control" id="Select-Year-Profit"
+								placeholder="1999년 입력 : 1999">
+						</div>
+
+						<button type="button" id="Show-Owner-Store-Profit-Btn"
+							class="btn btn-default">확인</button>
+					</form>
+				</div>
+				<!-- Chart -->
+				<div class="row">
+					<div id="Year-Chart" style="display: none"></div>
+					<div id="Years-Chart" style="display: none"></div>
+					<div id="Month-Chart" style="display: none"></div>
+				</div>
+				<!-- 예약 Chart -->
+				<div class="row">
+					<div id="Year-Order-Chart" style="display: none"></div>
+					<div id="Month-Order-Chart" style="display: none"></div>
+					<div id="Day-Order-Chart" style="display: none"></div>
+				</div>
+				<div id="More-Detail-Profit-First-Head" class="row text-center"
+					style="display: none">
+					<h3>더 상세한 자료를 원한다면 아래의 아이콘을 클릭해주세요</h3>
+					<a id="Want-More-Detail-Profit-Btn" class="btn btn-default"><em
+						class="fa fa-exclamation" aria-hidden="true"></em></a>
+				</div>
+				<div id="More-Detail-Profit-Table-Div" class="row"
+					style="display: none">
+					<hr />
+					<h2>상세 정보</h2>
+					<ul class="nav nav-tabs">
+						<li role="presentation" class="active"><a href="#">2016년</a></li>
+						<li role="presentation"><a href="#">1월</a></li>
+						<li role="presentation"><a href="#">2월</a></li>
+						<li role="presentation"><a href="#">3월</a></li>
+						<li role="presentation"><a href="#">4월</a></li>
+						<li role="presentation"><a href="#">5월</a></li>
+						<li role="presentation"><a href="#">6월</a></li>
+						<li role="presentation"><a href="#">7월</a></li>
+						<li role="presentation"><a href="#">8월</a></li>
+						<li role="presentation"><a href="#">9월</a></li>
+						<li role="presentation"><a href="#">10월</a></li>
+						<li role="presentation"><a href="#">11월</a></li>
+						<li role="presentation"><a href="#">12월</a></li>
+					</ul>
+					<br />
+					<table id="Material-Order-Table"
+						class="table table-bordered table-striped" style="clear: both">
+						<tbody>
+							<tr>
+								<td width="35%">매장명</td>
+								<td width="65%"><a href="#" id="username" data-type="text"
+									data-pk="1" data-title="Enter username">종각점</a></td>
+							</tr>
+							<tr>
+								<td>담당자</td>
+								<td><a href="#" id="firstname" data-type="text" data-pk="1"
+									data-placement="right" data-placeholder="Required"
+									data-title="Enter your firstname">점장1</a></td>
+							</tr>
+							<tr>
+								<td>조회 날짜</td>
+								<td><a href="#" id="sex" data-type="select" data-pk="1"
+									data-value="" data-title="Select sex">2016년</a></td>
+							</tr>
+							<tr class="Address-tr">
+								<td>온라인 예약건수</td>
+								<td><a href="#" id="group" data-type="select" data-pk="1"
+									data-value="5" data-source="/groups" data-title="Select group">4,000회</a></td>
+							</tr>
+							<tr class="Address-tr">
+								<td>하루 평균 예약건수</td>
+								<td><a href="#" id="group" data-type="select" data-pk="1"
+									data-value="5" data-source="/groups" data-title="Select group">5회</a></td>
+							</tr>
+							<tr class="Address-tr">
+								<td>커피</td>
+								<td><a href="#" id="group" data-type="select" data-pk="1"
+									data-value="5" data-source="/groups" data-title="Select group">23,000,000원</a></td>
+							</tr>
+							<tr class="Address-tr">
+								<td>케이크</td>
+								<td><a href="#" id="group" data-type="select" data-pk="1"
+									data-value="5" data-source="/groups" data-title="Select group">23,000,000원</a></td>
+							</tr>
+							<tr class="Address-tr">
+								<td>음료</td>
+								<td><a href="#" id="group" data-type="select" data-pk="1"
+									data-value="5" data-source="/groups" data-title="Select group">23,000,000원</a></td>
+							</tr>
+							<tr class="Address-tr">
+								<td>매출액</td>
+								<td><a href="#" id="group" data-type="select" data-pk="1"
+									data-value="5" data-source="/groups" data-title="Select group">99,000,000원</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<!-- Coffee Detail  -->
+					<div class="panel panel-default panel-table">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col col-xs-6">
+									<h3 class="panel-title">커피</h3>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<!-- Coffee Info Panel -->
+							<div class="row">
+								<table id="Material-Order-Table"
+									class="table table-bordered table-striped" style="clear: both">
+									<tbody>
+
+										<tr>
+											<td width="35%">핫초코</td>
+											<td width="35%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">1711회
+													주문</a></td>
+											<td width="30%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
+										</tr>
+										<tr>
+											<td width="35%">아메리카노</td>
+											<td width="35%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">1711회
+													주문</a></td>
+											<td width="30%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
+										</tr>
+										<tr>
+											<td width="35%">카페모카</td>
+											<td width="35%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">1711회
+													주문</a></td>
+											<td width="30%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- Cake -->
+					<div class="panel panel-default panel-table">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col col-xs-6">
+									<h3 class="panel-title">케이크</h3>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<!-- Cake Info Panel -->
+							<div class="row">
+								<table id="Material-Order-Table"
+									class="table table-bordered table-striped" style="clear: both">
+									<tbody>
+
+										<tr>
+											<td width="35%">허니 브레드</td>
+											<td width="35%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">1711회
+													주문</a></td>
+											<td width="30%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
+										</tr>
+										<tr>
+											<td width="35%">허니 버터 브레드</td>
+											<td width="35%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">1711회
+													주문</a></td>
+											<td width="30%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
+										</tr>
+										<tr>
+											<td width="35%">허니 버터 갈릭 브레드</td>
+											<td width="35%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">1711회
+													주문</a></td>
+											<td width="30%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- Drink -->
+					<div class="panel panel-default panel-table">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col col-xs-6">
+									<h3 class="panel-title">음료</h3>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<!-- Drink Info Panel -->
+							<div class="row">
+								<table id="Material-Order-Table"
+									class="table table-bordered table-striped" style="clear: both">
+									<tbody>
+
+										<tr>
+											<td width="35%">아이스티</td>
+											<td width="35%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">1711회
+													주문</a></td>
+											<td width="30%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
+										</tr>
+										<tr>
+											<td width="35%">딸기 스무디</td>
+											<td width="35%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">1711회
+													주문</a></td>
+											<td width="30%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
+										</tr>
+										<tr>
+											<td width="35%">립톤</td>
+											<td width="35%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">1711회
+													주문</a></td>
+											<td width="30%"><a href="#" id="username"
+												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- MenuProfit Modal -->
+	<jsp:include page="MenuProfit_Modal.jsp" />
+		<!-- jQuery 2.2.0 -->
+	<script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<!-- Google Chart -->
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
@@ -339,275 +612,6 @@
 			});
 		})
 	</script>
-<style>
-.main-sidebar span {
-	color: white;
-}
-
-.Select-Profit {
-	margin-right: 10px;
-}
-</style>
-</head>
-<body class="hold-transition skin-blue sidebar-mini">
-	<div class="wrapper">
-		<!-- Header -->
-		<jsp:include page="../layout/Header.jsp" />
-
-		<!-- 점장이 원하는 연도 혹은 월별을 선택하는 Panel -->
-		<div class="panel panel-default panel-table">
-			<div class="panel-heading" style="background-color: #18bc9c">
-				<div class="row">
-					<div class="col col-xs-6">
-						<h3 class="panel-title">매출액</h3>
-					</div>
-				</div>
-			</div>
-			<div class="panel-body">
-				<!-- Member Info Panel -->
-				<div class="row" style="padding-left: 15px">
-					<form id="Select-Profit-Form" class="form-inline">
-						<div class="form-group Select-Profit">
-							<label for="Select-Year-Profit">연도 입력</label> <input type="text"
-								class="form-control" id="Select-Year-Profit"
-								placeholder="1999년 입력 : 1999">
-						</div>
-
-						<button type="button" id="Show-Owner-Store-Profit-Btn"
-							class="btn btn-default">확인</button>
-					</form>
-				</div>
-				<!-- Chart -->
-				<div class="row">
-					<div id="Year-Chart" style="display: none"></div>
-					<div id="Years-Chart" style="display: none"></div>
-					<div id="Month-Chart" style="display: none"></div>
-				</div>
-				<!-- 예약 Chart -->
-				<div class="row">
-					<div id="Year-Order-Chart" style="display: none"></div>
-					<div id="Month-Order-Chart" style="display: none"></div>
-					<div id="Day-Order-Chart" style="display: none"></div>
-				</div>
-				<div id="More-Detail-Profit-First-Head" class="row text-center"
-					style="display: none">
-					<h3>더 상세한 자료를 원한다면 아래의 아이콘을 클릭해주세요</h3>
-					<a id="Want-More-Detail-Profit-Btn" class="btn btn-default"><em
-						class="fa fa-exclamation" aria-hidden="true"></em></a>
-				</div>
-				<div id="More-Detail-Profit-Table-Div" class="row"
-					style="display: none">
-					<hr />
-					<h2>상세 정보</h2>
-					<ul class="nav nav-tabs">
-						<li role="presentation" class="active"><a href="#">2016년</a></li>
-						<li role="presentation"><a href="#">1월</a></li>
-						<li role="presentation"><a href="#">2월</a></li>
-						<li role="presentation"><a href="#">3월</a></li>
-						<li role="presentation"><a href="#">4월</a></li>
-						<li role="presentation"><a href="#">5월</a></li>
-						<li role="presentation"><a href="#">6월</a></li>
-						<li role="presentation"><a href="#">7월</a></li>
-						<li role="presentation"><a href="#">8월</a></li>
-						<li role="presentation"><a href="#">9월</a></li>
-						<li role="presentation"><a href="#">10월</a></li>
-						<li role="presentation"><a href="#">11월</a></li>
-						<li role="presentation"><a href="#">12월</a></li>
-					</ul>
-					<br />
-					<table id="Material-Order-Table"
-						class="table table-bordered table-striped" style="clear: both">
-						<tbody>
-							<tr>
-								<td width="35%">매장명</td>
-								<td width="65%"><a href="#" id="username" data-type="text"
-									data-pk="1" data-title="Enter username">종각점</a></td>
-							</tr>
-							<tr>
-								<td>담당자</td>
-								<td><a href="#" id="firstname" data-type="text" data-pk="1"
-									data-placement="right" data-placeholder="Required"
-									data-title="Enter your firstname">점장1</a></td>
-							</tr>
-							<tr>
-								<td>조회 날짜</td>
-								<td><a href="#" id="sex" data-type="select" data-pk="1"
-									data-value="" data-title="Select sex">2016년</a></td>
-							</tr>
-							<tr class="Address-tr">
-								<td>온라인 예약건수</td>
-								<td><a href="#" id="group" data-type="select" data-pk="1"
-									data-value="5" data-source="/groups" data-title="Select group">4,000회</a></td>
-							</tr>
-							<tr class="Address-tr">
-								<td>하루 평균 예약건수</td>
-								<td><a href="#" id="group" data-type="select" data-pk="1"
-									data-value="5" data-source="/groups" data-title="Select group">5회</a></td>
-							</tr>
-							<tr class="Address-tr">
-								<td>커피</td>
-								<td><a href="#" id="group" data-type="select" data-pk="1"
-									data-value="5" data-source="/groups" data-title="Select group">23,000,000원</a></td>
-							</tr>
-							<tr class="Address-tr">
-								<td>케이크</td>
-								<td><a href="#" id="group" data-type="select" data-pk="1"
-									data-value="5" data-source="/groups" data-title="Select group">23,000,000원</a></td>
-							</tr>
-							<tr class="Address-tr">
-								<td>음료</td>
-								<td><a href="#" id="group" data-type="select" data-pk="1"
-									data-value="5" data-source="/groups" data-title="Select group">23,000,000원</a></td>
-							</tr>
-							<tr class="Address-tr">
-								<td>매출액</td>
-								<td><a href="#" id="group" data-type="select" data-pk="1"
-									data-value="5" data-source="/groups" data-title="Select group">99,000,000원</a></td>
-							</tr>
-						</tbody>
-					</table>
-					<!-- Coffee Detail  -->
-					<div class="panel panel-default panel-table">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col col-xs-6">
-									<h3 class="panel-title">커피</h3>
-								</div>
-							</div>
-						</div>
-						<div class="panel-body">
-							<!-- Coffee Info Panel -->
-							<div class="row">
-								<table id="Material-Order-Table"
-									class="table table-bordered table-striped" style="clear: both">
-									<tbody>
-
-										<tr>
-											<td width="35%">핫초코</td>
-											<td width="35%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">1711회
-													주문</a></td>
-											<td width="30%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
-										</tr>
-										<tr>
-											<td width="35%">아메리카노</td>
-											<td width="35%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">1711회
-													주문</a></td>
-											<td width="30%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
-										</tr>
-										<tr>
-											<td width="35%">카페모카</td>
-											<td width="35%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">1711회
-													주문</a></td>
-											<td width="30%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-					<!-- Cake -->
-					<div class="panel panel-default panel-table">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col col-xs-6">
-									<h3 class="panel-title">케이크</h3>
-								</div>
-							</div>
-						</div>
-						<div class="panel-body">
-							<!-- Cake Info Panel -->
-							<div class="row">
-								<table id="Material-Order-Table"
-									class="table table-bordered table-striped" style="clear: both">
-									<tbody>
-
-										<tr>
-											<td width="35%">허니 브레드</td>
-											<td width="35%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">1711회
-													주문</a></td>
-											<td width="30%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
-										</tr>
-										<tr>
-											<td width="35%">허니 버터 브레드</td>
-											<td width="35%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">1711회
-													주문</a></td>
-											<td width="30%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
-										</tr>
-										<tr>
-											<td width="35%">허니 버터 갈릭 브레드</td>
-											<td width="35%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">1711회
-													주문</a></td>
-											<td width="30%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-					<!-- Drink -->
-					<div class="panel panel-default panel-table">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col col-xs-6">
-									<h3 class="panel-title">음료</h3>
-								</div>
-							</div>
-						</div>
-						<div class="panel-body">
-							<!-- Drink Info Panel -->
-							<div class="row">
-								<table id="Material-Order-Table"
-									class="table table-bordered table-striped" style="clear: both">
-									<tbody>
-
-										<tr>
-											<td width="35%">아이스티</td>
-											<td width="35%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">1711회
-													주문</a></td>
-											<td width="30%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
-										</tr>
-										<tr>
-											<td width="35%">딸기 스무디</td>
-											<td width="35%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">1711회
-													주문</a></td>
-											<td width="30%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
-										</tr>
-										<tr>
-											<td width="35%">립톤</td>
-											<td width="35%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">1711회
-													주문</a></td>
-											<td width="30%"><a href="#" id="username"
-												data-type="text" data-pk="1" data-title="Enter username">3,000,000원</a></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- MenuProfit Modal -->
-	<jsp:include page="MenuProfit_Modal.jsp" />
 	<!-- Footer -->
 	<jsp:include page="../layout/Footer.jsp" />
 </body>

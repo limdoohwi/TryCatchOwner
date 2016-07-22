@@ -1,4 +1,4 @@
-package com.trycatch.owner.notice.persistence;
+package com.trycatch.owner.persistence;
 
 import java.sql.SQLException;
 
@@ -13,15 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.trycatch.owner.main.domain.MemberDTO;
+import com.trycatch.owner.domain.MemberDTO;
 
 @Repository
-public class NoticeDAOImpl implements NoticeDAO {
+public class MemberDAOImpl implements MemberDAO {
 	@Inject
 	private SqlSession sqlSession;
 
 	private static final String NAMESPACE = "com.trycatch.owner.mappers.memberMapper";
-	private static final Logger logger = LoggerFactory.getLogger(NoticeDAOImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(MemberDAOImpl.class);
 
 	@Override
 	public List<MemberDTO> getMemberList() {

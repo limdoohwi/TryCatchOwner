@@ -27,7 +27,9 @@
   <!-- Daterange picker -->
   <link rel="stylesheet" href="/owner/resources/plugins/daterangepicker/daterangepicker-bs3.css">
   <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="/owner/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">    
+  <link rel="stylesheet" href="/owner/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+  
+  
 <header class="main-header">
     <!-- Logo -->
     <a href="index2.html" class="logo" style="background-color: black">
@@ -134,7 +136,7 @@
       <li class="header">MAIN</li>
         <!-- 공지 사항 Menu -->
         <li>
-          <a href="/owner/notice.owner">
+          <a href="/owner/notice/Notice">
             <i class="fa fa-newspaper-o"></i> <span>공지 사항</span> <i class="fa fa-angle-left pull-right"></i>
           </a>
         </li>
@@ -154,21 +156,21 @@
         </li>
         <!-- Community Menu -->
         <li>
-          <a href="Community_Owner.jsp">
+          <a href="/owner/community/Community_Owner">
             <i class="fa fa-commenting"></i> <span>Community</span>
             <small class="label pull-right bg-green">new</small>
           </a>
         </li>
         <!-- Coffee Order Menu : 사용자가 온라인 상에서 주문한 커피 내역을 확인  -->
         <li>
-          <a href="TryCoffee_Order.jsp">
+          <a href="/owner/management/TryCoffee_Order">
             <i class="fa fa-check-square"></i> <span>Coffee Order</span>
             <small class="label pull-right bg-green">new</small>
           </a>
         </li>
        	<!-- TryCoffee Owner : TryCoffee 매장을 갖고있는 점장들을 조회 및 chat -->
         <li class="treeview">
-          <a href="TryCoffee_Owner.jsp">
+          <a href="/owner/messenger/TryCoffee_Owner">
             <i class="fa fa-users"></i>
             <span>TryCoffee Owner</span>
             <i class="fa fa-angle-left pull-right"></i>
@@ -176,15 +178,10 @@
         </li>
         <!-- 매출액 관리 -->
         <li class="treeview">
-          <a href="#">
+          <a href="/owner/management/Profit_Owner">
             <i class="fa fa-bar-chart"></i> <span>매출액</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="/owner/resources/pages/forms/general.html"><i class="fa fa-circle-o"></i> General Elements</a></li>
-            <li><a href="/owner/resources/pages/forms/advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-            <li><a href="/owner/resources/pages/forms/editors.html"><i class="fa fa-circle-o"></i> Editors</a></li>
-          </ul>
         </li>
         <li>
         <!-- 재료 주문 -->
@@ -195,15 +192,11 @@
         </li>
         <!-- MeetingRoom -->
         <li>
-          <a href="pages/calendar.html">
+          <a href="/owner/management/MeetingRoom">
             <i class="fa fa-calendar"></i> <span>MeetingRoom</span>
             <small class="label pull-right bg-red">3</small>
           </a>
         </li>
-        <li class="header">LABELS</li>
-        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

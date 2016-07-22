@@ -88,8 +88,11 @@
 	</div>
 	</section>
 </div>
- 	<!-- Footer -->
- 	<jsp:include page="../layout/Footer.jsp" />
+ 	
+ 		<!-- jQuery 2.2.0 -->
+	<script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 	<script>
 	  $.widget.bridge('uibutton', $.ui.button);
 	  
@@ -113,5 +116,7 @@
 		});
 	})
 	</script>
+	<!-- Footer -->
+ 	<jsp:include page="../layout/Footer.jsp" />
 </body>
 </html>

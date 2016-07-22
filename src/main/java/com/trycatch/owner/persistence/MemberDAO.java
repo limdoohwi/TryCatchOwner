@@ -1,8 +1,8 @@
-package com.trycatch.owner.main.persistence;
+package com.trycatch.owner.persistence;
 
 import java.util.List;
 
-import com.trycatch.owner.main.domain.MemberDTO;
+import com.trycatch.owner.domain.MemberDTO;
 
 
 
