@@ -43,4 +43,27 @@ public class MemberDAOImpl implements MemberDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public MemberDTO getMember_WithPW(String member_email, String member_pw) {
+		try{
+			Map<String, Object> map = new HashMap<>();
+			map.put("member_email", member_email);
+			map.put("member_pw", member_pw);
+			return sqlSession.selectOne("getMember_WithPW",map);
+		}
+		catch(Exception err){
+			return null;
+		}
+	}
+	
+	@Override
+	public MemberDTO getMember_email(String member_email) {
+		try {
+			return sqlSession.selectOne(NAMESPACE + ".getMember_email", member_email);
+		}
+		catch (Exception err) {
+			return null;
+		}
+	}
 }

@@ -18,11 +18,6 @@ public class MemberServiceImpl implements MemberService {
 	private MemberDAO dao;
 
 	@Override
-	public MemberDTO login(int member_no) throws Exception {
-		return dao.getMember_no(member_no);
-	}
-
-	@Override
 	public List<MemberDTO> getMemberList() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
@@ -34,4 +29,19 @@ public class MemberServiceImpl implements MemberService {
 		return null;
 	}
 	
+	@Override
+	public MemberDTO login(String member_email, String member_pw) throws Exception {
+		MemberDTO dto =dao.getMember_email(member_email);
+		if(dto!=null){
+				if(dto.getMember_pw().equals(member_pw)){
+					return dto;
+				}
+				else{
+					return null;
+				}
+		}
+		else{
+			return null;
+		}
+	}
 }

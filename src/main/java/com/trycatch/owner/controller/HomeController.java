@@ -13,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.trycatch.owner.domain.MemberDTO;
 import com.trycatch.owner.service.MemberService;
 
 /**
@@ -25,11 +27,33 @@ public class HomeController {
 	private MemberService service;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Model model, HttpServletRequest req) throws Exception {
-		int member_no=7;
-		req.getSession().setAttribute("member_dto", service.login(member_no));
+	
+	
+	//·Î±×ÀÎ ¤·¤·
+	@RequestMapping(value = "/log_in", method = RequestMethod.POST)
+	public String login(Model model, HttpServletRequest req, RedirectAttributes rttr) throws Exception {
+			String member_email = req.getParameter("member_email");
+			String member_pw = req.getParameter("member_pw");
+			MemberDTO member_dto =service.login(member_email, member_pw);
+			if(member_dto==null){
+				rttr.addFlashAttribute("login_success", false);
+				return "redirect:/login.member";
+			}
+			else{
+				rttr.addFlashAttribute("login_success", true);
+				req.getSession().setAttribute("member_dto", member_dto);
+				
+				return "redirect:/log_in";
+			}
+		}
+	
+	@RequestMapping(value = "/log_in", method = RequestMethod.GET)
+	public String log_in() throws Exception {
 		return "Main";
+	}
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String home() throws Exception {
+		return "log_in";
 	}
 	
 	@RequestMapping("/messenger/TryCoffee_Owner")
