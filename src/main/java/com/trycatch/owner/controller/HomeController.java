@@ -45,6 +45,10 @@ public class HomeController {
 	public void communityGET() throws Exception{
 		
 	}
+	@RequestMapping("/community/Community_Read")
+	public void communityReadGET() throws Exception{
+		
+	}
 	
 	@RequestMapping("/management/TryCoffee_Order")
 	public void tryCoffee_OrderGET() throws Exception{
