@@ -84,7 +84,7 @@
 							<i class="fa fa-user fa-5x"></i>
 							<!-- Onwer Name -->
 							<h3 class="widget-user-username">
-								owner2@owner.com<a class="Let-Message-Btn" style="color: white" href="#"
+								owner2@owner.com<a class="Let-Message-Btn" style="color: white" onclick="connect()"
 									data-toggle="tooltip" title="1:1 대화">&nbsp;<i
 									class="Lets-Message-Btn fa fa-commenting-o"></i></a>
 							</h3>
@@ -124,43 +124,19 @@
 						<!-- Conversations are loaded here -->
 						<div class="direct-chat-messages">
 							<!-- Message. Default to the left -->
-							<div class="direct-chat-msg">
-								<div class="direct-chat-info clearfix">
-									<span class="direct-chat-name pull-left">나</span><br /> <span
-										class="direct-chat-timestamp pull-left">23 Jan 2:00 pm</span>
-								</div>
-								<!-- 나 -->
-								<span><i class="fa fa-user fa-3x"></i></span>
-								<div class="direct-chat-text">돈 좀 꿔져</div>
-							</div>
-
 							<!-- 상대방 -->
 							<!-- Message to the right -->
-							<div class="direct-chat-msg right">
-								<div class="direct-chat-info clearfix">
-									<span class="direct-chat-name pull-right">상대방</span><br /> <span
-										class="direct-chat-timestamp pull-right">23 Jan 2:05 pm</span>
-								</div>
-								<div style="display: block">
-									<span class="pull-right"><i class="fa fa-user fa-3x"></i></span>
-								</div>
-								<div style="display: block" class="direct-chat-text">
-									ㄲㅈ ㅇㅈ?<br /> ㄲㅈ ㅇㅈ?<br /> ㄲㅈ ㅇㅈ?<br />
-								</div>
-							</div>
+							
 						</div>
 					</div>
 
 					<!-- Send Message -->
 					<div class="box-footer">
-						<form action="#" method="post">
-							<div class="input-group">
-								<input type="text" name="message" placeholder="Type Message ..."
-									class="form-control"> <span class="input-group-btn">
-									<button type="submit" class="btn btn-primary btn-flat">Send</button>
-								</span>
-							</div>
-						</form>
+						<div class="input-group">
+							<input type="text" id="message" placeholder="Type Message ..."> <span class="input-group-btn">
+								<button type="button" onclick="sendName()" class="btn btn-primary btn-flat">Send</button>
+							</span>
+						</div>
 					</div>
 					<!-- /.box-footer-->
 				</div>
@@ -194,6 +170,63 @@
 		  $("#Message-Div").show();
 	  });
 	})
+
+	function connect() {
+		if ('WebSocket' in window) {
+			console.log('Websocket supported');
+			socket = new WebSocket('ws://' + document.location.hostname+ ':8080/owner//websocket');
+			console.log('Connection attempted');
+			socket.onopen = function() {
+				console.log('Connection open!');
+			}
+			socket.onclose = function() {
+				console.log('Disconnecting connection');
+			}
+			socket.onmessage = function(evt) {
+				var received_msg = evt.data;
+				console.log(received_msg);
+				console.log('message received!');
+				showMessage(received_msg);
+			}
+		} else {
+			console.log('Websocket not supported');
+		}
+	}
+	function disconnect() {
+		console.log("Disconnected");
+	}
+	function sendName() {
+		var message = document.getElementById('message').value;
+		showmyMessage(message)
+		socket.send(JSON.stringify({'message' : message}));
+	}
+	function showMessage(message) {
+		var html = "";
+		html += '<div class="direct-chat-msg right">';
+		html += '<div class="direct-chat-info clearfix">';
+		html +=	'<span class="direct-chat-name pull-right">상대방</span><br /> <span class="direct-chat-timestamp pull-right">23 Jan 2:05 pm</span>';
+		html += '</div>';
+		html += '<div style="display: block">'
+		html += '<span class="pull-right"><i class="fa fa-user fa-3x"></i></span>';
+		html += '</div>';
+		html += '<div style="display: block" class="direct-chat-text">';
+		html += message;
+		html += '</div></div>';
+		$(".direct-chat-messages").append(html);
+		
+	}
+	function showmyMessage(message){
+		var html = "";
+		html += '<div class="direct-chat-msg">';
+		html += '<div class="direct-chat-info clearfix">';
+		html +=	'<span class="direct-chat-name pull-left">나<span><br /> <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>';
+		html += '</div>';
+		html += '<span><i class="fa fa-user fa-3x"></i></span>';
+		html += '<div class="direct-chat-text">';
+		html += message;
+		html += '</div></div>';
+		$(".direct-chat-messages").append(html);
+	}
 	</script>
 		<!-- Footer -->
 	<%@ include file="../layout/Footer.jsp" %>

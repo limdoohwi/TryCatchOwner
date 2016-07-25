@@ -1,15 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<footer class="main-footer">
-	<div class="pull-right hidden-xs">
-		<b>Version</b> 2.3.3
-	</div>
-	<strong>Copyright &copy; 2014-2015 <a
-		href="http://almsaeedstudio.com">Almsaeed Studio</a>.
-	</strong> All rights reserved.
-</footer>
-	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 	<script>
 	  $.widget.bridge('uibutton', $.ui.button);
 	</script>
@@ -42,3 +33,12 @@
 	<script src="/owner/resources/dist/js/pages/dashboard.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="/owner/resources/dist/js/demo.js"></script>
+	
+<footer class="main-footer">
+	<div class="pull-right hidden-xs">
+		<b>Version</b> 2.3.3
+	</div>
+	<strong>Copyright &copy; 2014-2015 <a
+		href="http://almsaeedstudio.com">Almsaeed Studio</a>.
+	</strong> All rights reserved.
+</footer>

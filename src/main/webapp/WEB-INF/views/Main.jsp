@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +28,7 @@
           </div>
           <!-- Now Order List : Client가 온라인 상으로 주문한 예약을 확인 할 수 있는 box  -->
           <div class="box box-primary">
-            <div class="box-header">
+            <div id="Now-Order-List-Box-Header" class="box-header">
               <i class="ion ion-clipboard"></i>
 			<!-- title -->
               <h3 class="box-title">Now Order List</h3>
@@ -42,55 +43,7 @@
                 </ul>
               </div>
             </div>
-            <div class="box-body">
-              <ul class="todo-list">
-                <li>
-                  <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fa fa-coffee"></i>
-                      </span>
-                  <!-- Order Menu List -->
-                  <span class="text">아메리카노 외 3종</span>
-                  <span class="text">client@client.net</span>
-                  <!-- Emphasis label -->
-                  <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
-                  <a class="New-Order-List-Show-Btn btn btn-primary btn-xs">내역 보기</a>
-                  <!-- Detail Order List -->
-                  <div class="New-Order-List-Modal" style="display:none;">
-                  	<div class="row" style="margin-top: 10px">
-						<form class="form-horizontal">
-							<!-- Order User -->
-							<div class="form-group">
-								<label for="inputEmail3" class="col-sm-2 control-label">주문자</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control" value="고객1" readonly="readonly" style="border:none; background-color:transparent;">
-								</div>
-							</div>
-							<!-- Order List Information -->
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label">주문 정보</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control" value="아메리카노1/핫초코2/카페모카1" readonly="readonly" style="border:none; background-color:transparent;">
-								</div>
-							</div>
-							<!-- Order Option -->
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label">요청</label>
-								<div class="col-sm-6">
-									<textarea rows="3" cols="50" class="form-control" readonly="readonly">아메리카노 1개에 샷추가, 핫초코 둘다 휘핑 빼주세요</textarea>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-offset-2 col-sm-10">
-									<button type="button" class="Hide-New-Order-List-Modal-Btn btn btn-primary">닫기</button>
-								</div>
-							</div>
-						</form>
-					</div>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            
           </div>
           <!-- quick email widget -->
           <div class="box box-info">
@@ -167,6 +120,151 @@
         </section>
       </div>
   </div>
+ <!-- ./wrapper -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+  $(function(){
+	  //newNoticeAlarm_Order();
+	  
+	  //New-Order-List-Show-Btn Click Show Modal
+	  $(".New-Order-List-Show-Btn").click(function(){
+		  var index = $(".New-Order-List-Show-Btn").index(this);
+		  var btn = $(".New-Order-List-Show-Btn").eq(index);
+		$(".New-Order-List-Modal").eq(index).slideDown(400);
+	  });
+	  //Hide-New-Order-List-Modal-Btn Click Hide Modal
+	  $(".Hide-New-Order-List-Modal-Btn").click(function(){
+		  var index = $(".Hide-New-Order-List-Modal-Btn ").index(this);
+		  var modal = $(".New-Order-List-Modal").eq(index);
+		  $(modal).slideUp(400);
+	  });
+	  //My Store 메뉴에서 선택된 매장은 red표시, red표시인 매장명을 메인 상단에 띄움
+	  $(".Select-Store-Btn").click(function(){
+		 var index = $(".Select-Store-Btn").index(this);
+		 var store_no = $(".My-Store-No-List").eq(index).val();
+		 $.ajax({
+			 url:"/owner/set.owner_store",
+			 type:"post",
+			 data:{store_no:store_no},
+			 success:function(data){
+				 alert(data);
+				 if(data == true){
+					 alert("매장 설정이 완료되었습니다.");
+					 location.href="/owner/log_in";
+				 }
+				 else{
+					 alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
+				 }
+			 },
+			 error:function(){
+				 alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
+			 }
+		 });
+	  });
+	  
+	  
+	  //내역보기 클릭
+	  $(document).on("click", '.New-Order-List-Show-Btn', function(){
+		 var index = $(".New-Order-List-Show-Btn").index(this); 
+		 $(".New-Order-List-Modal").eq(index).fadeIn(400);
+	  });
+	  //내역보기 닫기 클릭
+	  $(document).on("click", ".Hide-New-Order-List-Modal-Btn", function(){
+		 var index = $(".Hide-New-Order-List-Modal-Btn").index(this);
+		 $(".New-Order-List-Modal").eq(index).fadeOut(400);
+	  });
+  })
+  
+  function newNoticeAlarm_Order(){
+	//점장이 접속한 매장의 주문 내역을 불러옴
+	  $.ajax({
+		  url:"/owner/client_order_list.order",
+		  type:"post",
+		  success:function(data){
+				//초기화 후 내용 추가
+				$("#Now-Order-List-Box-Header").html("");
+			  $.each(data.orderList, function(index, jsonData){
+				  var menu_total_list = "";
+				  var menu_total_list2 = "";
+				  if(jsonData.menu_total_list.indexOf("null") != -1){
+						var start = jsonData.menu_total_list.indexOf("null");
+						menu_total_list = jsonData.menu_total_list.substring(start+4, jsonData.menu_total_list.length);
+						menu_total_list2 = menu_total_list;
+					}
+					else{
+						menu_total_list = jsonData.menu_total_list;
+						menu_total_list2 = menu_total_list;
+					}
+					if(menu_total_list.length > 8){
+						menu_total_list = menu_total_list.substring(0,8) + ".....";
+					}
+					$("#Now-Order-List-Box-Header").append("" + 
+					"<div class='box-body'>" +
+				         "<ul class='todo-list'>" +
+	                		"<li>" +
+	                      		"<span class='handle'>" +
+	                        		"<i class='fa fa-coffee'></i>" + 
+	                      		"</span>" +
+	                  			"<span class='text'>"+menu_total_list+"</span>" +
+	                  			"<span class='text' style='color:blue'>"+jsonData.order_name+"</span>" +
+	                  			"<small class='label label-danger'><i class='fa fa-clock-o'></i>"+jsonData.menu_reserve_time+"</small>" +
+	                  			"<a class='New-Order-List-Show-Btn btn btn-primary btn-xs'>내역 보기</a>" +
+	                  			"<div class='New-Order-List-Modal' style='display:none;'>" +
+	                  				"<div class='row' style='margin-top: 10px'>" + 
+										"<form class='form-horizontal'>" +
+											"<div class='form-group'>" +
+												"<label for='inputEmail3' class='col-sm-2 control-label'>주문자</label>" + 
+												"<div class='col-sm-6'>" +
+													"<input type='text' class='form-control' value='"+jsonData.order_name+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
+												"</div>" +
+											"</div>" +
+											"<div class='form-group'>" +
+												"<label for='inputEmail3' class='col-sm-2 control-label'>연락처</label>" + 
+												"<div class='col-sm-6'>" +
+													"<input type='text' class='form-control' value='"+jsonData.order_tel+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
+												"</div>" +
+											"</div>" +
+											"<div class='form-group'>" +
+												"<label for='inputEmail3' class='col-sm-2 control-label'>매장명</label>" + 
+												"<div class='col-sm-6'>" +
+													"<input type='text' class='form-control' value='"+jsonData.store_name+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
+												"</div>" +
+											"</div>" +
+		
+											"<div class='form-group'>" +
+												"<label for='inputPassword3' class='col-sm-2 control-label'>주문 정보</label>" +
+												"<div class='col-sm-6'>" +
+													"<input type='text' class='form-control' value='"+menu_total_list2+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
+												"</div>" +
+											"</div>" +
+											"<div class='form-group'>" +
+												"<label for='inputEmail3' class='col-sm-2 control-label'>총 결제액</label>" + 
+												"<div class='col-sm-6'>" +
+													"<input type='text' class='form-control' value='"+jsonData.menu_total_price+"원' readonly='readonly' style='border:none; background-color:transparent;'>" +
+												"</div>" +
+											"</div>" +
+											"<div class='form-group'>" +
+												"<div class='col-sm-offset-2 col-sm-10'>" +
+													"<button type='button' class='Hide-New-Order-List-Modal-Btn btn btn-primary'>닫기</button>" +
+												"</div>" +
+										"</div>" +
+									"</div>" +
+								"</div>" +
+							"</form>" +
+						"</div>" +
+	                  "</div>" +
+	                "</li>" +
+	              "</ul>" +
+	            "</div>");
+			  });
+		  },
+		  error:function(){
+			  alert("ajax 연결 실패");
+		  }
+	  });
+  }
+</script>
+
   <!-- Footer -->
   <jsp:include page="layout/Footer.jsp" />
 
@@ -363,25 +461,5 @@
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
-
-<!-- ./wrapper -->
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-  $(function(){
-	  //New-Order-List-Show-Btn Click Show Modal
-	  $(".New-Order-List-Show-Btn").click(function(){
-		  var index = $(".New-Order-List-Show-Btn").index(this);
-		  var btn = $(".New-Order-List-Show-Btn").eq(index);
-		$(".New-Order-List-Modal").eq(index).slideDown(400);
-	  });
-	  //Hide-New-Order-List-Modal-Btn Click Hide Modal
-	  $(".Hide-New-Order-List-Modal-Btn").click(function(){
-		  var index = $(".Hide-New-Order-List-Modal-Btn ").index(this);
-		  var modal = $(".New-Order-List-Modal").eq(index);
-		  $(modal).slideUp(400);
-	  });
-  })
-</script>
 </body>
 </html>

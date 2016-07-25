@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -28,7 +29,107 @@
   <link rel="stylesheet" href="/owner/resources/plugins/daterangepicker/daterangepicker-bs3.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="/owner/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-  
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <!-- jQuery 2.2.0 -->
+  <script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+  <script>
+	$(function(){
+		connect();
+		newNoticeAlarm();
+		//읽지않은 음료주문 알람을 띄움
+		
+	})
+	
+	/*
+		WebSocket
+		*/
+		function connect() {
+			if ('WebSocket' in window) {
+				console.log('Websocket supported');
+				socket = new WebSocket('ws://' + document.location.hostname+ ':8080/owner//websocket');
+				console.log('Connection attempted');
+				socket.onopen = function() {
+					console.log('Connection open!');
+				}
+				socket.onclose = function() {
+					console.log('Disconnecting connection');
+				}
+				//데이터 받음
+				socket.onmessage = function(evt) {
+					var received_msg = evt.data;
+					console.log(received_msg);
+					console.log('message received!');
+					receiveNotice_Alarm();
+				}
+			} else {
+				console.log('Websocket not supported');
+			}
+		}
+		function disconnect() {
+			console.log("Disconnected");
+		}
+		function sendName() {
+			//var message = "테스트 메세지 : 주문할게요";
+			//showmyMessage(message)
+			//socket.send(JSON.stringify({'message' : message}));
+		}
+		function receiveNotice_Alarm(){
+			alert("데이터 받음");
+			newNoticeAlarm();
+			newNoticeAlarm_Order();
+		}
+		/*
+		function showMessage(message) {
+			alert(message);
+			
+			var html = "";
+			html += '<div class="direct-chat-msg right">';
+			html += '<div class="direct-chat-info clearfix">';
+			html +=	'<span class="direct-chat-name pull-right">상대방</span><br /> <span class="direct-chat-timestamp pull-right">23 Jan 2:05 pm</span>';
+			html += '</div>';
+			html += '<div style="display: block">'
+			html += '<span class="pull-right"><i class="fa fa-user fa-3x"></i></span>';
+			html += '</div>';
+			html += '<div style="display: block" class="direct-chat-text">';
+			html += message;
+			html += '</div></div>';
+			$(".direct-chat-messages").append(html);
+			
+			
+		}
+		
+		function showmyMessage(message){
+			alert(message);
+		}
+		*/
+		
+		function newNoticeAlarm(){
+			//점장이 접속한 매장의 알림을 띄움
+			  $.ajax({
+				  url:"/owner/notice_alarm.notification",
+				  type:"post",
+				  success:function(data){
+					  $("#Notification-Detail-Ul").html("");
+					  $.each(data.notice_alarmList, function(index, jsonData){
+						 $("#Notification-Detail-Ul").append("" +
+								 "<li class='Notice-Detail-Li'>" +
+				                    "<a href='#'>" +
+				                      "<i class='fa fa-thumbs-o-up text-aqua'></i>" +jsonData.notice_alarm_content + "" +
+				                    "</a>" +
+				                  "</li>");
+					  });
+					  var notice_count = $(".Notice-Detail-Li").length;
+					  $("#Notification-Not-Read-Count-Span").text(notice_count); 
+					  $("#Notification-Header-li").text(notice_count+"건의 알람이 있습니다.");
+				  },
+				  error:function(){
+					  alert("ajax 연결 실패");
+				  }
+			  });
+		}
+  </script>
   
 <header class="main-header">
     <!-- Logo -->
@@ -44,7 +145,7 @@
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
-
+	
 		<!-- 페이지 우측상단 menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav" style="margin-right: 50px">
@@ -86,25 +187,14 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
               <!-- Notifications Count Number -->
-              <span class="label label-warning">10</span>
+              <span id="Notification-Not-Read-Count-Span" class="label label-warning"></span>
             </a>
             <!-- Notifications Click Show Div -->
             <ul class="dropdown-menu">
-              <li class="header">10건의 알람이 있습니다.</li>
+              <li id="Notification-Header-li" class="header"></li>
               <li>
                 <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-thumbs-o-up text-aqua"></i> 점장3이 좋아요를 눌렀습니다.
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-pencil text-yellow"></i> 점장4가 댓글을 달았습니다.
-                    </a>
-                  </li>
-                </ul>
+                <ul id="Notification-Detail-Ul" class="menu"></ul>
               </li>
               <li class="footer"><a href="#">모두 보기</a></li>
             </ul>
@@ -147,11 +237,22 @@
             <span>My Store</span>
             <span class="label label-primary pull-right">4</span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="/owner/resources/pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> 인천점</a></li>
-            <li><a href="/owner/resources/pages/layout/boxed.html"><i class="fa fa-circle-o"></i> 연수점</a></li>
-            <li><a href="/owner/resources/pages/layout/fixed.html"><i class="fa fa-circle-o"></i> 창동점</a></li>
-            <li><a href="/owner/resources/pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> 의정부점</a></li>
+          <ul id="My-Store-Ul" class="treeview-menu">
+          	<c:forEach var="storeDto" items="${storeList}" varStatus="storeIndex">
+		          		 <li>
+		          		 	<a class="Select-Store-Btn" style="cursor:pointer;">
+		          		 		<c:if test="${store_dto.store_no == storeDto.store_no}">
+		          		 			<i style="color: red; text-shadow: 1px 1px 1px #ccc;" class="My-Store-Name-List fa fa-circle-o"></i><span>${storeDto.store_name}</span>
+		          		 		<input type="hidden" class="My-Store-No-List" value="${storeDto.store_no}" />
+		          		 		</c:if>
+		          		 		<c:if test="${store_dto.store_no != storeDto.store_no}">
+		          		 			<i class="My-Store-Name-List fa fa-circle-o"></i><span>${storeDto.store_name}</span>
+		          		 		<input type="hidden" class="My-Store-No-List" value="${storeDto.store_no}" />
+		          		 		</c:if>
+		          		 	</a>
+		          		 </li>
+          	</c:forEach>
+          	
           </ul>
         </li>
         <!-- Community Menu -->
@@ -208,7 +309,9 @@
     <section class="content-header">
       <!-- 접속한 점장의 매장명 -->
       <h1>
-                   종각점
+      	<span id="Main-Store-Name">
+      		${store_dto.store_name}
+      	</span>
         <small>반갑습니다.</small>
       </h1>
       <ol class="breadcrumb">
