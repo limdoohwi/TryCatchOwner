@@ -51,7 +51,7 @@
 					<div class="widget-user-image">
 						<i class="fa fa fa-exclamation-circle fa-5x"></i>
 						<h3 class="widget-user-username">
-							E-Mail 혹은 이름을 검색하여 원하시는 점장을 찾아보세요!
+							지점을 검색하여 원하시는 점장을 찾아보세요!
 						</h3>
 						<h5 class="widget-user-desc">TryCatchCommunity</h5>
 					</div>
@@ -97,7 +97,7 @@
 		</div>
 		
 		<!-- Message -->
-			<div id="Message-Div" class="col-md-4 col-md-offset-6" style="position:fixed; display:none">
+			<div id="Message-Div" class="col-md-4 col-md-offset-6" style="position:fixed; display:none;">
 				<div class="box box-primary direct-chat direct-chat-primary">
 					<div class="box-header with-border">
 						<!-- 채팅하는 상대방 아이디 -->
@@ -158,6 +158,18 @@
 	  });
 	  //Owner-Search-Text KeyUp Show Result
 	  $("#Owner-Search-Text").keyup(function(){
+		  $.ajax({
+				url:"/store/search",
+				type:"post",
+				data:{store_name:$(this).val()},
+				success:function(data){
+					
+				},
+				error:function(){
+					alert("알수 없는 오류로인해 작업을 중지합니다. 다시 시도해 주세요");
+					return false;
+				}
+			});	
 		$("#Auto-Result-Div").show();
 	  });
 	  //Owner-Result-Div DoubleClick Show Owner Detail Info
@@ -171,6 +183,9 @@
 	  });
 	})
 
+	
+	
+	// Web-socket 관련 메서드 
 	function connect() {
 		if ('WebSocket' in window) {
 			console.log('Websocket supported');
@@ -186,7 +201,8 @@
 				var received_msg = evt.data;
 				console.log(received_msg);
 				console.log('message received!');
-				showMessage(received_msg);
+				var json_msg = JSON.parse(received_msg);
+				showMessage(json_msg.message);
 			}
 		} else {
 			console.log('Websocket not supported');
@@ -213,6 +229,7 @@
 		html += message;
 		html += '</div></div>';
 		$(".direct-chat-messages").append(html);
+		$(".direct-chat-messages").scrollTop($(this).scrollHeight);
 		
 	}
 	function showmyMessage(message){
@@ -226,6 +243,7 @@
 		html += message;
 		html += '</div></div>';
 		$(".direct-chat-messages").append(html);
+		$(".direct-chat-messages").scrollTop($(this).scrollHeight);
 	}
 	</script>
 		<!-- Footer -->
