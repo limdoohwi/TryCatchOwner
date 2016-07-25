@@ -1,465 +1,462 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-  	.main-sidebar span{
-  		color:white;
-  	}
-  </style>
+<style>
+.main-sidebar span {
+	color: white;
+}
+</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
-      <!-- Header -->
-      <jsp:include page="layout/Header.jsp" />
-      <!-- Month Profit -->
-      <div class="row">
-        <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
-          <!-- Custom tabs (Charts with tabs)-->
-          <div class="nav-tabs-custom">
-            <div class="tab-content no-padding">
-              <!-- Google Chart Month Profit -->
-              <jsp:include page="management/MonthProfit_Chart.jsp" />
-              <div class="chart tab-pane active" id="Month-Profit-Div" style="position: relative; height: 300px;"></div>
-            </div>
-          </div>
-          <!-- Now Order List : Client가 온라인 상으로 주문한 예약을 확인 할 수 있는 box  -->
-          <div class="box box-primary">
-            <div id="Now-Order-List-Box-Header" class="box-header">
-              <i class="ion ion-clipboard"></i>
-			<!-- title -->
-              <h3 class="box-title">Now Order List</h3>
-			<!-- Now Order List Page -->
-              <div class="box-tools pull-right">
-                <ul class="pagination pagination-sm inline">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">&raquo;</a></li>
-                </ul>
-              </div>
-            </div>
-            
-          </div>
-          <!-- quick email widget -->
-          <div class="box box-info">
-            <div class="box-header">
-              <i class="fa fa-envelope"></i>
+	<div class="wrapper">
+		<!-- Header -->
+		<jsp:include page="layout/Header.jsp" />
+		<!-- Month Profit -->
+		<div class="row">
+			<!-- Left col -->
+			<section class="col-lg-7 connectedSortable">
+				<!-- Custom tabs (Charts with tabs)-->
+				<div class="nav-tabs-custom">
+					<div class="tab-content no-padding">
+						<!-- Google Chart Month Profit -->
+						<jsp:include page="management/MonthProfit_Chart.jsp" />
+						<div class="chart tab-pane active" id="Month-Profit-Div"
+							style="position: relative; height: 300px;"></div>
+					</div>
+				</div>
+				<!-- Now Order List : Client가 온라인 상으로 주문한 예약을 확인 할 수 있는 box  -->
+				<div class="box box-primary">
+					<div id="Now-Order-List-Box-Header" class="box-header">
+						<i class="ion ion-clipboard"></i>
+						<!-- title -->
+						<h3 class="box-title">Now Order List</h3>
+						<!-- Now Order List Page -->
+						<div class="box-tools pull-right">
+							<ul class="pagination pagination-sm inline">
+								<li><a href="#">&laquo;</a></li>
+								<li><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">&raquo;</a></li>
+							</ul>
+						</div>
+					</div>
+					<c:forEach var="order_dto" items="${orderList}">
+						<div class='box-body'>
+							<ul class='todo-list'>
+								<li>
+									<span class='handle'> <i class='fa fa-coffee'></i></span>
+									<!-- 메뉴리스트 --> 
+									<span class='text'>${order_dto.menu_simple_list}</span>
+									<!-- 주문자 --> 
+									<span class='text' style='color: blue'>${order_dto.order_name}</span> 
+									<!-- 예약 시간 -->
+									<small class='label label-danger'>
+										<i class='fa fa-clock-o'></i>${order_dto.menu_reserve_time}
+									</small>
+									<!-- 내역 보기 버튼 -->
+									<a class='New-Order-List-Show-Btn btn btn-primary btn-xs'>내역보기</a>
+									<!-- 내역보기 div -->
+									<div class='New-Order-List-Modal' style='display: none;'>
+										<div class='row' style='margin-top: 10px'>
+											<form class='form-horizontal'>
+												<div class='form-group'>
+													<label for='inputEmail3' class='col-sm-2 control-label'>주문자</label>
+													<div class='col-sm-6'>
+														<input type='text' class='form-control'
+															value='${order_dto.order_name}' readonly='readonly'
+															style='border: none; background-color: transparent;'>
+													</div>
+												</div>
+												<div class='form-group'>
+													<label for='inputEmail3' class='col-sm-2 control-label'>연락처</label>
+													<div class='col-sm-6'>
+														<input type='text' class='form-control'
+															value='${order_dto.order_tel}' readonly='readonly'
+															style='border: none; background-color: transparent;'>
+													</div>
+												</div>
+												<div class='form-group'>
+													<label for='inputEmail3' class='col-sm-2 control-label'>매장명</label>
+													<div class='col-sm-6'>
+														<input type='text' class='form-control'
+															value='${order_dto.store_name}' readonly='readonly'
+															style='border: none; background-color: transparent;'>
+													</div>
+												</div>
 
-              <h3 class="box-title">Quick Email</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
-                  <i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <form action="#" method="post">
-                <div class="form-group">
-                  <input type="email" class="form-control" name="emailto" placeholder="Email to:">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject">
-                </div>
-                <div>
-                  <textarea class="textarea" placeholder="Message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                </div>
-              </form>
-            </div>
-            <div class="box-footer clearfix">
-              <button type="button" class="pull-right btn btn-default" id="sendEmail">Send
-                <i class="fa fa-arrow-circle-right"></i></button>
-            </div>
-          </div>
-        </section>
-        <section class="col-lg-5 connectedSortable">
-          <!-- solid sales graph -->
-          <div class="box box-solid bg-teal-gradient">
-            <div class="box-header">
-              <i class="fa fa-th"></i>
+												<div class='form-group'>
+													<label for='inputPassword3' class='col-sm-2 control-label'>주문
+														정보</label>
+													<div class='col-sm-6'>
+														<input type='text' class='form-control'
+															value='${order_dto.menu_total_list}' readonly='readonly'
+															style='border: none; background-color: transparent;'>
+													</div>
+												</div>
+												<div class='form-group'>
+													<label for='inputEmail3' class='col-sm-2 control-label'>총
+														결제액</label>
+													<div class='col-sm-6'>
+														<input type='text' class='form-control'
+															value='${order_dto.menu_total_price}원' readonly='readonly'
+															style='border: none; background-color: transparent;'>
+													</div>
+												</div>
+												<div class='form-group'>
+													<div class='col-sm-offset-2 col-sm-10'>
+														<button type='button'
+															class='Hide-New-Order-List-Modal-Btn btn btn-primary'>닫기</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</c:forEach>
+				</div>
+				<!-- quick email widget -->
+				<div class="box box-info">
+					<div class="box-header">
+						<i class="fa fa-envelope"></i>
 
-              <h3 class="box-title">2016 Year Graph</h3>
-              <div class="box-tools pull-right">
-               	<!-- 최소화 버튼 -->
-                <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <!-- 닫기 버튼 -->
-                <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i class="fa fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body border-radius-none">
-            <!-- Google Year Profit Chart -->
-              <jsp:include page="management/YearProfit_Chart.jsp" />
-              <div class="chart" id="Year-Profit-Div" style="height: 250px;"></div>
-            </div>
-            <!-- 해당 연도 매출액에서 각 메뉴들이 차지하는 판매율을 %로 나타냄 -->
-            <div class="box-footer no-border">
-              <div class="row">
-                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
-                  <div class="knob-label">Coffee</div>
-                </div>
-                <!-- ./col -->
-                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgColor="#39CCCC">
+						<h3 class="box-title">Quick Email</h3>
+						<!-- tools box -->
+						<div class="pull-right box-tools">
+							<button type="button" class="btn btn-info btn-sm"
+								data-widget="remove" data-toggle="tooltip" title="Remove">
+								<i class="fa fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="box-body">
+						<form action="#" method="post">
+							<div class="form-group">
+								<input type="email" class="form-control" name="emailto"
+									placeholder="Email to:">
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" name="subject"
+									placeholder="Subject">
+							</div>
+							<div>
+								<textarea class="textarea" placeholder="Message"
+									style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+							</div>
+						</form>
+					</div>
+					<div class="box-footer clearfix">
+						<button type="button" class="pull-right btn btn-default"
+							id="sendEmail">
+							Send <i class="fa fa-arrow-circle-right"></i>
+						</button>
+					</div>
+				</div>
+			</section>
+			<section class="col-lg-5 connectedSortable">
+				<!-- solid sales graph -->
+				<div class="box box-solid bg-teal-gradient">
+					<div class="box-header">
+						<i class="fa fa-th"></i>
 
-                  <div class="knob-label">Drink</div>
-                </div>
-                <div class="col-xs-4 text-center">
-                  <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgColor="#39CCCC">
-                  <div class="knob-label">Cake</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-  </div>
- <!-- ./wrapper -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-  $(function(){
-	  //newNoticeAlarm_Order();
-	  
-	  //New-Order-List-Show-Btn Click Show Modal
-	  $(".New-Order-List-Show-Btn").click(function(){
-		  var index = $(".New-Order-List-Show-Btn").index(this);
-		  var btn = $(".New-Order-List-Show-Btn").eq(index);
-		$(".New-Order-List-Modal").eq(index).slideDown(400);
-	  });
-	  //Hide-New-Order-List-Modal-Btn Click Hide Modal
-	  $(".Hide-New-Order-List-Modal-Btn").click(function(){
-		  var index = $(".Hide-New-Order-List-Modal-Btn ").index(this);
-		  var modal = $(".New-Order-List-Modal").eq(index);
-		  $(modal).slideUp(400);
-	  });
-	  //My Store 메뉴에서 선택된 매장은 red표시, red표시인 매장명을 메인 상단에 띄움
-	  $(".Select-Store-Btn").click(function(){
-		 var index = $(".Select-Store-Btn").index(this);
-		 var store_no = $(".My-Store-No-List").eq(index).val();
-		 $.ajax({
-			 url:"/owner/set.owner_store",
-			 type:"post",
-			 data:{store_no:store_no},
-			 success:function(data){
-				 alert(data);
-				 if(data == true){
-					 alert("매장 설정이 완료되었습니다.");
-					 location.href="/owner/log_in";
-				 }
-				 else{
-					 alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
-				 }
-			 },
-			 error:function(){
-				 alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
-			 }
-		 });
-	  });
-	  
-	  
-	  //내역보기 클릭
-	  $(document).on("click", '.New-Order-List-Show-Btn', function(){
-		 var index = $(".New-Order-List-Show-Btn").index(this); 
-		 $(".New-Order-List-Modal").eq(index).fadeIn(400);
-	  });
-	  //내역보기 닫기 클릭
-	  $(document).on("click", ".Hide-New-Order-List-Modal-Btn", function(){
-		 var index = $(".Hide-New-Order-List-Modal-Btn").index(this);
-		 $(".New-Order-List-Modal").eq(index).fadeOut(400);
-	  });
-  })
-  
-  function newNoticeAlarm_Order(){
-	//점장이 접속한 매장의 주문 내역을 불러옴
-	  $.ajax({
-		  url:"/owner/client_order_list.order",
-		  type:"post",
-		  success:function(data){
-				//초기화 후 내용 추가
-				$("#Now-Order-List-Box-Header").html("");
-			  $.each(data.orderList, function(index, jsonData){
-				  var menu_total_list = "";
-				  var menu_total_list2 = "";
-				  if(jsonData.menu_total_list.indexOf("null") != -1){
-						var start = jsonData.menu_total_list.indexOf("null");
-						menu_total_list = jsonData.menu_total_list.substring(start+4, jsonData.menu_total_list.length);
-						menu_total_list2 = menu_total_list;
+						<h3 class="box-title">2016 Year Graph</h3>
+						<div class="box-tools pull-right">
+							<!-- 최소화 버튼 -->
+							<button type="button" class="btn bg-teal btn-sm"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+							<!-- 닫기 버튼 -->
+							<button type="button" class="btn bg-teal btn-sm"
+								data-widget="remove">
+								<i class="fa fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="box-body border-radius-none">
+						<!-- Google Year Profit Chart -->
+						<jsp:include page="management/YearProfit_Chart.jsp" />
+						<div class="chart" id="Year-Profit-Div" style="height: 250px;"></div>
+					</div>
+					<!-- 해당 연도 매출액에서 각 메뉴들이 차지하는 판매율을 %로 나타냄 -->
+					<div class="box-footer no-border">
+						<div class="row">
+							<div class="col-xs-4 text-center"
+								style="border-right: 1px solid #f4f4f4">
+								<input type="text" class="knob" data-readonly="true" value="20"
+									data-width="60" data-height="60" data-fgColor="#39CCCC">
+								<div class="knob-label">Coffee</div>
+							</div>
+							<!-- ./col -->
+							<div class="col-xs-4 text-center"
+								style="border-right: 1px solid #f4f4f4">
+								<input type="text" class="knob" data-readonly="true" value="50"
+									data-width="60" data-height="60" data-fgColor="#39CCCC">
+
+								<div class="knob-label">Drink</div>
+							</div>
+							<div class="col-xs-4 text-center">
+								<input type="text" class="knob" data-readonly="true" value="30"
+									data-width="60" data-height="60" data-fgColor="#39CCCC">
+								<div class="knob-label">Cake</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+	<!-- ./wrapper -->
+	<script>
+		$.widget.bridge('uibutton', $.ui.button);
+		$(function(){
+			var totalRecord_Order = "${fn:length(orderList)}";
+			alert("총 개수 : " + totalRecored_Order);
+			var numPerPage_Order = 3;
+			var pagePerBlock_Order = 5;
+			var totalPage_Order = Math.ceil(totalRecord_Order / numPerPage_Order);
+			var totalBlock_Order = Math.ceil(totalPage_Order / pagePerBlock_Order);
+			var nowPage_Order = 0;
+			var beginPerPage_Order = nowPage_Order * numPerPage_Order;
+			//newNoticeAlarm_Order();
+
+			//New-Order-List-Show-Btn Click Show Modal
+			$(".New-Order-List-Show-Btn").click(function() {
+				var index = $(".New-Order-List-Show-Btn").index(this);
+				var btn = $(".New-Order-List-Show-Btn").eq(index);
+				$(".New-Order-List-Modal").eq(index).slideDown(400);
+			});
+			//Hide-New-Order-List-Modal-Btn Click Hide Modal
+			$(".Hide-New-Order-List-Modal-Btn").click(function() {
+				var index = $(".Hide-New-Order-List-Modal-Btn ").index(this);
+				var modal = $(".New-Order-List-Modal").eq(index);
+				$(modal).slideUp(400);
+			});
+			//My Store 메뉴에서 선택된 매장은 red표시, red표시인 매장명을 메인 상단에 띄움
+			$(".Select-Store-Btn").click(function() {
+				var index = $(".Select-Store-Btn").index(this);
+				var store_no = $(".My-Store-No-List").eq(index).val();
+				$.ajax({
+					url : "/owner/set.owner_store",
+					type : "post",
+					data : {
+						store_no : store_no
+					},
+					success : function(data) {
+						alert(data);
+						if (data == true) {
+							alert("매장 설정이 완료되었습니다.");
+							location.href = "/owner/log_in";
+						} else {
+							alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
+						}
+					},
+					error : function() {
+						alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
 					}
-					else{
-						menu_total_list = jsonData.menu_total_list;
-						menu_total_list2 = menu_total_list;
-					}
-					if(menu_total_list.length > 8){
-						menu_total_list = menu_total_list.substring(0,8) + ".....";
-					}
-					$("#Now-Order-List-Box-Header").append("" + 
-					"<div class='box-body'>" +
-				         "<ul class='todo-list'>" +
-	                		"<li>" +
-	                      		"<span class='handle'>" +
-	                        		"<i class='fa fa-coffee'></i>" + 
-	                      		"</span>" +
-	                  			"<span class='text'>"+menu_total_list+"</span>" +
-	                  			"<span class='text' style='color:blue'>"+jsonData.order_name+"</span>" +
-	                  			"<small class='label label-danger'><i class='fa fa-clock-o'></i>"+jsonData.menu_reserve_time+"</small>" +
-	                  			"<a class='New-Order-List-Show-Btn btn btn-primary btn-xs'>내역 보기</a>" +
-	                  			"<div class='New-Order-List-Modal' style='display:none;'>" +
-	                  				"<div class='row' style='margin-top: 10px'>" + 
-										"<form class='form-horizontal'>" +
-											"<div class='form-group'>" +
-												"<label for='inputEmail3' class='col-sm-2 control-label'>주문자</label>" + 
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+jsonData.order_name+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-											"<div class='form-group'>" +
-												"<label for='inputEmail3' class='col-sm-2 control-label'>연락처</label>" + 
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+jsonData.order_tel+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-											"<div class='form-group'>" +
-												"<label for='inputEmail3' class='col-sm-2 control-label'>매장명</label>" + 
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+jsonData.store_name+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-		
-											"<div class='form-group'>" +
-												"<label for='inputPassword3' class='col-sm-2 control-label'>주문 정보</label>" +
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+menu_total_list2+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-											"<div class='form-group'>" +
-												"<label for='inputEmail3' class='col-sm-2 control-label'>총 결제액</label>" + 
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+jsonData.menu_total_price+"원' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-											"<div class='form-group'>" +
-												"<div class='col-sm-offset-2 col-sm-10'>" +
-													"<button type='button' class='Hide-New-Order-List-Modal-Btn btn btn-primary'>닫기</button>" +
-												"</div>" +
-										"</div>" +
-									"</div>" +
-								"</div>" +
-							"</form>" +
-						"</div>" +
-	                  "</div>" +
-	                "</li>" +
-	              "</ul>" +
-	            "</div>");
-			  });
-		  },
-		  error:function(){
-			  alert("ajax 연결 실패");
-		  }
-	  });
-  }
-</script>
+				});
+			});
 
-  <!-- Footer -->
-  <jsp:include page="layout/Footer.jsp" />
+			//내역보기 클릭
+			$(document).on("click", '.New-Order-List-Show-Btn', function() {
+				var index = $(".New-Order-List-Show-Btn").index(this);
+				$(".New-Order-List-Modal").eq(index).fadeIn(400);
+			});
+			//내역보기 닫기 클릭
+			$(document).on("click", ".Hide-New-Order-List-Modal-Btn", function() {
+				var index = $(".Hide-New-Order-List-Modal-Btn").index(this);
+			 	$(".New-Order-List-Modal").eq(index).fadeOut(400);
+			});
+			//주문 내역보기 페이징
+			$.ajax({
+				url:"/owner/order.paging.owner",
+				type:"post",
+				data:{}
+			});
+		})	
+	</script>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <!-- Home tab content -->
-      <div class="tab-pane" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Recent Activity</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+	<!-- Footer -->
+	<jsp:include page="layout/Footer.jsp" />
 
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+	<!-- Control Sidebar -->
+	<aside class="control-sidebar control-sidebar-dark">
+		<!-- Create the tabs -->
+		<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+			<li><a href="#control-sidebar-home-tab" data-toggle="tab"><i
+					class="fa fa-home"></i></a></li>
+			<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i
+					class="fa fa-gears"></i></a></li>
+		</ul>
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<!-- Home tab content -->
+			<div class="tab-pane" id="control-sidebar-home-tab">
+				<h3 class="control-sidebar-heading">Recent Activity</h3>
+				<ul class="control-sidebar-menu">
+					<li><a href="javascript:void(0)"> <i
+							class="menu-icon fa fa-birthday-cake bg-red"></i>
 
-                <p>Will be 23 on April 24th</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-user bg-yellow"></i>
+							<div class="menu-info">
+								<h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
 
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+								<p>Will be 23 on April 24th</p>
+							</div>
+					</a></li>
+					<li><a href="javascript:void(0)"> <i
+							class="menu-icon fa fa-user bg-yellow"></i>
 
-                <p>New phone +1(800)555-1234</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+							<div class="menu-info">
+								<h4 class="control-sidebar-subheading">Frodo Updated His
+									Profile</h4>
 
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+								<p>New phone +1(800)555-1234</p>
+							</div>
+					</a></li>
+					<li><a href="javascript:void(0)"> <i
+							class="menu-icon fa fa-envelope-o bg-light-blue"></i>
 
-                <p>nora@example.com</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-file-code-o bg-green"></i>
+							<div class="menu-info">
+								<h4 class="control-sidebar-subheading">Nora Joined Mailing
+									List</h4>
 
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+								<p>nora@example.com</p>
+							</div>
+					</a></li>
+					<li><a href="javascript:void(0)"> <i
+							class="menu-icon fa fa-file-code-o bg-green"></i>
 
-                <p>Execution time 5 seconds</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
+							<div class="menu-info">
+								<h4 class="control-sidebar-subheading">Cron Job 254
+									Executed</h4>
 
-        <h3 class="control-sidebar-heading">Tasks Progress</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Custom Template Design
-                <span class="label label-danger pull-right">70%</span>
-              </h4>
+								<p>Execution time 5 seconds</p>
+							</div>
+					</a></li>
+				</ul>
+				<!-- /.control-sidebar-menu -->
 
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Update Resume
-                <span class="label label-success pull-right">95%</span>
-              </h4>
+				<h3 class="control-sidebar-heading">Tasks Progress</h3>
+				<ul class="control-sidebar-menu">
+					<li><a href="javascript:void(0)">
+							<h4 class="control-sidebar-subheading">
+								Custom Template Design <span
+									class="label label-danger pull-right">70%</span>
+							</h4>
 
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Laravel Integration
-                <span class="label label-warning pull-right">50%</span>
-              </h4>
+							<div class="progress progress-xxs">
+								<div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+							</div>
+					</a></li>
+					<li><a href="javascript:void(0)">
+							<h4 class="control-sidebar-subheading">
+								Update Resume <span class="label label-success pull-right">95%</span>
+							</h4>
 
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Back End Framework
-                <span class="label label-primary pull-right">68%</span>
-              </h4>
+							<div class="progress progress-xxs">
+								<div class="progress-bar progress-bar-success"
+									style="width: 95%"></div>
+							</div>
+					</a></li>
+					<li><a href="javascript:void(0)">
+							<h4 class="control-sidebar-subheading">
+								Laravel Integration <span class="label label-warning pull-right">50%</span>
+							</h4>
 
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
+							<div class="progress progress-xxs">
+								<div class="progress-bar progress-bar-warning"
+									style="width: 50%"></div>
+							</div>
+					</a></li>
+					<li><a href="javascript:void(0)">
+							<h4 class="control-sidebar-subheading">
+								Back End Framework <span class="label label-primary pull-right">68%</span>
+							</h4>
 
-      </div>
-      <!-- /.tab-pane -->
-      <!-- Stats tab content -->
-      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-      <!-- /.tab-pane -->
-      <!-- Settings tab content -->
-      <div class="tab-pane" id="control-sidebar-settings-tab">
-        <form method="post">
-          <h3 class="control-sidebar-heading">General Settings</h3>
+							<div class="progress progress-xxs">
+								<div class="progress-bar progress-bar-primary"
+									style="width: 68%"></div>
+							</div>
+					</a></li>
+				</ul>
+				<!-- /.control-sidebar-menu -->
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Report panel usage
-              <input type="checkbox" class="pull-right" checked>
-            </label>
+			</div>
+			<!-- /.tab-pane -->
+			<!-- Stats tab content -->
+			<div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab
+				Content</div>
+			<!-- /.tab-pane -->
+			<!-- Settings tab content -->
+			<div class="tab-pane" id="control-sidebar-settings-tab">
+				<form method="post">
+					<h3 class="control-sidebar-heading">General Settings</h3>
 
-            <p>
-              Some information about this general settings option
-            </p>
-          </div>
-          <!-- /.form-group -->
+					<div class="form-group">
+						<label class="control-sidebar-subheading"> Report panel
+							usage <input type="checkbox" class="pull-right" checked>
+						</label>
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Allow mail redirect
-              <input type="checkbox" class="pull-right" checked>
-            </label>
+						<p>Some information about this general settings option</p>
+					</div>
+					<!-- /.form-group -->
 
-            <p>
-              Other sets of options are available
-            </p>
-          </div>
-          <!-- /.form-group -->
+					<div class="form-group">
+						<label class="control-sidebar-subheading"> Allow mail
+							redirect <input type="checkbox" class="pull-right" checked>
+						</label>
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Expose author name in posts
-              <input type="checkbox" class="pull-right" checked>
-            </label>
+						<p>Other sets of options are available</p>
+					</div>
+					<!-- /.form-group -->
 
-            <p>
-              Allow the user to show his name in blog posts
-            </p>
-          </div>
-          <!-- /.form-group -->
+					<div class="form-group">
+						<label class="control-sidebar-subheading"> Expose author
+							name in posts <input type="checkbox" class="pull-right" checked>
+						</label>
 
-          <h3 class="control-sidebar-heading">Chat Settings</h3>
+						<p>Allow the user to show his name in blog posts</p>
+					</div>
+					<!-- /.form-group -->
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Show me as online
-              <input type="checkbox" class="pull-right" checked>
-            </label>
-          </div>
-          <!-- /.form-group -->
+					<h3 class="control-sidebar-heading">Chat Settings</h3>
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Turn off notifications
-              <input type="checkbox" class="pull-right">
-            </label>
-          </div>
-          <!-- /.form-group -->
+					<div class="form-group">
+						<label class="control-sidebar-subheading"> Show me as
+							online <input type="checkbox" class="pull-right" checked>
+						</label>
+					</div>
+					<!-- /.form-group -->
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Delete chat history
-              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
-            </label>
-          </div>
-          <!-- /.form-group -->
-        </form>
-      </div>
-      <!-- /.tab-pane -->
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
+					<div class="form-group">
+						<label class="control-sidebar-subheading"> Turn off
+							notifications <input type="checkbox" class="pull-right">
+						</label>
+					</div>
+					<!-- /.form-group -->
+
+					<div class="form-group">
+						<label class="control-sidebar-subheading"> Delete chat
+							history <a href="javascript:void(0)" class="text-red pull-right"><i
+								class="fa fa-trash-o"></i></a>
+						</label>
+					</div>
+					<!-- /.form-group -->
+				</form>
+			</div>
+			<!-- /.tab-pane -->
+		</div>
+	</aside>
+	<!-- /.control-sidebar -->
+	<!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
+	<div class="control-sidebar-bg"></div>
 </body>
 </html>

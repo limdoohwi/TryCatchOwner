@@ -8,9 +8,18 @@ public class Order_InformationDTO {
 	private String[] menu_no;
 	private String[] menu_count;
 	private String[] menu_option;
-	private String menu_total_list;
+	private String menu_simple_list;
+	private String menu_total_list = "";
 	private int store_no;
 	private String store_name;
+
+	public String getMenu_simple_list() {
+		return menu_simple_list;
+	}
+
+	public void setMenu_simple_list(String menu_simple_list) {
+		this.menu_simple_list = menu_simple_list;
+	}
 
 	public int getStore_no() {
 		return store_no;

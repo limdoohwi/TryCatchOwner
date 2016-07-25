@@ -44,12 +44,11 @@ public class OrderServiceImpl implements OrderService {
 				menu_name = new String[list.get(i).getMenu_no().length];
 				for(int j=0; j<list.get(i).getMenu_no().length; j++){
 					int menu_num = Integer.parseInt((list.get(i).getMenu_no()[j]));
-					logger.info("메뉴 번호 : " + menu_num);
 					menuDto = menuDao.getMenu_withMenu_num(menu_num);
 					menu_name[j] = menuDto.getMenu_name();
 				}
-				logger.info("메뉴 : " + menu_name.length + ", " + list.get(i).getMenu_count().length + ", " + list.get(i).getMenu_option().length);
 				list.get(i).setMenu_total_list(menu_name, list.get(i).getMenu_count(), list.get(i).getMenu_option());
+				list.get(i).setMenu_simple_list(list.get(i).getMenu_total_list().substring(0, 9) + "...");
 			}
 			transactionManager.commit(status);
 			return list;

@@ -6,8 +6,8 @@
     
 <mapper namespace="com.trycatch.owner.mappers.orderMapper">  
 	<select id="getOrder_Information" parameterType="int" resultType="Order_InformationDTO">
-	    select order_name, order_tel, menu_reserve_time, menu_total_price, menu_order.menu_no, menu_count, menu_option, store_name from menu_payment
+	       select order_name, order_tel, menu_reserve_time, menu_total_price, menu_order.menu_no, menu_count, menu_option, store_name from menu_payment
 	    inner join menu_order on menu_payment.menu_payment_no = menu_order.menu_payment_no inner join store on menu_payment.store_no = store.store_no
-	    inner join menu on menu_order.menu_no = menu.menu_num where store.member_no = #{member_no} date(menu_reserve_time) = curdate() group by menu_reserve_time desc;
+	    inner join menu on menu_order.menu_no = menu.menu_num where store.member_no = #{member_no} and date(menu_reserve_time) = curdate() group by menu_reserve_time desc
 	</select>
 </mapper>
