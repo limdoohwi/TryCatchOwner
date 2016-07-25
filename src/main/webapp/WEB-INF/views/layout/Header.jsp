@@ -36,8 +36,8 @@
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
   <script>
 	$(function(){
-		connect();
-		newNoticeAlarm();
+		//connect();
+		//newNoticeAlarm();
 		//읽지않은 음료주문 알람을 띄움
 		
 	})

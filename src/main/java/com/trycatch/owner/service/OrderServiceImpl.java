@@ -32,14 +32,15 @@ public class OrderServiceImpl implements OrderService {
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 		
 	@Override
-	public List<Order_InformationDTO> getOrder_Information(int member_no) {
+	public List<Order_InformationDTO> getOrder_Information(int member_no, int start_Page, boolean asce, String search_order_info) {
 		transaction.setName("owner_order_transaction");
 		transaction.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		status = transactionManager.getTransaction(transaction);
 		String[] menu_name;
 		MenuDTO menuDto = null;
 		try {
-			List<Order_InformationDTO> list = dao.getOrder_Information(member_no);
+			List<Order_InformationDTO> list = dao.getOrder_Information(member_no, start_Page, asce, search_order_info);
+			logger.info("리스트 사이즈좀 알아보자 : " + list.size());
 			for(int i=0; i<list.size(); i++){
 				menu_name = new String[list.get(i).getMenu_no().length];
 				for(int j=0; j<list.get(i).getMenu_no().length; j++){
@@ -50,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
 				}
 				logger.info("메뉴 : " + menu_name.length + ", " + list.get(i).getMenu_count().length + ", " + list.get(i).getMenu_option().length);
 				list.get(i).setMenu_total_list(menu_name, list.get(i).getMenu_count(), list.get(i).getMenu_option());
+				list.get(i).setMenu_simple_list(list.get(i).getMenu_total_list().substring(0, 9) + "...");
 			}
 			transactionManager.commit(status);
 			return list;

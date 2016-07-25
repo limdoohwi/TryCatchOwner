@@ -5,9 +5,46 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.trycatch.owner.mappers.orderMapper">  
-	<select id="getOrder_Information" parameterType="int" resultType="Order_InformationDTO">
-	    select order_name, order_tel, menu_reserve_time, menu_total_price, menu_order.menu_no, menu_count, menu_option, store_name from menu_payment
+	<select id="getOrder_Information" parameterType="hashMap" resultType="Order_InformationDTO">
+	    select order_name, order_tel, menu_reserve_time, menu_payment_date, menu_total_price, menu_order.menu_no, menu_count, menu_option, store_name from menu_payment
 	    inner join menu_order on menu_payment.menu_payment_no = menu_order.menu_payment_no inner join store on menu_payment.store_no = store.store_no
-	    inner join menu on menu_order.menu_no = menu.menu_num where store.member_no = #{member_no} date(menu_reserve_time) = curdate() group by menu_reserve_time desc;
+	    inner join menu on menu_order.menu_no = menu.menu_num
+	    <where>
+	    <if test="search_order_info != null">
+	    	<if test="search_order_info != ''">
+		    	store.member_no = #{member_no} and date(menu_reserve_time) = curdate() and order_name = #{search_order_info}
+		    	<if test="isAsc != null">
+					<if test='isAsc == "false"'>
+						group by menu_payment.menu_payment_no desc
+					</if>
+					<if test='isAsc == "true"'>
+						group by menu_payment.menu_payment_no asc
+					</if>
+				</if>
+		    </if>
+		     <if test="search_order_info == ''">
+		    	store.member_no = #{member_no} and date(menu_reserve_time) = curdate()
+		    	<if test="isAsc != null">
+					<if test='isAsc == "false"'>
+						group by menu_payment.menu_payment_no desc
+					</if>
+					<if test='isAsc == "true"'>
+						group by menu_payment.menu_payment_no asc
+					</if>
+				</if>
+		    </if>
+	    </if>
+	    <if test="search_order_info == null">
+	    	store.member_no = #{member_no} and date(menu_reserve_time) = curdate()
+		    	<if test="isAsc != null">
+					<if test='isAsc == "false"'>
+						group by menu_payment.menu_payment_no desc
+					</if>
+					<if test='isAsc == "true"'>
+						group by menu_payment.menu_payment_no asc
+					</if>
+				</if>
+	    </if>
+	    </where>
 	</select>
 </mapper>

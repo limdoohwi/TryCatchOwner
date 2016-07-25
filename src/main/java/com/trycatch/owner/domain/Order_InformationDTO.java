@@ -8,9 +8,27 @@ public class Order_InformationDTO {
 	private String[] menu_no;
 	private String[] menu_count;
 	private String[] menu_option;
-	private String menu_total_list;
+	private String menu_simple_list;
+	private String menu_total_list = "";
+	private String menu_payment_date;
 	private int store_no;
 	private String store_name;
+
+	public String getMenu_payment_date() {
+		return menu_payment_date;
+	}
+
+	public void setMenu_payment_date(String menu_payment_date) {
+		this.menu_payment_date = menu_payment_date;
+	}
+
+	public String getMenu_simple_list() {
+		return menu_simple_list;
+	}
+
+	public void setMenu_simple_list(String menu_simple_list) {
+		this.menu_simple_list = menu_simple_list;
+	}
 
 	public int getStore_no() {
 		return store_no;
@@ -34,7 +52,7 @@ public class Order_InformationDTO {
 
 	public void setMenu_total_list(String[] menu_name, String[] menu_count, String[] menu_option) {
 		for (int i = 0; i < menu_name.length; i++) {
-			this.menu_total_list += menu_name[i] + "/" + menu_count[i] + "ÀÜ/" + menu_option[i] + ", ";
+			this.menu_total_list += menu_name[i] + "/" + menu_count[i] + "ìž”/" + menu_option[i] + ", ";
 		}
 	}
 

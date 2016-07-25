@@ -24,9 +24,18 @@ public class OrderDAOImpl implements OrderDAO {
 	private static final Logger logger = LoggerFactory.getLogger(OrderDAOImpl.class);
 	
 	@Override
-	public List<Order_InformationDTO> getOrder_Information(int member_no) {
+	public List<Order_InformationDTO> getOrder_Information(int member_no, int start_Page, boolean asce, String search_order_info) {
 		try {
-			return sqlSession.selectList(NAMESPACE + ".getOrder_Information", member_no);
+			logger.info("asce : " + asce);
+			int end_Order = start_Page + 5;
+			RowBounds rowB = new RowBounds(start_Page, end_Order);
+			String isAsc = String.valueOf(asce);
+			Map map = new HashMap<>();
+			map.put("member_no", member_no);
+			map.put("isAsc", isAsc);
+			map.put("search_order_info", search_order_info);
+			logger.info("써치인포 : " + search_order_info);
+			return sqlSession.selectList(NAMESPACE + ".getOrder_Information", map, rowB);
 		} catch (Exception err) {
 			return null;
 		}

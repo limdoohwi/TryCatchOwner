@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
@@ -35,15 +36,14 @@
 			<!-- Now Order List Page -->
               <div class="box-tools pull-right">
                 <ul class="pagination pagination-sm inline">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">&raquo;</a></li>
+                  <li><a href="#" class="pre_page_Order">&laquo;</a></li>
+                  <li><a href="#" class="page_Order"></a></li>
+                  <li><a href="#" class="page_Order"></a></li>
+                  <li><a href="#" class="page_Order"></a></li>
+                  <li><a href="#" class="next_page_Order">&raquo;</a></li>
                 </ul>
               </div>
             </div>
-            
           </div>
           <!-- quick email widget -->
           <div class="box box-info">
@@ -120,11 +120,111 @@
         </section>
       </div>
   </div>
- <!-- ./wrapper -->
+<script src="/owner/resources/Owner_js/ListAjax.js"></script>
 <script>
+function orderListSuccess(data){
+	//초기화 후 내용 추가
+	$(".Now-Order-List-Box-Body").remove();
+	  $.each(data.orderList, function(index, jsonData){
+			$("#Now-Order-List-Box-Header").append("" + 
+			"<div class='Now-Order-List-Box-Body box-body'>" +
+		         "<ul class='todo-list'>" +
+	        		"<li>" +
+	              		"<span class='handle'>" +
+	                		"<i class='fa fa-coffee'></i>" + 
+	              		"</span>" +
+	          			"<span class='text'>"+jsonData.menu_simple_list+"</span>" +
+	          			"<span class='text' style='color:blue'>"+jsonData.order_name+"</span>" +
+	          			"<small class='label label-danger'><i class='fa fa-clock-o'></i>"+jsonData.menu_reserve_time+"</small>" +
+	          			"<a class='New-Order-List-Show-Btn btn btn-primary btn-xs'>내역 보기</a>" +
+	          			"<div class='New-Order-List-Modal' style='display:none;'>" +
+	          				"<div class='row' style='margin-top: 10px'>" + 
+								"<form class='form-horizontal'>" +
+									"<div class='form-group'>" +
+										"<label for='inputEmail3' class='col-sm-2 control-label'>주문자</label>" + 
+										"<div class='col-sm-6'>" +
+											"<input type='text' class='form-control' value='"+jsonData.order_name+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
+										"</div>" +
+									"</div>" +
+									"<div class='form-group'>" +
+										"<label for='inputEmail3' class='col-sm-2 control-label'>연락처</label>" + 
+										"<div class='col-sm-6'>" +
+											"<input type='text' class='form-control' value='"+jsonData.order_tel+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
+										"</div>" +
+									"</div>" +
+									"<div class='form-group'>" +
+										"<label for='inputEmail3' class='col-sm-2 control-label'>매장명</label>" + 
+										"<div class='col-sm-6'>" +
+											"<input type='text' class='form-control' value='"+jsonData.store_name+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
+										"</div>" +
+									"</div>" +
+	
+									"<div class='form-group'>" +
+										"<label for='inputPassword3' class='col-sm-2 control-label'>주문 정보</label>" +
+										"<div class='col-sm-6'>" +
+											"<input type='text' class='form-control' value='"+jsonData.menu_total_list+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
+										"</div>" +
+									"</div>" +
+									"<div class='form-group'>" +
+										"<label for='inputEmail3' class='col-sm-2 control-label'>총 결제액</label>" + 
+										"<div class='col-sm-6'>" +
+											"<input type='text' class='form-control' value='"+jsonData.menu_total_price+"원' readonly='readonly' style='border:none; background-color:transparent;'>" +
+										"</div>" +
+									"</div>" +
+									"<div class='form-group'>" +
+										"<div class='col-sm-offset-2 col-sm-10'>" +
+											"<button type='button' class='Hide-New-Order-List-Modal-Btn btn btn-primary'>닫기</button>" +
+										"</div>" +
+								"</div>" +
+							"</div>" +
+						"</div>" +
+					"</form>" +
+				"</div>" +
+	          "</div>" +
+	        "</li>" +
+	      "</ul>" +
+	    "</div>");
+	})
+}
   $.widget.bridge('uibutton', $.ui.button);
   $(function(){
-	  //newNoticeAlarm_Order();
+	  var pageNumber = 1;
+	  var jsonData = {
+		  start_Page : (pageNumber-1) * 5
+	  };
+	  callList_Ajax("/owner/client_order_list/order", orderListSuccess, null, jsonData);
+	
+	  //페이지 번호 초기화
+	  $(".page_Order").eq(0).text("1");
+	  $(".page_Order").eq(1).text("2");
+	  $(".page_Order").eq(2).text("3");	 
+	  
+	  //페이지 버튼 클릭
+	  $(".page_Order").click(function(){
+		  pageNumber = $(this).text();
+		  jsonData = {
+				  start_Page : (pageNumber-1) * 5
+		  };
+		  callList_Ajax("/owner/client_order_list/order", orderListSuccess, null, jsonData);
+	  });
+	  
+	  //페이지 이전 블록 버튼 클릭
+	  $(".pre_page_Order").click(function(){
+		  var startPageNumber = Number($(".page_Order").eq(0).text()) - 3;
+		  if(startPageNumber > 0){
+			  $(".page_Order").eq(0).text(startPageNumber);
+			  $(".page_Order").eq(1).text(startPageNumber+1);
+			  $(".page_Order").eq(2).text(startPageNumber+2);
+		  }
+	  });
+	  
+	  //페이지 다음 블록 버튼 클릭
+	  $(".next_page_Order").click(function(){
+		  var startPageNumber = Number($(".page_Order").eq(2).text()) + 1;
+		  $(".page_Order").eq(0).text(startPageNumber);
+		  $(".page_Order").eq(1).text(startPageNumber+1);
+		  $(".page_Order").eq(2).text(startPageNumber+2);	
+	  });
 	  
 	  //New-Order-List-Show-Btn Click Show Modal
 	  $(".New-Order-List-Show-Btn").click(function(){
@@ -174,95 +274,6 @@
 		 $(".New-Order-List-Modal").eq(index).fadeOut(400);
 	  });
   })
-  
-  function newNoticeAlarm_Order(){
-	//점장이 접속한 매장의 주문 내역을 불러옴
-	  $.ajax({
-		  url:"/owner/client_order_list.order",
-		  type:"post",
-		  success:function(data){
-				//초기화 후 내용 추가
-				$("#Now-Order-List-Box-Header").html("");
-			  $.each(data.orderList, function(index, jsonData){
-				  var menu_total_list = "";
-				  var menu_total_list2 = "";
-				  if(jsonData.menu_total_list.indexOf("null") != -1){
-						var start = jsonData.menu_total_list.indexOf("null");
-						menu_total_list = jsonData.menu_total_list.substring(start+4, jsonData.menu_total_list.length);
-						menu_total_list2 = menu_total_list;
-					}
-					else{
-						menu_total_list = jsonData.menu_total_list;
-						menu_total_list2 = menu_total_list;
-					}
-					if(menu_total_list.length > 8){
-						menu_total_list = menu_total_list.substring(0,8) + ".....";
-					}
-					$("#Now-Order-List-Box-Header").append("" + 
-					"<div class='box-body'>" +
-				         "<ul class='todo-list'>" +
-	                		"<li>" +
-	                      		"<span class='handle'>" +
-	                        		"<i class='fa fa-coffee'></i>" + 
-	                      		"</span>" +
-	                  			"<span class='text'>"+menu_total_list+"</span>" +
-	                  			"<span class='text' style='color:blue'>"+jsonData.order_name+"</span>" +
-	                  			"<small class='label label-danger'><i class='fa fa-clock-o'></i>"+jsonData.menu_reserve_time+"</small>" +
-	                  			"<a class='New-Order-List-Show-Btn btn btn-primary btn-xs'>내역 보기</a>" +
-	                  			"<div class='New-Order-List-Modal' style='display:none;'>" +
-	                  				"<div class='row' style='margin-top: 10px'>" + 
-										"<form class='form-horizontal'>" +
-											"<div class='form-group'>" +
-												"<label for='inputEmail3' class='col-sm-2 control-label'>주문자</label>" + 
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+jsonData.order_name+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-											"<div class='form-group'>" +
-												"<label for='inputEmail3' class='col-sm-2 control-label'>연락처</label>" + 
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+jsonData.order_tel+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-											"<div class='form-group'>" +
-												"<label for='inputEmail3' class='col-sm-2 control-label'>매장명</label>" + 
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+jsonData.store_name+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-		
-											"<div class='form-group'>" +
-												"<label for='inputPassword3' class='col-sm-2 control-label'>주문 정보</label>" +
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+menu_total_list2+"' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-											"<div class='form-group'>" +
-												"<label for='inputEmail3' class='col-sm-2 control-label'>총 결제액</label>" + 
-												"<div class='col-sm-6'>" +
-													"<input type='text' class='form-control' value='"+jsonData.menu_total_price+"원' readonly='readonly' style='border:none; background-color:transparent;'>" +
-												"</div>" +
-											"</div>" +
-											"<div class='form-group'>" +
-												"<div class='col-sm-offset-2 col-sm-10'>" +
-													"<button type='button' class='Hide-New-Order-List-Modal-Btn btn btn-primary'>닫기</button>" +
-												"</div>" +
-										"</div>" +
-									"</div>" +
-								"</div>" +
-							"</form>" +
-						"</div>" +
-	                  "</div>" +
-	                "</li>" +
-	              "</ul>" +
-	            "</div>");
-			  });
-		  },
-		  error:function(){
-			  alert("ajax 연결 실패");
-		  }
-	  });
-  }
 </script>
 
   <!-- Footer -->
