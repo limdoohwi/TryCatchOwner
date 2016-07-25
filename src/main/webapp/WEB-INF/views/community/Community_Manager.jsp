@@ -3,11 +3,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-  	.main-sidebar span{
-  		color:white;
-  	}
-  </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

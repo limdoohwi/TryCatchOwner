@@ -257,7 +257,7 @@
         </li>
         <!-- Community Menu -->
         <li>
-          <a href="/owner/community/Community_Owner">
+          <a href="/owner/community_list">
             <i class="fa fa-commenting"></i> <span>Community</span>
             <small class="label pull-right bg-green">new</small>
           </a>
