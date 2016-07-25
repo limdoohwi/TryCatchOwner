@@ -104,7 +104,7 @@
                     	<div class="Book-Mark-Before" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
                     	<div class="Book-Mark-After" style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                    
                     </td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                    <td class="mailbox-name"><a href="/owner/community/Community_Read">Alexander Pierce</a></td>
                     <td class="mailbox-subject"><b>제목 - </b>  <a style="text-decoration: none" href="Community_Read.jsp">Trying to find a solution to this problem...</a>
                     </td>
                     <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>

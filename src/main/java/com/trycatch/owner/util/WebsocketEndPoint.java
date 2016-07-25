@@ -17,6 +17,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		TextMessage returnMessage = message;
 		System.out.println(returnMessage.toString());
 		//session.sendMessage(returnMessage);
+		System.out.println("세션 사이즈 : " + sessions.size());
 		for(int i=0; i<sessions.size();i++){
 			if(!sessions.get(i).getId().equals(session.getId())){
 				sessions.get(i).sendMessage(returnMessage);}
