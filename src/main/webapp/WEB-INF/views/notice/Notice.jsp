@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,7 @@
 <!-- Header -->
 <jsp:include page="../layout/Header.jsp" />
 <!-- Notice Write -->
-<!-- 곧지사항 - 관리자 영역 -->
+<!-- 공지사항 - 관리자 영역 -->
 <c:if test="${member_dto.member_code == 3}">
 		<div class="row">
         <div class="col-md-12">
@@ -38,7 +38,7 @@
 	              </div>
 	              <!-- 작성 일시 -->
 	              <div style="display:inline-block; margin-left: 5%">
-	             	 <span class="text-muted">2016년 7월 3일 16시 26분</span>
+	             	 <span class="text-muted">${notice.notice_date}</span>
 	              </div>
               </div>	
               <div class="box-tools">
@@ -50,9 +50,11 @@
               </div>
             </div>
             <div class="Notice-Write-Div box-body">
-              <textarea id="Notice-Write-Text-Area" rows="10" cols="334" placeholder="글쓰기" required="required" wrap="hard"></textarea>
-              <button type="button" id="Notice-Write-Btn" class="btn btn-success btn-xs">글쓰기</button>
-            </div>
+              <form id="notice_insert_form" method="post" action="/owner/notice.insert">
+              <textarea name="notice_content" id="Notice-Write-Text-Area" rows="10" cols="334" placeholder="글쓰기" required="required" wrap="hard"></textarea>
+              <button type="button" id="Notice-Write-Btn" class="btn btn-success btn-xs">글쓰기</button>              
+              </form>  
+           	</div>
           </div>
         </div>
  	</div>
@@ -60,62 +62,72 @@
  	
 <!-- Notice -->
 <!-- 공지사항 list 영역 -->
- <div class="row">
-        <div class="col-md-12">
-          <div class="box box-widget">
-            <div class="box-header with-border">
-              <div class="user-block">
-              		<!-- User Icon -->
-	              <div style="display:inline-block;">
-	              	<i class="fa fa-user fa-2x"
-							style="color: red; text-shadow: 1px 1px 1px #ccc;"></i>
+<c:forEach items="${notice_list}" var="notice" >
+	 <div class="row">
+	        <div class="col-md-12">
+	          <div class="box box-widget">
+	            <c:if test="${notice.notice_depth==0 }">
+	            <div class="box-header with-border">
+	              <div class="user-block">
+	              		<!-- User Icon -->
+		              <div style="display:inline-block;">
+		              	<i class="fa fa-user fa-2x"
+								style="color: red; text-shadow: 1px 1px 1px #ccc;"></i>
+		              </div>
+		              	<!-- 작성자 -->     		
+		           	  <div style="display:inline-block;">
+		               <a class="Notice-Writer-User-Name" href="#">${member_dto.member_name}</a>
+		              </div>
+	              </div>	
+	              <div class="box-tools">
+					<!-- 최소화 버튼 -->
+	                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+	                </button>
+	                <!-- 닫기 버튼 -->
+	                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 	              </div>
-	              	<!-- 작성자 -->
-	              <div style="display:inline-block;">
-	               <a class="Notice-Writer-User-Name" href="#">${member_dto.member_name}</a>
+	            </div>
+	            <form method="post" action="/owner/notice.delete">
+		            <div class="box-body">
+		             ${notice.notice_content}
+		              <c:if test="${member_dto.member_code == 3}">
+		              	<button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>삭제</button>
+		              </c:if>
+		              <!-- 좋아요 및 댓글 Count Number -->
+		              <span class="pull-right text-muted"> 3 comments</span>
+		            </div>
+	            <input type="hidden" value="${notice.notice_num}" name="notice_num">
+	            </form>
+	            <!-- Reply -->
+	            <div class="box-footer box-comments">
+	              <div class="box-comment">
+	                <div class="comment-text">
+	                 <c:forEach items="${notice_reply_list}" var="reply">
+	                      <span class="username">
+	                       ${member_dto.member_email } 
+	                        <span class="text-muted pull-right">${reply.notice_date}</span>
+	                      </span>
+	                  <!-- Reply Content -->
+	                      ${reply.notice_content } 
+	                 </c:forEach>    
+	               </div>
 	              </div>
-              </div>	
-              <div class="box-tools">
-				<!-- 최소화 버튼 -->
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <!-- 닫기 버튼 -->
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <p>이제부터 여러분들의 상납금을 올리겠습니다. <br/>만일 불복종한다면 화형입니다.</p>
-              <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> 좋아요</button>
-              <c:if test="${member_dto.member_code == 3}">
-              	<button type="button" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>삭제</button>
-              </c:if>
-              <!-- 좋아요 및 댓글 Count Number -->
-              <span class="pull-right text-muted">127 likes - 3 comments</span>
-            </div>
-            <!-- Reply -->
-            <div class="box-footer box-comments">
-              <div class="box-comment">
-                <div class="comment-text">
-                      <span class="username">
-                        Maria Gonzales
-                        <span class="text-muted pull-right">2016년 7월 3일 16시 26분</span>
-                      </span>
-                  <!-- Reply Content -->
-                      	ㅇㅅㅇ
-               </div>
-              </div>
-            </div>
-    		<!-- Reply 작성하는 곳 -->
-            <div class="box-footer">
-                <div class="img-push">
-                  <input type="text" class="Notice-Reply-Text form-control input-sm" placeholder="Press enter to post comment">
-                </div>
-            </div>
-          </div>
-        </div>
- 	</div>
- </div>
- 
+	            </div>
+	    		<!-- Reply 작성하는 곳 -->
+	    		<form action="/owner/notice.reply.insert" method="post" id="notice_insert_reply_form">
+	            <div class="box-footer">
+	                <div class="img-push">
+	                  <input type="text" name="reply_content" class="Notice-Reply-Text form-control input-sm" placeholder="Press enter to post comment">
+	                  <input type="hidden" name="notice_pos" value="${notice.notice_pos }">
+	                  <input type="hidden" value="${notice.notice_num}" name="notice_num">
+	                </div>
+	            </div>
+	            </form>
+	            </c:if>
+	          </div>
+	        </div>
+	 	</div>
+</c:forEach>	 
  <!-- jQuery 2.2.0 -->
 <script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -126,21 +138,32 @@
 	  $(function(){
 		  //관리자 - 글쓰기 버튼 클릭
 		  $("#Notice-Write-Btn").click(function(){
-			 var content = $("#Notice-Write-Text-Area").val();
-			 if(content == ""){
-				 alert("읿력된 내용이 없습니다.");
+			 var notice_content = $("#Notice-Write-Text-Area").val();
+			 if(notice_content == ""){
+				 alert("입력된 내용이 없습니다.");
 				 $("#Notice-Write-Text-Area").focus();
 				 return false;
+			 }
+			 else{
+				 $("#notice_insert_form").submit();
 			 }
 		  });
 		  
 		  //댓글 쓰기란 엔터키 입력시 댓글 등록
 		  $(".Notice-Reply-Text").keyup(function(e){
 			  if(e.keyCode == 13){
-				  
+				  var reply_content = $(".Notice-Reply-Text").val();
+					 if(reply_content == ""){
+						 alert("입력된 내용이 없습니다.");
+						 $(".Notice-Reply-Text").focus();
+						 return false;
+					 }
+					 else{
+						 $("#notice_insert_reply_form").submit();
+					 }
 			  }
 		  });
-	  })
+	  });
 </script>
  <!-- Footer -->
  <jsp:include page="../layout/Footer.jsp" />
