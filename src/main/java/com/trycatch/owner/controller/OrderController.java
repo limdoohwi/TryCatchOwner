@@ -18,8 +18,8 @@ public class OrderController {
 	private OrderService orderService;
 	
 	/**
-	 * @author ±èÁØÇõ
-	 * ajax ¹× À¥¼ÒÄÏ Åë½ÅÀ» ÀÌ¿ëÇÑ Å¬¶óÀÌ¾ğÆ®°¡ ÁÖ¹®ÇÑ ³»¿ªÀ» DB¿¡¼­ È£Ãâ
+	 * @author ê¹€ì¤€í˜
+	 * ajax ë° ì›¹ì†Œì¼“ í†µì‹ ì„ ì´ìš©í•œ í´ë¼ì´ì–¸íŠ¸ê°€ ì£¼ë¬¸í•œ ë‚´ì—­ì„ DBì—ì„œ í˜¸ì¶œ
 	 * @category Ajax
 	 * @param store_no
 	 * @param req
@@ -37,5 +37,11 @@ public class OrderController {
 		}
 		jsonRoot.put("orderList", orderService.getOrder_Information(memberDto.getMember_no(), storeDto.getStore_no(), start_Page, asce, search_order_info));
 		return jsonRoot;
+	}
+	
+	@RequestMapping("/month_profit/main/chart")
+	public @ResponseBody Object monthProfitInMainPOST() throws Exception{
+		
+		return null;
 	}
 }

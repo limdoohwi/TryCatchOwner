@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trycatch.owner.mappers.profitMapper">
+	<select id="getMonthProfit">
+		select month(p.menu_payment_date) as month, c.menu_category_name,
+		sum(m.menu_price) as total_price
+		from menu_order o, menu m, menu_category c, menu_payment p , store s where
+		o.menu_no = m.menu_num
+		and c.menu_category_num = m.menu_category_num and o.menu_payment_no =
+		p.menu_payment_no and p.store_no = s.store_no
+		and p.store_no = #{store_no} and s.member_no = #{member_no} and DATE(p.menu_payment_date) = curdate()
+		group by c.menu_category_num, month(p.MENU_PAYMENT_DATE);
+	</select>
+</mapper>

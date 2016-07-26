@@ -9,10 +9,10 @@
 			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
 		</layout>
 	</appender>
-	
+    
 	<!-- Application Loggers -->
-	<logger name="com.trycatch.community">
-		<level value="info" />
+	<logger name="com.trycatch.owner">
+		<level value="degbug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

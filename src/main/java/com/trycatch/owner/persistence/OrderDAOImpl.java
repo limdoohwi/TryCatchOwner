@@ -24,7 +24,8 @@ public class OrderDAOImpl implements OrderDAO {
 	private static final Logger logger = LoggerFactory.getLogger(OrderDAOImpl.class);
 	
 	@Override
-	public List<Order_InformationDTO> getOrder_Information(int member_no, int store_no, int start_Page, boolean asce, String search_order_info) {
+	public List<Order_InformationDTO> getOrder_Information(int menu_payment_no, int member_no, int store_no, int start_Page, boolean asce, String search_order_info) {
+		logger.info("OrderDaoImpl 회원 번호 : " + member_no);
 		logger.info("OrderDaoImpl 매장 번호 : " + store_no);
 		logger.info("OrderDaoImpl 써치 : " + search_order_info);
 		try {
@@ -36,7 +37,17 @@ public class OrderDAOImpl implements OrderDAO {
 			map.put("store_no", store_no);
 			map.put("isAsc", isAsc);
 			map.put("search_order_info", search_order_info);
+			map.put("menu_payment_no", menu_payment_no);
 			return sqlSession.selectList(NAMESPACE + ".getOrder_Information", map, rowB);
+		} catch (Exception err) {
+			return null;
+		}
+	}
+	
+	@Override
+	public List<Integer> getMenu_Payment_noList() {
+		try {
+			return sqlSession.selectList(NAMESPACE + ".getMenu_Payment_noList");
 		} catch (Exception err) {
 			return null;
 		}

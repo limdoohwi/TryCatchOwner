@@ -160,7 +160,6 @@
 	})
 	
 	function orderListSuccess(data){
-	alert("함수 실행");
 	//초기화 후 내용 추가
 	$("tbody").html("");
 	  $.each(data.orderList, function(index, jsonData){

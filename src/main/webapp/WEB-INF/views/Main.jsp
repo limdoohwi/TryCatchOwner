@@ -126,6 +126,8 @@ function orderListSuccess(data){
 	//초기화 후 내용 추가
 	$(".Now-Order-List-Box-Body").remove();
 	  $.each(data.orderList, function(index, jsonData){
+		  var simple_list = jsonData.menu_total_list;
+		  simple_list = simple_list.substring(0,9)+"...";
 			$("#Now-Order-List-Box-Header").append("" + 
 			"<div class='Now-Order-List-Box-Body box-body'>" +
 		         "<ul class='todo-list'>" +
@@ -133,7 +135,7 @@ function orderListSuccess(data){
 	              		"<span class='handle'>" +
 	                		"<i class='fa fa-coffee'></i>" + 
 	              		"</span>" +
-	          			"<span class='text'>"+jsonData.menu_simple_list+"</span>" +
+	          			"<span class='text'>"+simple_list+"</span>" +
 	          			"<span class='text' style='color:blue'>"+jsonData.order_name+"</span>" +
 	          			"<small class='label label-danger'><i class='fa fa-clock-o'></i>"+jsonData.menu_reserve_time+"</small>" +
 	          			"<a class='New-Order-List-Show-Btn btn btn-primary btn-xs'>내역 보기</a>" +
