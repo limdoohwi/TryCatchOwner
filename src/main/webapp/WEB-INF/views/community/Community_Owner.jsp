@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,14 +37,24 @@
             <div class="box-body no-padding">
               <ul class="nav nav-pills nav-stacked">
                 <li id="My-Write" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 쓴 글
-                  <span class="label label-primary pull-right">12</span></a>
+                  <span class="label label-primary pull-right">${fn:length(mycommunity_list)}</span></a>
                   <div id="My-Write-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-                    <div style="display: block">
-                    	<a href="#">2016년 6월 17일 - 이거어떰?</a>
-                    </div>
-                    <div style="display: block">
-                    	<a href="#">2016년 6월 7일 - 아 존나</a>
-                    </div>
+<c:set var="mycommunity_list" value="${mycommunity_list}"/>
+<c:set var="mycommunity_size" value="${fn:length(mycommunity_list)}"/>
+					<c:choose>
+						<c:when test="${mycommunity_size!=0}">
+							<c:forEach var = "mycommunity_list" items="${mycommunity_list}">
+			                    <div style="display: block">
+			                    	<a href="/owner/community_read?community_no=${mycommunity_list.community_no}">내용 - ${mycommunity_list.community_title}</a>
+			                    </div>
+			                </c:forEach>
+			            </c:when>
+			            <c:when test="${mycommunity_size==0}">
+			            	<div style="display:block">
+			            		글을 쓰세요<button type="button" class="btn btn-default btn-sm" id="goinsert"><i class="glyphicon glyphicon-pencil"></i></button>
+			            	</div>
+			            </c:when>
+			        </c:choose>            
                    </div> 
                  </li>
                 <li id="My-Reply" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 단 댓글
@@ -89,6 +100,7 @@
                   <tbody>               
 <c:set var="community_list" value="${community_list}"/>
 <c:set var="community_size" value="${fn:length(community_list)}"/>
+
 					<c:choose>
 						<c:when test="${community_size!=0}">
 							<c:forEach var = "community_list" items="${community_list}">
@@ -97,11 +109,11 @@
 				                    	<div class="Book-Mark-Before" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
 				                    	<div class="Book-Mark-After" style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                    
 				                    </td>
-				                    <td class="mailbox-name">${community_list.community_writer}</td>
+				                    <td class="mailbox-name">작성자 - ${community_list.community_writer}</td>
 				                    <td class="mailbox-subject"><b>제목 - </b><a style="text-decoration: none" href="/owner/community_read?community_no=${community_list.community_no}">${community_list.community_title}</a>
 				                    </td>
 				                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-				                    <td class="mailbox-date">12 days ago</td>
+				                    <td class="mailbox-date">${community_list.community_regdate}</td>
 			                    </tr>
 		                    </c:forEach>
 	                    </c:when>
@@ -116,7 +128,7 @@
             <div class="box-footer no-padding">
               <div class="mailbox-controls">
                 <div class="btn-group"></div>
-                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                <button type="button" class="btn btn-default btn-sm" id="refresh"><i class="fa fa-refresh"></i></button>
                 <div class="pull-right">
                   1-50/200
                   <div class="btn-group">
@@ -166,6 +178,9 @@
 		  });
 		  $("#goinsert").click(function(){
 			  location.href="/owner/community_insert";
+		  })	  
+		  $("#refresh").click(function(){
+			  location.href="/owner/community_list"
 		  })
 		  
 	  })

@@ -9,4 +9,5 @@ public interface CommunityDAO {
 		public void updateCommunity(Integer community_no);
 		public void deleteCommunity(Integer community_no);
 		public CommunityDTO readCommunity(Integer community_no);
+		public List<CommunityDTO> myCommunityList(String community_name);
 }

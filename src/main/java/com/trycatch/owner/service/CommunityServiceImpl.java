@@ -39,4 +39,9 @@ public class CommunityServiceImpl implements CommunityService {
 		return dao.readCommunity(community_no);
 	}
 
+	@Override
+	public List<CommunityDTO> myCommunityList(String community_name) {
+		return dao.myCommunityList(community_name);
+	}
+
 }

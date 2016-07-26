@@ -8,6 +8,9 @@
 	<select id="communityList" resultType="CommunityDTO">
 		select * from community;
 	</select>
+	<select id="mycommunityList" resultType="CommunityDTO">
+		select * from community where community_writer = #{writer}
+	</select>
 	
 	<select id="communityRead" resultType="CommunityDTO">
 		select * from community where community_no = #{community_no}

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,19 +41,27 @@
 	            <div class="box-body no-padding">
 	              <ul class="nav nav-pills nav-stacked">
 	                <!-- 내가 쓴 글 -->
-	                <li id="My-Write" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 쓴 글
-	                  <!-- 내가 쓴 글 Count Number -->
-	                  <span class="label label-primary pull-right">12</span></a>
-	                  <!-- 내가 쓴 글 List -->
-	                  <div id="My-Write-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-	                    <div style="display: block">
-	                    	<a href="#">2016년 6월 17일 - 이거어떰?</a>
-	                    </div>
-	                    <div style="display: block">
-	                    	<a href="#">2016년 6월 7일 - 아 존나</a>
-	                    </div>
-	                   </div> 
-	                 </li>
+	              <li id="My-Write" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 쓴 글
+                  <span class="label label-primary pull-right">${fn:length(mycommunity_list)}</span></a>
+                  <div id="My-Write-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
+<c:set var="mycommunity_list" value="${mycommunity_list}"/>
+<c:set var="mycommunity_size" value="${fn:length(mycommunity_list)}"/>
+					<c:choose>
+						<c:when test="${mycommunity_size!=0}">
+							<c:forEach var = "mycommunity_list" items="${mycommunity_list}">
+			                    <div style="display: block">
+			                    	<a href="/owner/community_read?community_no=${mycommunity_list.community_no}">${mycommunity_list.community_title}</a>
+			                    </div>
+			                </c:forEach>
+			            </c:when>
+			            <c:when test="${mycommunity_size==0}">
+			            	<div style="display:block">
+			            		글을 쓰세요<button type="button" class="btn btn-default btn-sm" id="goinsert"><i class="glyphicon glyphicon-pencil"></i></button>
+			            	</div>
+			            </c:when>
+			        </c:choose>            
+                   </div> 
+                 </li>
 	                <!-- 내가 단 댓글 -->
 	                <li id="My-Reply" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 단 댓글
 	                  <!-- 내가 단 댓글 Count Number -->
@@ -99,6 +109,7 @@
 	              <div class="mailbox-read-info">
 	              <!-- Board Subject -->
 	                <h3>${communityDTO.community_title}</h3>
+	                <h2>${communityDTO.community_writer}</h2>
 	               	<!-- Board Writer -->
 	                <h5>
 	                  <span class="mailbox-read-time pull-right">${communityDTO.community_regdate}</span></h5>
@@ -136,7 +147,7 @@
 	            </div>
 	            <!-- Reply 작성하는 곳 -->
 	            <div class="box-footer">
-	              <form action="#" method="post">
+	              <form action="/owner/community_reply" method="post">
 	                <div class="img-push">
 	                  <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
 	                </div>

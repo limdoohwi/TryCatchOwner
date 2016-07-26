@@ -40,8 +40,10 @@ public class CommunityController {
 	 */
 	
 	@RequestMapping(value="/community_list",method=RequestMethod.GET)
-	public String CommunityList(Model model){
+	public String CommunityList(Model model,HttpServletRequest req){
+		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
 		model.addAttribute("community_list",service.getCommunityList());
+		model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
 		return "/community/Community_Owner";
 	}
 	
@@ -64,8 +66,10 @@ public class CommunityController {
 	}
 	
 	@RequestMapping(value="/community_read",method=RequestMethod.GET)
-	public String CommunityRead(int community_no,Model model){
-		System.out.println(community_no);
+	public String CommunityRead(int community_no,Model model,HttpServletRequest req){
+		model.addAttribute("community_list",service.getCommunityList());
+		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
+		model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
 		model.addAttribute(service.readCommunity(community_no));
 		return "/community/Community_Read";
 	}
@@ -77,7 +81,12 @@ public class CommunityController {
 		return "redirect:/community_list";
 	}
 	
-
+	@RequestMapping("/community_reply")
+	public String CommunityReply(int community_no){
+		
+		return "";
+	}
+	
 	@RequestMapping("/multiplePhotoUpload")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response){
 	    try {

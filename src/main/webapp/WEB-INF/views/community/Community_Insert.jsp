@@ -42,7 +42,11 @@ $(function(){
         editor_object.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
         $("#frm").submit();
     });
+    $("#recipe_goback").click(function(){
+    	location.href="/owner/community_list";
+    })
 });
+
 
 </script>
 	<jsp:include page="../layout/Footer.jsp" />	

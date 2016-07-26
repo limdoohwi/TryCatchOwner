@@ -45,4 +45,11 @@ public class CommunityDAOImpl implements CommunityDAO {
 		return sqlSession.selectOne(NAMESPACE+".communityRead",community_no);
 	}
 
+	@Override
+	public List<CommunityDTO> myCommunityList(String community_name) {
+		return sqlSession.selectList(NAMESPACE+".mycommunityList", community_name);
+	}
+
+
+
 }
