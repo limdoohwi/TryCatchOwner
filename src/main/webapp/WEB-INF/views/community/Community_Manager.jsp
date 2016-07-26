@@ -1,13 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-  	.main-sidebar span{
-  		color:white;
-  	}
-  </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

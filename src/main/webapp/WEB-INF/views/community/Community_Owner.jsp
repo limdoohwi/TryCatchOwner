@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,43 +75,40 @@
         <!-- /.col -->
         <div class="col-md-9">
           <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title"></h3>
-              <div class="box-tools pull-right">
-                <div class="has-feedback">
-                  <input type="text" class="form-control input-sm" placeholder="작성자 & 제목 검색">
-                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                </div>
-              </div>
-            </div>
-            <div class="box-body no-padding">
-              <div class="mailbox-controls">
-                <div class="btn-group"></div>
+            <div class="mailbox-controls">              
                 <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                <button type="button" class="btn btn-default btn-sm" id="goinsert"><i class="glyphicon glyphicon-pencil"></i></button>
                 <div class="pull-right">
-                  1-50/200
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                  </div>
+                  <input type="text" class="form-control input-sm" placeholder="작성자 & 제목 검색">
+                  <span style="margin-top:5px;" class="glyphicon glyphicon-search form-control-feedback"></span>   
                 </div>
               </div>
+            <div class="box-body no-padding">
               <div class="table-responsive mailbox-messages">
                 <table class="table table-hover table-striped">
-                  <tbody>
-                  <tr>
-                    <td></td>
-                    <td class="mailbox-star">
-                    	<div class="Book-Mark-Before" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
-                    	<div class="Book-Mark-After" style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                    
-                    </td>
-                    <td class="mailbox-name"><a href="/owner/community/Community_Read">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>제목 - </b>  <a style="text-decoration: none" href="Community_Read.jsp">Trying to find a solution to this problem...</a>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">12 days ago</td>
-                  </tr>
+                  <tbody>               
+<c:set var="community_list" value="${community_list}"/>
+<c:set var="community_size" value="${fn:length(community_list)}"/>
+					<c:choose>
+						<c:when test="${community_size!=0}">
+							<c:forEach var = "community_list" items="${community_list}">
+								<tr>
+				                    <td class="mailbox-star">
+				                    	<div class="Book-Mark-Before" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
+				                    	<div class="Book-Mark-After" style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                    
+				                    </td>
+				                    <td class="mailbox-name">${community_list.community_writer}</td>
+				                    <td class="mailbox-subject"><b>제목 - </b><a style="text-decoration: none" href="/owner/community_read?community_no=${community_list.community_no}">${community_list.community_title}</a>
+				                    </td>
+				                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+				                    <td class="mailbox-date">12 days ago</td>
+			                    </tr>
+		                    </c:forEach>
+	                    </c:when>
+	                    <c:when test="${community_size==0}">
+	                    	<td style="width: 100%; text-align: center;">데이터가 없습니다.</td>
+	                    </c:when>
+                    </c:choose>
                   </tbody>
                 </table>
               </div>
@@ -133,10 +132,6 @@
     </section>
   </div>
  	
- 	<!-- jQuery 2.2.0 -->
-	<script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
-	<!-- jQuery UI 1.11.4 -->
-	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 	<script>
 	  $.widget.bridge('uibutton', $.ui.button);
 	  
@@ -169,6 +164,10 @@
 		  $("#My-Reply").click(function(){
 			  $("#My-Reply-List").slideToggle(400);
 		  });
+		  $("#goinsert").click(function(){
+			  location.href="/owner/community_insert";
+		  })
+		  
 	  })
 	</script>
 	<!-- Footer -->
