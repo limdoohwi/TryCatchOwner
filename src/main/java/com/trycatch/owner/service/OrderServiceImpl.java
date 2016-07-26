@@ -32,14 +32,15 @@ public class OrderServiceImpl implements OrderService {
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 		
 	@Override
-	public List<Order_InformationDTO> getOrder_Information(int member_no) {
+	public List<Order_InformationDTO> getOrder_Information(int member_no, int store_no, int start_Page, boolean asce, String search_order_info) {
+		logger.info("선택된 매장 번호(OrderServiceImpl): " + store_no);
 		transaction.setName("owner_order_transaction");
 		transaction.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		status = transactionManager.getTransaction(transaction);
 		String[] menu_name;
 		MenuDTO menuDto = null;
 		try {
-			List<Order_InformationDTO> list = dao.getOrder_Information(member_no);
+			List<Order_InformationDTO> list = dao.getOrder_Information(member_no, store_no, start_Page, asce, search_order_info);
 			for(int i=0; i<list.size(); i++){
 				menu_name = new String[list.get(i).getMenu_no().length];
 				for(int j=0; j<list.get(i).getMenu_no().length; j++){

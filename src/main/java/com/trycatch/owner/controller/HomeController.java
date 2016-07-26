@@ -57,8 +57,6 @@ public class HomeController {
 	@RequestMapping(value = "/log_in", method = RequestMethod.GET)
 	public String log_in(HttpServletRequest req, Model model) throws Exception {
 		MemberDTO dto = (MemberDTO)req.getSession().getAttribute("member_dto");
-		//클라이언트가 주문한 내역 호출
-		model.addAttribute("orderList", orderService.getOrder_Information(dto.getMember_no()));
 		return "Main";
 	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)

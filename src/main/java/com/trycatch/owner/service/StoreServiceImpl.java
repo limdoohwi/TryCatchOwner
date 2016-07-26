@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.trycatch.owner.domain.StoreDTO;
@@ -19,8 +21,10 @@ public class StoreServiceImpl implements StoreService {
 	@Inject
 	private StoreDAO dao;
 	
+	private static final Logger logger = LoggerFactory.getLogger(StoreServiceImpl.class);
 	@Override
 	public StoreDTO getStore_store_no(int store_no) throws Exception {
+		logger.info("StoreServiceImpl : " + store_no);
 		return dao.getStore_store_no(store_no);
 	}
 	
