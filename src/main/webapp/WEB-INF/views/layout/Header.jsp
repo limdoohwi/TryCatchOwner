@@ -34,102 +34,7 @@
   <script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
   <!-- jQuery UI 1.11.4 -->
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-  <script>
-	$(function(){
-		connect();
-		newNoticeAlarm();
-		//읽지않은 음료주문 알람을 띄움
-		
-	})
-	
-	/*
-		WebSocket
-		*/
-		function connect() {
-			if ('WebSocket' in window) {
-				console.log('Websocket supported');
-				socket = new WebSocket('ws://' + document.location.hostname+ ':8080/owner//websocket');
-				console.log('Connection attempted');
-				socket.onopen = function() {
-					console.log('Connection open!');
-				}
-				socket.onclose = function() {
-					console.log('Disconnecting connection');
-				}
-				//데이터 받음
-				socket.onmessage = function(evt) {
-					var received_msg = evt.data;
-					console.log(received_msg);
-					console.log('message received!');
-					receiveNotice_Alarm();
-				}
-			} else {
-				console.log('Websocket not supported');
-			}
-		}
-		function disconnect() {
-			console.log("Disconnected");
-		}
-		function sendName() {
-			//var message = "테스트 메세지 : 주문할게요";
-			//showmyMessage(message)
-			//socket.send(JSON.stringify({'message' : message}));
-		}
-		function receiveNotice_Alarm(){
-			alert("데이터 받음");
-			newNoticeAlarm();
-			newNoticeAlarm_Order();
-		}
-		/*
-		function showMessage(message) {
-			alert(message);
-			
-			var html = "";
-			html += '<div class="direct-chat-msg right">';
-			html += '<div class="direct-chat-info clearfix">';
-			html +=	'<span class="direct-chat-name pull-right">상대방</span><br /> <span class="direct-chat-timestamp pull-right">23 Jan 2:05 pm</span>';
-			html += '</div>';
-			html += '<div style="display: block">'
-			html += '<span class="pull-right"><i class="fa fa-user fa-3x"></i></span>';
-			html += '</div>';
-			html += '<div style="display: block" class="direct-chat-text">';
-			html += message;
-			html += '</div></div>';
-			$(".direct-chat-messages").append(html);
-			
-			
-		}
-		
-		function showmyMessage(message){
-			alert(message);
-		}
-		*/
-		
-		function newNoticeAlarm(){
-			//점장이 접속한 매장의 알림을 띄움
-			  $.ajax({
-				  url:"/owner/notice_alarm.notification",
-				  type:"post",
-				  success:function(data){
-					  $("#Notification-Detail-Ul").html("");
-					  $.each(data.notice_alarmList, function(index, jsonData){
-						 $("#Notification-Detail-Ul").append("" +
-								 "<li class='Notice-Detail-Li'>" +
-				                    "<a href='#'>" +
-				                      "<i class='fa fa-thumbs-o-up text-aqua'></i>" +jsonData.notice_alarm_content + "" +
-				                    "</a>" +
-				                  "</li>");
-					  });
-					  var notice_count = $(".Notice-Detail-Li").length;
-					  $("#Notification-Not-Read-Count-Span").text(notice_count); 
-					  $("#Notification-Header-li").text(notice_count+"건의 알람이 있습니다.");
-				  },
-				  error:function(){
-					  alert("ajax 연결 실패");
-				  }
-			  });
-		}
-  </script>
+
   
 <header class="main-header">
     <!-- Logo -->
@@ -286,7 +191,7 @@
         </li>
         <li>
         <!-- 재료 주문 -->
-          <a href="#">
+          <a href="/owner/delivery/Delivery">
             <i class="fa fa-cart-plus"></i> <span>재료 주문</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>

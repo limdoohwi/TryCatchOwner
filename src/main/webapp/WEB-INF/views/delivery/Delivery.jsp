@@ -12,27 +12,27 @@
 <meta name="author" content="">
 
 <!-- Bootstrap Core CSS -->
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/owner/resources/bootstrap_delivery/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="bootstrap/css/stylish-portfolio.css" rel="stylesheet">
+<link href="/owner/resources/bootstrap_delivery/css/stylish-portfolio.css" rel="stylesheet">
 
 <!-- Custom Fonts -->
-<link href="bootstrap/font-awesome/css/font-awesome.min.css"
+<link href="/owner/resources/bootstrap_delivery/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-<link
-	href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
+<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
 	rel="stylesheet" type="text/css">
 
 <!-- jQuery -->
-<script src="bootstrap/js/jquery.js"></script>
+<script src="/owner/resources/bootstrap_delivery/js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="/owner/resources/bootstrap_delivery/js/bootstrap.min.js"></script>
 <!-- Custom Theme JavaScript -->
 <script>
 	// Scrolls to the selected menu item on the page
-	$(function() {
+	$(
+		function() {
 		//ToolTip
 		$('[data-toggle="tooltip"]').tooltip();
 
@@ -126,7 +126,19 @@
 				$("#Material-Cart-Div").hide();
 			}
 		}); 
+		$(document).on('click',"Cart-add-btn", function(){
+			$.ajax({
+				url:"/owner/",
+				type:"post",
+				data: {
+					param: "plus",
+					menu_num:$(".menu_num_hidden").eq(eq).val(),	
+				}
+			});	
+		});
 	});
+	
+	
 </script>
 <style>
 .btn-success {
@@ -138,47 +150,32 @@
 <body>
 	<!-- Cart -->
 	<div id="Material-Cart-Div" class="col-sm-2" style="color:white; display:none; background-color:black; opacity: 0.5; margin-right: 0px !important; position: fixed;">
+	
 		<h4>장바 구니</h4>
-		<ul class="list-group" style="color:black">
-		  <div>
-			  <li class="list-group-item">
-			    <span class="Material-Quantity badge">14</span>
-			    계피가루
-			  </li>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="상품 취소" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>
-		  </div>
-		  <div>
-			  <li class="list-group-item">
-			    <span class="Material-Quantity badge">14</span>
-			    송진가루
-			  </li>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="상품 취소" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>
-		  </div>
-		  <div>
-			  <li class="list-group-item">
-			    <span class="Material-Quantity badge">14</span>
-			    원두
-			  </li>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="상품 취소" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>
-		  </div>
-		</ul>
+		<c:forEach items="${cart}" var="goods">
+			<ul class="list-group" style="color:black">
+			  <div>
+				  <li class="list-group-item">
+				    <span class="Material-Quantity badge">${goods.cnt}</span>
+				    ${goods.name}
+				  </li>
+				  <a data-toggle="tooltip" data-placement="top" title="수량 +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>
+				  <a data-toggle="tooltip" data-placement="top" title="수량 -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>
+				  <a data-toggle="tooltip" data-placement="top" title="상품 취소" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>
+			  </div>
+			</ul>
+		</c:forEach>
 	</div>
 	<!-- Navigation -->
 	<a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i
 		class="fa fa-bars"></i></a>
 	<nav id="sidebar-wrapper">
 		<ul class="sidebar-nav">
-			<a id="menu-close" href="#"
-				class="btn btn-light btn-lg pull-right toggle"><i
-				class="fa fa-times"></i></a>
+			<a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle">
+				<i class="fa fa-times"></i>
+			</a>
 			<li class="sidebar-brand"><a href="#top">TryCatch Delivery</a></li>
-			<li><a href="#top">주문 내역 보기</a></li>
+			<li><a href="/owner/delivery/Order_list">주문 내역 보기</a></li>
 			<li>
 			<div class="dropdown">
 				<a id="Select-Store-Btn" href="#" data-toggle="dropdown" aria-haspopup="ture" aria-expanded="true">매장 선택<span class="caret"></span></a>
@@ -278,29 +275,34 @@
 									<img class="img-portfolio img-responsive"
 										src="bootstrap/img/portfolio-1.jpg">
 								</div>
+								<!-- 담기 -->
 								<div class="row" style="margin-top: 5px">
-									<form class="form-horizontal">
+									<form class="form-horizontal" method="post" action="add">
 										<!-- Material Name -->
 										<div class="form-group">
-											<h3>계피 가루(20kg)</h3>
+											<h3>계피 가루(10kg)</h3>
 										</div>
 										<!-- Material Price -->
 										<div class="form-group">
-											<h4>300원</h4>
+											<h4>3000원</h4>
 										</div>
+										<input type="hidden" name="name" value="계피 가루(10kg)"/>
+										<input type="hidden" name="price" value="3000"/>
 										<!-- Material Quantity -->
 										<div class="form-group">
-											<label for="inputEmail3" class="col-sm-2 control-label">수량</label>
+											<label  class="col-sm-2 control-label">수량</label>
 											<div class="col-sm-8">
-												<input type="email" class="form-control" id="inputEmail3"
-													placeholder="상품 수량">
+												
+												<input class="form-control" 
+													placeholder="상품 수량" name="cnt">
 											</div>
 										</div>
+				
 										<!-- 담기 button -->
 										<div class="form-group">
 											<div class="col-sm-2 col-sm-offset-2">
-												<button id="User-Log-In-Btn" type="button"
-													class="btn btn-danger btn-cart-material">담기</button>
+												<button id="Cart-add-btn" type="button"
+													class="btn btn-danger btn-cart-material" >담기</button>
 												&nbsp;&nbsp;
 											</div>
 										</div>
@@ -417,5 +419,4 @@
 		</div>
 	</footer>
 </body>
-
 </html>
