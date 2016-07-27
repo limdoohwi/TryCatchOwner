@@ -27,12 +27,19 @@ public class ProfitController {
 	
 	@RequestMapping("/month_profit/main/chart")
 	public @ResponseBody Object monthProfitInMainPOST(HttpServletRequest req) throws Exception{
-		logger.info("ProfitController 시작");
 		MemberDTO memberDto = (MemberDTO)req.getSession().getAttribute("member_dto");
 		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
-		JSONObject jsonRoot = new JSONObject();
-		jsonRoot.put("menuCategoryList", menuService.getMenuCategoryList());
-		jsonRoot.put("profitMonthList", service.getMonthProfit(storeDto.getStore_no(), memberDto.getMember_no()));
+		JSONObject jsonRoot = service.getMonthProfit(storeDto.getStore_no(), memberDto.getMember_no());
+		jsonRoot.put("categoryList", menuService.getMenuCategoryList());
+		return jsonRoot;
+	}
+	
+	@RequestMapping("/year_profit/main/chart")
+	public @ResponseBody Object yearProfitInMainPOST(HttpServletRequest req) throws Exception{
+		MemberDTO memberDto = (MemberDTO)req.getSession().getAttribute("member_dto");
+		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
+		JSONObject jsonRoot = service.getYearProfit(storeDto.getStore_no(), memberDto.getMember_no());
+		jsonRoot.put("categoryList", menuService.getMenuCategoryList());
 		return jsonRoot;
 	}
 }

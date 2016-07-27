@@ -2,13 +2,13 @@ package com.trycatch.owner.domain;
 
 import java.util.Map;
 
-public class ProfitMonthDTO {
-	private int month;
+public class ProfitYearDTO {
+	private int year;
 	private String menu_category_name;
 	private int total_price;
 
-	public int getMonth() {
-		return month;
+	public int getYear() {
+		return year;
 	}
 
 	public String getMenu_category_name() {
@@ -19,8 +19,8 @@ public class ProfitMonthDTO {
 		return total_price;
 	}
 
-	public void setMonth(int month) {
-		this.month = month;
+	public void setYear(int year) {
+		this.year = year;
 	}
 
 	public void setMenu_category_name(String menu_category_name) {

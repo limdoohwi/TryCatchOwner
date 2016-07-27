@@ -1,6 +1,9 @@
 package com.trycatch.owner.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,14 +12,19 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.trycatch.owner.domain.MenuDTO;
 import com.trycatch.owner.domain.ProfitMonthDTO;
+import com.trycatch.owner.domain.ProfitYearDTO;
 import com.trycatch.owner.persistence.MenuDAO;
 import com.trycatch.owner.persistence.ProfitDAO;
 
@@ -35,37 +43,74 @@ public class ProfitServiceImpl implements ProfitService {
 	private static final Logger logger = LoggerFactory.getLogger(ProfitServiceImpl.class);
 		
 	@Override
-	public List<ProfitMonthDTO> getMonthProfit(int store_no, int member_no) {
-		logger.info("ProfitServiceImpl 시작");
-		logger.info("ProfitServiceImpl 매장 번호 : " + store_no);
-		logger.info("ProfitServiceImpl 회원 번호 : " + member_no);
-		
+	public JSONObject getMonthProfit(int store_no, int member_no) {
+		JSONObject jsonRoot = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonTemp = null;
+		JSONObject jsonMenuCategory = new JSONObject();
 		List<String> menuCategoryList = menuDao.getMenuCategoryList();
-		logger.info("ProfitServiceImpl menuCategoryList size : " + menuCategoryList.size());
-		Map<String, Integer> map = new HashMap<>();
+		String[] categoryName = new String[menuCategoryList.size()];
 		for(int i=0; i<menuCategoryList.size(); i++){
-			logger.info("ProfitServiceImpl " + i + "번째 메뉴 카테고리 이름 : " + menuCategoryList.get(i));
-			map.put(menuCategoryList.get(i), 0);
+			categoryName[i] = menuCategoryList.get(i);
 		}
-		List<ProfitMonthDTO> profitResultList = new ArrayList<>();
+		
 		for(int month=0; month<12; month++){
 			List<ProfitMonthDTO> profitList = dao.getMonthProfit(store_no, member_no, month+1);
-			logger.info("ProfitServiceImpl profitList size : " + profitList.size());
-			ProfitMonthDTO dto = new ProfitMonthDTO();
-			dto.setMonth(month+1);
-			if(!profitList.isEmpty()){
-				for(int i=0; i<map.size(); i++){
-					for(int j=0; j<profitList.size(); j++){
-						if(menuCategoryList.get(i).equals(profitList.get(j).getMenu_category_name())){
-							map.replace(menuCategoryList.get(i) ,map.get(menuCategoryList.get(i)), profitList.get(j).getTotal_price());
-						}
-					}
+			jsonTemp = new JSONObject();
+			jsonTemp.put("month", month+1);
+			int[] categoryPrice = new int[menuCategoryList.size()];
+			String menuAndPrice = "";
+			for(int j=0; j<menuCategoryList.size(); j++){
+				for(int i=0; i<profitList.size(); i++){
+					if(categoryName[j].equals(profitList.get(i).getMenu_category_name()))
+						categoryPrice[j] = profitList.get(i).getTotal_price();
 				}
-				dto.setProfitMap(map);
-				map.clear();
 			}
-			profitResultList.add(dto);
+			for(int i=0; i<menuCategoryList.size(); i++){
+				menuAndPrice += categoryName[i] + "," + String.valueOf(categoryPrice[i]) + "/";
+			}
+			jsonTemp.put("profitMenu", menuAndPrice);
+			jsonArray.add(jsonTemp);
 		}
-		return profitResultList;
+		jsonRoot.put("categoryList", menuCategoryList);
+		jsonRoot.put("profitMonthList", jsonArray);
+		return jsonRoot;
+	}
+	
+	@Override
+	public JSONObject getYearProfit(int store_no, int member_no) {
+		JSONObject jsonRoot = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonTemp = null;
+		JSONObject jsonMenuCategory = new JSONObject();
+		List<String> menuCategoryList = menuDao.getMenuCategoryList();
+		String[] categoryName = new String[menuCategoryList.size()];
+		for(int i=0; i<menuCategoryList.size(); i++){
+			categoryName[i] = menuCategoryList.get(i);
+		}
+		Date date = new Date();
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy");
+		int year = Integer.parseInt(sd.format(date));
+		for(int startYear=year-2; startYear<=year; startYear++){
+			List<ProfitYearDTO> yearList = dao.getYearProfit(store_no, member_no, startYear);
+			jsonTemp = new JSONObject();
+			jsonTemp.put("year", startYear);
+			int[] categoryPrice = new int[menuCategoryList.size()];
+			String menuAndPrice = "";
+			for(int j=0; j<menuCategoryList.size(); j++){
+				for(int i=0; i<yearList.size(); i++){
+					if(categoryName[j].equals(yearList.get(i).getMenu_category_name()))
+						categoryPrice[j] = yearList.get(i).getTotal_price();
+				}
+			}
+			for(int i=0; i<menuCategoryList.size(); i++){
+				menuAndPrice += categoryName[i] + "," + String.valueOf(categoryPrice[i]) + "/";
+			}
+			jsonTemp.put("profitMenu", menuAndPrice);
+			jsonArray.add(jsonTemp);
+		}
+		jsonRoot.put("categoryList", menuCategoryList);
+		jsonRoot.put("profitYearList", jsonArray);
+		return jsonRoot;
 	}
 }

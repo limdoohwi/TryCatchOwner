@@ -15,4 +15,15 @@
 		and month(p.menu_payment_date) = #{month}
 		group by c.menu_category_num, month(p.MENU_PAYMENT_DATE);
 	</select>
+	
+	<select id="getYearProfit" resultType="ProfitYearDTO">
+		select year(p.menu_payment_date) as year, c.menu_category_name,
+		sum(m.menu_price) as total_price
+		from menu_order o, menu m, menu_category c, menu_payment p , store s where
+		o.menu_no = m.menu_num
+		and c.menu_category_num = m.menu_category_num and o.menu_payment_no =
+		p.menu_payment_no and p.store_no = s.store_no
+		and p.store_no = #{store_no} and s.member_no = #{member_no} and YEAR(p.menu_payment_date) = #{year}
+		group by c.menu_category_num, year(p.MENU_PAYMENT_DATE);
+	</select>
 </mapper>

@@ -24,7 +24,7 @@
             <div class="tab-content no-padding">
               <!-- Google Chart Month Profit -->
               <jsp:include page="management/MonthProfit_Chart.jsp" />
-              <div class="chart tab-pane active" id="Month-Profit-Div" style="position: relative; height: 300px;"></div>
+              <div class="chart tab-pane active" id="Month-Profit-Div" style="position: relative; width:100%; height: 300px;"></div>
             </div>
           </div>
           <!-- Now Order List : Client가 온라인 상으로 주문한 예약을 확인 할 수 있는 box  -->
@@ -82,7 +82,7 @@
             <div class="box-header">
               <i class="fa fa-th"></i>
 
-              <h3 class="box-title">2016 Year Graph</h3>
+              <h3 class="box-title">Year Graph</h3>
               <div class="box-tools pull-right">
                	<!-- 최소화 버튼 -->
                 <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -99,21 +99,7 @@
             </div>
             <!-- 해당 연도 매출액에서 각 메뉴들이 차지하는 판매율을 %로 나타냄 -->
             <div class="box-footer no-border">
-              <div class="row">
-                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
-                  <div class="knob-label">Coffee</div>
-                </div>
-                <!-- ./col -->
-                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgColor="#39CCCC">
-
-                  <div class="knob-label">Drink</div>
-                </div>
-                <div class="col-xs-4 text-center">
-                  <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgColor="#39CCCC">
-                  <div class="knob-label">Cake</div>
-                </div>
+              <div id="Category-Percentage-div" class="row">
               </div>
             </div>
           </div>

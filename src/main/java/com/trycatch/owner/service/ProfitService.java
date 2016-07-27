@@ -1,10 +1,10 @@
 package com.trycatch.owner.service;
 
-import java.util.List;
 
-import com.trycatch.owner.domain.Order_InformationDTO;
-import com.trycatch.owner.domain.ProfitMonthDTO;
+import org.json.simple.JSONObject;
+
 
 public interface ProfitService {
-	public List<ProfitMonthDTO> getMonthProfit(int store_no, int member_no);
+	public JSONObject getMonthProfit(int store_no, int member_no);
+	public JSONObject getYearProfit(int store_no, int member_no);
 }
