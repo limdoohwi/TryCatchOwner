@@ -10,8 +10,8 @@
     </select>
     
     <insert id="notice_insert" parameterType="NoticeDTO">
-    	insert into notice(notice_content, notice_pos, notice_depth, notice_hits, notice_date, notice_group) 
-    	values(#{notice_content}, 0, 0, 0, now(),0)
+    	insert into notice(notice_content, notice_pos, notice_depth, notice_hits, notice_date, notice_group, member_name) 
+    	values(#{notice_content}, 0, 0, 0, now(),0, #{member_name})
     </insert>
     
     <update id="notice_pos_up">
@@ -22,13 +22,13 @@
 		update notice set notice_pos=notice_pos+1 where notice_pos>#{notice_pos}
 	</update>
 	
-    <select id="notice_reply_list" >
-    	select * from notice where notice_group=#{notice_num} order by notice_pos
+    <select id="notice_reply_list" resultType="NoticeDTO">
+    	select * from notice where notice_depth>0 order by notice_pos
     </select>
     
     <insert id="notice_reply_insert" parameterType="NoticeDTO">
-    	insert into notice(notice_content, notice_pos, notice_depth, notice_hits, notice_date,notice_group) 
-    	values(#{notice_content}, #{notice_pos}+1, #{notice_depth}+1, 0, now(),#{notice_group})
+    	insert into notice(notice_content, notice_pos, notice_depth, notice_hits, notice_date,notice_group, member_name) 
+    	values(#{notice_content}, #{notice_pos}+1, #{notice_depth}+1, 0, now(),#{notice_group}, #{member_name})
     </insert>
    
    <delete id="notice_delete">
@@ -37,5 +37,9 @@
    
    <delete id="notice_delete_reply">
   		delete from notice where notice_group=#{notice_num}
+   </delete>
+   
+   <delete id="myreply_delete">
+   		delete from notice where notice_num=#{notice_num}
    </delete>
 </mapper>

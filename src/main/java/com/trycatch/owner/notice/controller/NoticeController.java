@@ -20,11 +20,9 @@ public class NoticeController {
 	private NoticeService service;
 	
 	@RequestMapping("/notice/Notice")
-	public void listAll(Model model, NoticeDTO notice)throws Exception{
+	public void listAll(Model model, NoticeDTO notice, HttpServletRequest req)throws Exception{
 		model.addAttribute("notice_list", service.getNoticeList());
-		ArrayList list = (ArrayList) service.getNoticeList();
-		System.out.println(list.get(1));
-		//model.addAttribute("notice_reply_list", service.getNoticeReplyList(notice_num))
+		model.addAttribute("notice_reply_list", service.getNoticeReplyList());
 	}
 	
 	@RequestMapping("/notice.delete")
@@ -36,9 +34,11 @@ public class NoticeController {
 	}
 	
 	@RequestMapping("/notice.insert")
-	public String insert(NoticeDTO notice,RedirectAttributes rttr, HttpServletRequest req) throws Exception{
+	public String insert(NoticeDTO notice,RedirectAttributes rttr, HttpServletRequest req, String member_name) throws Exception{
 		String notice_content;
 		notice_content = req.getParameter("notice_content");
+		member_name = req.getParameter("member_name");
+		notice.setMember_name(member_name);
 		service.insertNotice(notice, notice_content);
 		rttr.addFlashAttribute("msg", "SUCCESS");
 		return "redirect:/notice/Notice";
@@ -49,7 +49,17 @@ public class NoticeController {
 		String notice_content = req.getParameter("reply_content");
 		int notice_pos = Integer.parseInt(req.getParameter("notice_pos"));
 		int notice_group = Integer.parseInt(req.getParameter("notice_num"));
+		String member_name = req.getParameter("reply_member_name");
+		notice.setMember_name(member_name);
 		service.insertNoticeReply(notice, notice_content , notice_pos, notice_group);
+		rttr.addFlashAttribute("msg", "SUCCESS");
+		return "redirect:/notice/Notice";
+	}
+	
+	@RequestMapping("/notice.reply.delete")
+	public String deleteReply(RedirectAttributes rttr, HttpServletRequest req) throws Exception{
+		int notice_num = Integer.parseInt(req.getParameter("reply_delete_num"));
+		service.deleteReply(notice_num);;
 		rttr.addFlashAttribute("msg", "SUCCESS");
 		return "redirect:/notice/Notice";
 	}

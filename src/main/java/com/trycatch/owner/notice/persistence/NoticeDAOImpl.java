@@ -35,14 +35,20 @@ public class NoticeDAOImpl implements NoticeDAO {
 	}
 
 	@Override
-	public List<NoticeDTO> getNoticeReplyList( int notice_num) {
-		return sqlSession.selectList(NAMESPACE + ".notice_reply_list", notice_num);
+	public List<NoticeDTO> getNoticeReplyList() {
+		
+		return sqlSession.selectList(NAMESPACE + ".notice_reply_list");
 	}
 
 	@Override
 	public void insertNoticeReply(NoticeDTO notice) throws Exception {
 		sqlSession.update(NAMESPACE + ".notice_reply_pos_up", notice);
 		sqlSession.insert(NAMESPACE + ".notice_reply_insert", notice);
+	}
+
+	@Override
+	public void deleteReply(Integer notice_num) throws Exception {
+		sqlSession.delete(NAMESPACE + ".myreply_delete", notice_num);
 	}
 
 }

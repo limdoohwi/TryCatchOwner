@@ -7,6 +7,7 @@ public class NoticeDTO {
 	private int notice_depth;
 	private String notice_date;
 	private int notice_group;
+	private String member_name;
 	
 	public int getNotice_num() {
 		return notice_num;
@@ -43,5 +44,11 @@ public class NoticeDTO {
 	}
 	public void setNotice_group(int notice_group) {
 		this.notice_group = notice_group;
+	}
+	public String getMember_name() {
+		return member_name;
+	}
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
 	}
 }

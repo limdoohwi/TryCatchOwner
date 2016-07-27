@@ -34,7 +34,7 @@
 	              </div>
 	              <!-- 작성자 -->
 	              <div style="display:inline-block;">
-	               <a class="Notice-Writer-User-Name" href="#">${member_dto.member_name}</a>
+	               <a class="Notice-Writer-User-Name" href="#">${notice.member_name}</a>
 	              </div>
 	              <!-- 작성 일시 -->
 	              <div style="display:inline-block; margin-left: 5%">
@@ -52,6 +52,7 @@
             <div class="Notice-Write-Div box-body">
               <form id="notice_insert_form" method="post" action="/owner/notice.insert">
               <textarea name="notice_content" id="Notice-Write-Text-Area" rows="10" cols="334" placeholder="글쓰기" required="required" wrap="hard"></textarea>
+               <input type="hidden" value="${member_dto.member_name}" name="member_name">
               <button type="button" id="Notice-Write-Btn" class="btn btn-success btn-xs">글쓰기</button>              
               </form>  
            	</div>
@@ -66,7 +67,7 @@
 	 <div class="row">
 	        <div class="col-md-12">
 	          <div class="box box-widget">
-	            <c:if test="${notice.notice_depth==0 }">
+	            <c:if test="${notice.notice_depth==0 }"> 
 	            <div class="box-header with-border">
 	              <div class="user-block">
 	              		<!-- User Icon -->
@@ -76,7 +77,7 @@
 		              </div>
 		              	<!-- 작성자 -->     		
 		           	  <div style="display:inline-block;">
-		               <a class="Notice-Writer-User-Name" href="#">${member_dto.member_name}</a>
+		               <a class="Notice-Writer-User-Name" href="#">${notice.member_name}</a>
 		              </div>
 	              </div>	
 	              <div class="box-tools">
@@ -102,14 +103,22 @@
 	            <div class="box-footer box-comments">
 	              <div class="box-comment">
 	                <div class="comment-text">
-	                 <c:forEach items="${notice_reply_list}" var="reply">
-	                      <span class="username">
-	                       ${member_dto.member_email } 
-	                        <span class="text-muted pull-right">${reply.notice_date}</span>
-	                      </span>
-	                  <!-- Reply Content -->
-	                      ${reply.notice_content } 
-	                 </c:forEach>    
+	                <c:forEach items="${notice_reply_list}" var="reply" >
+		              	<c:if test="${notice.notice_num == reply.notice_group }">
+		        		<form method="post" action="/owner/notice.reply.delete">  
+		                      <span class="username">
+		                       ${reply.member_name }
+		                      <c:if test="${member_dto.member_code == 3 || member_dto.member_name == reply.member_name}">
+		                      	<button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>삭제</button>
+		                      </c:if>
+		                        <span class="text-muted pull-right">${reply.notice_date}</span>
+		                      </span>
+		                  <!-- Reply Content -->
+		                      ${reply.notice_content }
+		                 	<input type="hidden" name="reply_delete_num" value="${reply.notice_num }"/>      
+		        		 </form>
+		                 </c:if>     
+	                 </c:forEach> 
 	               </div>
 	              </div>
 	            </div>
@@ -120,6 +129,7 @@
 	                  <input type="text" name="reply_content" class="Notice-Reply-Text form-control input-sm" placeholder="Press enter to post comment">
 	                  <input type="hidden" name="notice_pos" value="${notice.notice_pos }">
 	                  <input type="hidden" value="${notice.notice_num}" name="notice_num">
+	                  <input type="hidden" value="${member_dto.member_name}" name="reply_member_name">
 	                </div>
 	            </div>
 	            </form>
@@ -127,7 +137,8 @@
 	          </div>
 	        </div>
 	 	</div>
-</c:forEach>	 
+</c:forEach>
+</div>	 
  <!-- jQuery 2.2.0 -->
 <script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -161,6 +172,15 @@
 					 else{
 						 $("#notice_insert_reply_form").submit();
 					 }
+			  }
+		  });
+		  
+		  $().click(function(){
+			  if(confirm("삭제 하시겠습니까?") == true){
+				  
+			  }
+			  else{
+				  return;
 			  }
 		  });
 	  });

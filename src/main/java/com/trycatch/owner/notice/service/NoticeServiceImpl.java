@@ -1,9 +1,11 @@
 package com.trycatch.owner.notice.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.beans.factory.support.ReplaceOverride;
 import org.springframework.stereotype.Service;
 
 import com.trycatch.owner.notice.domain.NoticeDTO;
@@ -26,21 +28,28 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public void insertNotice(NoticeDTO notice, String notice_content) throws Exception {
-		notice.setNotice_content(notice_content);
+		String replace_notice_content = notice_content.replace("\n", "<br>");
+		notice.setNotice_content(replace_notice_content);
 		dao.insertNotice(notice);
 	}
 
 	@Override
-	public List<NoticeDTO> getNoticeReplyList(int notice_num) {
-		return dao.getNoticeReplyList(notice_num);
+	public List<NoticeDTO> getNoticeReplyList() {
+		return dao.getNoticeReplyList();
 	}
 
 	@Override
 	public void insertNoticeReply(NoticeDTO notice, String notice_content,int notice_pos, int notice_group) throws Exception {
-		notice.setNotice_content(notice_content);
+		String replace_notice_content = notice_content.replace("\n", "<br>");
+		notice.setNotice_content(replace_notice_content);
 		notice.setNotice_pos(notice_pos);
 		notice.setNotice_group(notice_group);
 		dao.insertNoticeReply(notice);
+	}
+
+	@Override
+	public void deleteReply(Integer notice_num) throws Exception {
+		dao.deleteReply(notice_num);
 	}
 
 }
