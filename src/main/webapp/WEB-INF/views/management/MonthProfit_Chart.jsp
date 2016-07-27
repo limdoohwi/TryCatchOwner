@@ -4,6 +4,19 @@
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="/owner/resources/Owner_js/ListAjax.js"></script>
 <script type="text/javascript">
+
+	$(function(){
+		alert("시작");
+		callList_Ajax("/owner/month_profit/main/chart", successCallProfitMonth, null, null);
+	})
+	  function successCallProfitMonth(data){
+		$.each(data.profitMonthList, function(index, profitDTO){
+			alert(profitDTO.month);
+			$.each(data.menuCategoryList, function(index, menuCategory){
+				alert(profitDTO.profitMap);
+			});
+		});
+	}
       google.charts.load('current', {'packages':['corechart', 'bar']});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {

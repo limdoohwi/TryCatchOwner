@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
 		transaction.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		status = transactionManager.getTransaction(transaction);
 		try {
-			List<Integer> numberList = dao.getMenu_Payment_noList();
+			List<Integer> numberList = dao.getMenu_Payment_noList(store_no);
 			List<Order_InformationDTO> list = null;
 			List<Order_InformationDTO> resultList = new ArrayList();
 

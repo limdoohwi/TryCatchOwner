@@ -45,9 +45,9 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 	
 	@Override
-	public List<Integer> getMenu_Payment_noList() {
+	public List<Integer> getMenu_Payment_noList(int store_no) {
 		try {
-			return sqlSession.selectList(NAMESPACE + ".getMenu_Payment_noList");
+			return sqlSession.selectList(NAMESPACE + ".getMenu_Payment_noList", store_no);
 		} catch (Exception err) {
 			return null;
 		}

@@ -22,13 +22,20 @@ public class ProfitDAOImpl implements ProfitDAO {
 	private static final Logger logger = LoggerFactory.getLogger(ProfitDAOImpl.class);
 
 	@Override
-	public List<ProfitMonthDTO> getMonthProfit(int store_no, int member_no) {
+	public List<ProfitMonthDTO> getMonthProfit(int store_no, int member_no, int month) {
+		logger.info("ProfitDAOImpl 시작");
+		logger.info("ProfitDAOImpl 매장 번호 : " + store_no);
+		logger.info("ProfitDAOImpl 회원 번호 : " + member_no);
+		logger.info("ProfitDAOImpl 월 : " + month);
+
 		Map<String, Integer> map = new HashMap<>();
 		map.put("store_no", store_no);
 		map.put("member_no", member_no);
+		map.put("month", month);
 		try {
 			return sqlSession.selectList(NAMESPACE + ".getMonthProfit", map);
 		} catch (Exception err) {
+			logger.info("ProfitDAOImpl 예외 발생 : " + err.getMessage());
 			return null;
 		}
 	}

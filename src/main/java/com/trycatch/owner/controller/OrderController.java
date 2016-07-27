@@ -38,10 +38,4 @@ public class OrderController {
 		jsonRoot.put("orderList", orderService.getOrder_Information(memberDto.getMember_no(), storeDto.getStore_no(), start_Page, asce, search_order_info));
 		return jsonRoot;
 	}
-	
-	@RequestMapping("/month_profit/main/chart")
-	public @ResponseBody Object monthProfitInMainPOST() throws Exception{
-		
-		return null;
-	}
 }

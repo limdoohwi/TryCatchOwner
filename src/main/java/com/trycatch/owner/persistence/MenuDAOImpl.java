@@ -25,4 +25,9 @@ public class MenuDAOImpl implements MenuDAO {
 			return null;
 		}
 	}
+	
+	@Override
+	public List<String> getMenuCategoryList() {
+		return sqlSession.selectList(NAMESPACE+".getMenuCategoryList");
+	}
 }
