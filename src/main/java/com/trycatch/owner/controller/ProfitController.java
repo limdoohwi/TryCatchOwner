@@ -45,9 +45,51 @@ public class ProfitController {
 	
 	@RequestMapping("/year_profit/profit_owner")
 	public @ResponseBody Object yearProfitOwnerPOST(HttpServletRequest req, int year) throws Exception{
-		logger.info("선택된 연도 : " + year);
 		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
-		JSONObject jsonRoot = service.getYearTotalPrice(storeDto.getStore_no(), year);
+		return service.getYearTotalPrice(storeDto.getStore_no(), year);
+	}
+	
+	@RequestMapping("/years_profit/profit_owner")
+	public @ResponseBody Object yearsProfitOwnerPOST(HttpServletRequest req) throws Exception{
+		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
+		return service.getYearsTotalPrice(storeDto.getStore_no());
+	}
+	
+	@RequestMapping("/month_profit/profit_owner")
+	public @ResponseBody Object monthProfitOwnerPOST(HttpServletRequest req) throws Exception{
+		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
+		JSONObject jsonRoot = service.getMonthTotalPrice(storeDto.getStore_no());
 		return jsonRoot;
 	}
+	
+	@RequestMapping("/year_reservation_drink/profit_owner")
+	public @ResponseBody Object yearReservationDrinkOwnerPOST(HttpServletRequest req) throws Exception{
+		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
+		JSONObject jsonRoot = service.getYearReservationDrink(storeDto.getStore_no());
+		return jsonRoot;
+	}
+	
+	@RequestMapping("/month_reservation_drink/profit_owner")
+	public @ResponseBody Object monthReservationDrinkOwnerPOST(HttpServletRequest req) throws Exception{
+		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
+		JSONObject jsonRoot = service.getMonthReservationDrink(storeDto.getStore_no());
+		return jsonRoot;
+	}
+	
+	@RequestMapping("/day_reservation_drink/profit_owner")
+	public @ResponseBody Object dayReservationDrinkOwnerPOST(HttpServletRequest req) throws Exception{
+		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
+		JSONObject jsonRoot = service.getDayAverageReservationDrink(storeDto.getStore_no());
+		return jsonRoot;
+	}
+	
+	@RequestMapping("/year_menu_percentage/profit_owner")
+	public @ResponseBody Object yearMenuPercentageOwnerPOST(HttpServletRequest req, int year, String yearProfit) throws Exception{
+		System.out.println(yearProfit + "********************************************" );
+		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
+		JSONObject jsonRoot = service.getYearMenuPercentager(storeDto.getStore_no(), year, yearProfit);
+		return jsonRoot;
+	}
+	
+	
 }

@@ -121,4 +121,97 @@ public class ProfitServiceImpl implements ProfitService {
 		jsonRoot.put("year_total_price", total_price);
 		return jsonRoot;
 	}
+	
+	@Override
+	public JSONObject getYearsTotalPrice(int store_no) {
+		JSONObject jsonRoot = new JSONObject();
+		List<Integer> list = new ArrayList<>();
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		int year = Integer.parseInt(sdf.format(date));
+		for(int i=year-2; i<year+1; i++){
+			list.add(dao.getYearsTotalPrice(store_no, String.valueOf(year)));
+		}
+		jsonRoot.put("yearPriceList", list);
+		return jsonRoot;
+	}
+	
+	@Override
+	public JSONObject getMonthTotalPrice(int store_no) {
+		JSONObject jsonRoot = new JSONObject();
+		List<ProfitMonthDTO> list = new ArrayList<>();
+		for(int month=0; month<12; month++){
+			ProfitMonthDTO dto = dao.getMonthTotalPrice(store_no, month+1);
+			if(dto == null){
+				dto = new ProfitMonthDTO();
+				dto.setMonth(month+1);
+				dto.setTotal_price(0);
+			}
+			list.add(dto);
+		}
+		jsonRoot.put("monthPriceList", list);
+		return jsonRoot;
+	}
+	
+	@Override
+	public JSONObject getYearReservationDrink(int store_no) {
+		JSONObject jsonRoot = new JSONObject();
+		jsonRoot.put("yearReservationDrinkCount", dao.getYearReservationDrink(store_no));
+		return jsonRoot;
+	}
+	
+	@Override
+	public JSONObject getMonthReservationDrink(int store_no) {
+		JSONObject jsonRoot = new JSONObject();
+		List<Integer> list = new ArrayList<>();
+		for(int month=0; month<12; month++){
+			int monthReservationCount = dao.getMonthReservationDrink(store_no, month+1);
+			list.add(monthReservationCount);
+		}
+		jsonRoot.put("monthReservationCount", list);
+		return jsonRoot;
+	}
+	
+	@Override
+	public JSONObject getDayAverageReservationDrink(int store_no) {
+		JSONObject jsonRoot = new JSONObject();
+		List<Double> list = new ArrayList<>();
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		String thisYear = sdf.format(date);
+		thisYear += "-01-01";
+		System.out.println(thisYear);
+		int nowDaysFrom01_01 = dao.getDayto_Curdate_withThisYear(thisYear);
+		for(int hour = 10; hour<23; hour++){
+			if(nowDaysFrom01_01 == 0){
+				list.add(0.0);
+			}
+			else{
+				int hourReservationCount = dao.getDayAverageReservationDrink(store_no, hour);
+				double dayHourAverageCount = Math.ceil((double)(hourReservationCount)/nowDaysFrom01_01);
+				list.add(dayHourAverageCount);
+			}
+		}
+		jsonRoot.put("dayHourReservationCount", list);
+		return jsonRoot;
+	}
+	
+	@Override
+	public JSONObject getYearMenuPercentager(int store_no, int year, String yearProfit) {
+		JSONObject jsonRoot = new JSONObject();
+		JSONObject jsonTemp = null;
+		JSONArray jsonArray = new JSONArray();
+		List<String> list = menuDao.getMenuCategoryList();
+		int year_profit = Integer.parseInt(yearProfit.replace(",", ""));
+		for(int i=0; i<list.size(); i++){
+			int menuProfit = dao.getYearMenuPercentager(store_no, list.get(i), year);
+			jsonTemp = new JSONObject();
+			jsonTemp.put("category_name", list.get(i));
+			double percentage = Math.ceil((double)(year_profit)/menuProfit);
+			jsonTemp.put("percentage", percentage);
+			jsonArray.add(jsonTemp);
+		}
+		jsonRoot.put("yearMenuPercentage", jsonArray);
+		return jsonRoot;
+	}
 }
