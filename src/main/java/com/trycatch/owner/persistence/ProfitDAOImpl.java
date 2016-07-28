@@ -48,4 +48,17 @@ public class ProfitDAOImpl implements ProfitDAO {
 			return null;
 		}
 	}
+	
+	@Override
+	public int getYearTotalPrice(int store_no, int year) {
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("store_no", store_no);
+		map.put("year", year);
+		try {
+			return sqlSession.selectOne(NAMESPACE + ".getYearTotalPrice", map);
+		} catch (Exception err) {
+			return 0;
+		}
+	}
 }

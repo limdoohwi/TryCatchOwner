@@ -279,8 +279,33 @@
 	<!-- Google Chart -->
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="/owner/resources/Owner_js/ListAjax.js"></script>
 <script>
-		google.charts.load("current", {packages : [ 'corechart' ]});
+	var yearTotalPrice;
+	var year;
+		$(function(){
+			google.charts.load("current", {packages : [ 'corechart' ]});
+			//연도 입력 후 확인 버튼 클릭
+			$("#Show-Owner-Store-Profit-Btn").click(function(){
+				year = String($("#Select-Year-Profit").val());
+				if(year == ""){
+					alert("입력되지 않았습니다.");
+					$("#Select-Year-Profit").focus();
+					return false;
+				}
+				var jsonData = {
+						year : year
+				};
+				callList_Ajax("/owner/year_profit/profit_owner", successYearProfitOwner, errorYearProfitOwner, jsonData);
+			});
+		})
+		function successYearProfitOwner(data){
+			yearTotalPrice = data.year_total_price;
+			google.charts.setOnLoadCallback(YearChart);
+		}
+		function errorYearProfitOwner(){
+			alert("연도별 매출액 그래프를 불러오는데 실패하였습니다.");
+		}
 		//Year Chart
 		function YearChart() {
 			var data = google.visualization
@@ -290,8 +315,8 @@
 							} ],
 
 							[
-									'2016',
-									280000000,
+									year,
+									yearTotalPrice,
 									'stroke-color: #703593; stroke-width: 4; fill-color: #C5A5CF' ] ]);
 
 			var view = new google.visualization.DataView(
@@ -596,7 +621,6 @@
 								$("#Year-Order-Chart").css("display", "inline-block");
 								$("#Month-Order-Chart").css("display", "inline-block");
 								$("#Day-Order-Chart").css("display", "inline-block");
-								google.charts.setOnLoadCallback(YearChart);
 								google.charts.setOnLoadCallback(YearsChart);
 								google.charts.setOnLoadCallback(MonthChart);								
 								google.charts.setOnLoadCallback(Year_Order_Chart);								

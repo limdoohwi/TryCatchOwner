@@ -28,7 +28,7 @@
 			var categoryNameAndPrice = data.profitYearList[i].profitMenu.split("/");
 			var categoryPrice;
 			var finalResult = new Array();
-			finalResult.push(String(data.profitYearList[i].year));
+			finalResult.push(String(data.profitYearList[i].year) + "년");
 			for(var j=0; j<categoryNameAndPrice.length-1; j++){
 				categoryPrice = categoryNameAndPrice[j].split(",");
 				finalResult.push(Number(categoryPrice[1]));

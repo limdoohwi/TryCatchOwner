@@ -42,4 +42,12 @@ public class ProfitController {
 		jsonRoot.put("categoryList", menuService.getMenuCategoryList());
 		return jsonRoot;
 	}
+	
+	@RequestMapping("/year_profit/profit_owner")
+	public @ResponseBody Object yearProfitOwnerPOST(HttpServletRequest req, int year) throws Exception{
+		logger.info("선택된 연도 : " + year);
+		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
+		JSONObject jsonRoot = service.getYearTotalPrice(storeDto.getStore_no(), year);
+		return jsonRoot;
+	}
 }

@@ -26,4 +26,13 @@
 		and p.store_no = #{store_no} and s.member_no = #{member_no} and YEAR(p.menu_payment_date) = #{year}
 		group by c.menu_category_num, year(p.MENU_PAYMENT_DATE);
 	</select>
+	
+	<select id="getYearTotalPrice" resultType="int">
+	 	select sum(menu_total_price) as year_total_price from menu_payment where store_no = #{store_no} and year(MENU_PAYMENT_DATE) = #{year}
+	</select>
+	
+	<select id="getYearTotalPrice" parameterType="int" resultType="ProfitYearDTO">
+	 	select year(menu_payment_date), sum(menu_total_price) as year_total_price from menu_payment where store_no = #{store_no} and year(MENU_PAYMENT_DATE) > year(curdate())-3 group by year(menu_payment_date)
+	</select>
+	
 </mapper>

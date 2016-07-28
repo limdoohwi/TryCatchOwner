@@ -113,4 +113,12 @@ public class ProfitServiceImpl implements ProfitService {
 		jsonRoot.put("profitYearList", jsonArray);
 		return jsonRoot;
 	}
+	
+	@Override
+	public JSONObject getYearTotalPrice(int store_no, int year) {
+		JSONObject jsonRoot = new JSONObject();
+		int total_price = dao.getYearTotalPrice(store_no, year);
+		jsonRoot.put("year_total_price", total_price);
+		return jsonRoot;
+	}
 }

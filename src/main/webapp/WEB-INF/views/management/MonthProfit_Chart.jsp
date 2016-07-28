@@ -21,7 +21,7 @@
 			var categoryNameAndPrice = data.profitMonthList[i].profitMenu.split("/");
 			var categoryPrice;
 			var finalResult = new Array();
-			finalResult.push(data.profitMonthList[i].month);
+			finalResult.push(data.profitMonthList[i].month + "월");
 			for(var j=0; j<categoryNameAndPrice.length-1; j++){
 				categoryPrice = categoryNameAndPrice[j].split(",");
 				finalResult.push(Number(categoryPrice[1]));
