@@ -43,7 +43,7 @@ $(function(){
         $("#frm").submit();
     });
     $("#recipe_goback").click(function(){
-    	location.href="/owner/community_list";
+    	location.href="/owner/community_list?limit=0";
     })
 });
 

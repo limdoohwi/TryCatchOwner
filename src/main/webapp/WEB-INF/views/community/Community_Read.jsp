@@ -50,7 +50,7 @@
 						<c:when test="${mycommunity_size!=0}">
 							<c:forEach var = "mycommunity_list" items="${mycommunity_list}">
 			                    <div style="display: block">
-			                    	<a href="/owner/community_read?community_no=${mycommunity_list.community_no}">${mycommunity_list.community_title}</a>
+			                    	<a href="/owner/community_read?community_no=${mycommunity_list.community_no}">내용 - ${mycommunity_list.community_title}</a>
 			                    </div>
 			                </c:forEach>
 			            </c:when>
@@ -62,32 +62,43 @@
 			        </c:choose>            
                    </div> 
                  </li>
-	                <!-- 내가 단 댓글 -->
+<c:set var="myreplycommunity_list" value="${myreplycommunity_list}"/>    
+<c:set var="myreplycommunity_size" value="${fn:length(myreplycommunity_list)}"/>             
 	                <li id="My-Reply" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 단 댓글
-	                  <!-- 내가 단 댓글 Count Number -->
-	                  <span class="label label-primary pull-right">12</span></a>
-	                   <!-- 내가 단 댓글 List -->
+	                  <span class="label label-primary pull-right">${myreplycommunity_size}</span></a>
 	                   <div id="My-Reply-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-	                    <div style="display: block">
-	                    	<a href="#">어떤놈이 쓴글1 - 제 생각에 님은 병신</a>
-	                    </div>
-	                    <div style="display: block">
-	                    	<a href="#">어떤놈이 쓴글2 - 어쩔</a>
-	                    </div>
+	                    <c:choose>
+	                    	<c:when test="${myreplycommunity_size!=0}">
+	                    		<c:forEach items="${myreplycommunity_list}" var="myreplycommunity_list">
+				                    <div style="display: block">
+				                    	<a href="/owner/community_read?community_no=${myreplycommunity_list.community_no}">${myreplycommunity_list.community_no}번 게시물에 대한 댓글 - ${myreplycommunity_list.community_reply_comment}</a>
+				                    </div>
+	                    		</c:forEach>
+							</c:when>
+							<c:when test="${myreplycommunity_size!=0}">
+								등록하신 댓글이 없습니다.
+							</c:when>
+	                    </c:choose>
 	                   </div>   
 	                </li>
 	                <!-- 즐겨찾기 -->
+<c:set var="mycommunity_like" value="${mycommunity_like}"/>
+<c:set var="mycommunity_like_size" value="${fn:length(mycommunity_like)}"/>                
 	                <li id="Book-Mark" class="active"><a href="#"><i class="fa fa-star text-yellow"></i> 즐겨찾기
-	                  <!-- 즐겨찾기 Count Number -->
-	                  <span class="label label-primary pull-right">12</span></a>
-	                    <!-- 즐겨찾기 List -->
+	                  <span class="label label-primary pull-right">${mycommunity_like_size}</span></a>
 	                    <div id="Book-Mark-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-	                    	<div style="display: block">
-	                    		<a href="#">작성자1 - 헉 수지 개쩜</a>
-	                    	</div>
-	                    	<div style="display: block">
-	                    		<a href="#">작성자2 - 아이돌 유출</a>
-	                    	</div>
+							<c:choose>   
+								<c:when test="${mycommunity_like_size!=0}">    
+									<c:forEach items="${mycommunity_like}" var="mycommunity_like">           
+				                    	<div style="display: block">
+				                    		<a href="/owner/community_read?community_no=${mycommunity_like.community_no}">제목 - ${mycommunity_like.community_title}</a>				    
+				                    	</div>
+			                    	</c:forEach> 
+	                    		</c:when>
+	                    		<c:when test="${mycommunity_like_size==0}">
+	                    			즐겨찾기 항목 없음
+	                    		</c:when>
+	                    	</c:choose>
 	                    </div>
 	                </li>
 	              </ul>
@@ -101,8 +112,8 @@
 	              <h3 class="box-title">READ</h3>
 	
 	              <div class="box-tools pull-right">
-	                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="Previous"><i class="fa fa-chevron-left"></i></a>
-	                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="Next"><i class="fa fa-chevron-right"></i></a>
+	                <a href="/owner/community_prev?community_no=${communityDTO.community_no}" class="btn btn-box-tool" data-toggle="tooltip" title="Previous"><i class="fa fa-chevron-left"></i></a>
+	                <a href="/owner/community_next?community_no=${communityDTO.community_no}" class="btn btn-box-tool" data-toggle="tooltip" title="Next"><i class="fa fa-chevron-right"></i></a>
 	              </div>
 	            </div>
 	            <div class="box-body no-padding">
@@ -136,20 +147,33 @@
 	            <div class="box-footer box-comments">
 	              <div class="box-comment">
 	                <div class="comment-text">
-	                      <span class="username">
-	                        Maria Gonzales
-	                        <span class="text-muted pull-right">2016년 7월 3일 16시 26분</span>
-	                      </span>
-	                  <!-- Reply Content -->
-	                      	ㅇㅅㅇ
+
+<c:set var="community_reply_size" value="${fn:length(community_reply_list)}"/>
+${community_reply_size}
+						<c:choose>
+							<c:when test="${community_reply_size!=0}">
+								<c:forEach end="${community_reply_size}" items="${community_reply_list}" var="community_reply">
+			                      <span class="username">
+			                        ${community_reply.community_reply_writer}
+			                        <span class="text-muted pull-right">${community_reply.community_reply_date}</span>
+			                      </span>
+		                  <!-- Reply Content -->
+	                      			${community_reply.community_reply_comment}
+	                      		</c:forEach>
+	                   	 	</c:when>  	
+	                 	<c:when test="${community_reply_size==0}">
+	                 		댓글이 없습니다.
+	                 	</c:when>
+	                  </c:choose>    	
 	               </div>
 	              </div>
 	            </div>
 	            <!-- Reply 작성하는 곳 -->
 	            <div class="box-footer">
 	              <form action="/owner/community_reply" method="post">
+	              	<input type="hidden" name ="community_no" value="${communityDTO.community_no}"/>
 	                <div class="img-push">
-	                  <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+	                  <input type="text" name="community_reply_comment"class="form-control input-sm" placeholder="Press enter to post comment">
 	                </div>
 	              </form>
 	            </div>

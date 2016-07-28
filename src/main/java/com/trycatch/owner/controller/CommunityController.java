@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -17,8 +19,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trycatch.owner.domain.CommunityDTO;
+import com.trycatch.owner.domain.CommunityLikeDTO;
 import com.trycatch.owner.domain.MemberDTO;
 import com.trycatch.owner.service.CommunityService;
 
@@ -40,12 +44,17 @@ public class CommunityController {
 	 */
 	
 	@RequestMapping(value="/community_list",method=RequestMethod.GET)
-	public String CommunityList(Model model,HttpServletRequest req){
+	public String CommunityList(Model model,HttpServletRequest req,int limit){
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
-		model.addAttribute("community_list",service.getCommunityList());
+		model.addAttribute("community_all",service.getCommunityAll());
+		model.addAttribute("community_list",service.getCommunityList(limit));
 		model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
+		model.addAttribute("myreplycommunity_list",service.myreplyCommunityList(mdto.getMember_no()));
+		model.addAttribute("limit",limit);
+		model.addAttribute("mycommunity_like",service.getCommunityLikeList(mdto.getMember_no()));
 		return "/community/Community_Owner";
 	}
+
 	
 	@RequestMapping(value="/community_insert",method=RequestMethod.GET)
 	public String CommunityInsert(){
@@ -62,15 +71,18 @@ public class CommunityController {
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
 		dto.setCommunity_writer(mdto.getMember_name());
 		service.insertCommunity(dto);
-		return "redirect:/community_list";
+		return "redirect:/community_list?limit=0";
 	}
 	
 	@RequestMapping(value="/community_read",method=RequestMethod.GET)
 	public String CommunityRead(int community_no,Model model,HttpServletRequest req){
-		model.addAttribute("community_list",service.getCommunityList());
+		model.addAttribute("community_list",service.getCommunityList(0));
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
+		model.addAttribute("community_reply_list",service.replyCommunityList(community_no));
 		model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
+		model.addAttribute("myreplycommunity_list",service.myreplyCommunityList(mdto.getMember_no()));
 		model.addAttribute(service.readCommunity(community_no));
+		model.addAttribute("mycommunity_like",service.getCommunityLikeList(mdto.getMember_no()));
 		return "/community/Community_Read";
 	}
 	
@@ -78,14 +90,42 @@ public class CommunityController {
 	public String CommunityDel(int community_no){
 		System.out.println(community_no);
 		service.deleteCommunity(community_no);
-		return "redirect:/community_list";
+		return "redirect:/community_list?limit=0";
 	}
 	
 	@RequestMapping("/community_reply")
-	public String CommunityReply(int community_no){
-		
-		return "";
+	public String CommunityReply(int community_no,HttpServletRequest req){
+		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
+		Map<String, Object> map = new HashMap<>();
+		map.put("community_reply_writer", mdto.getMember_name());
+		map.put("community_reply_comment",req.getParameter("community_reply_comment"));
+		map.put("community_no", community_no);
+		map.put("member_no", mdto.getMember_no());
+		service.insertCommunityReply(map);
+		return "redirect:/community_read?community_no="+community_no;
 	}
+	
+	@RequestMapping("/community_prev")
+	public String CommunityPrev(int community_no){
+		return "redirect:/community_read?community_no="+service.prevCommunity(community_no);
+	}
+	@RequestMapping("/community_next")
+	public String CommunityNext(int community_no){
+		return "redirect:/community_read?community_no="+service.nextCommunity(community_no);
+	}
+	
+	@RequestMapping("/community_like")
+	public @ResponseBody boolean CommunityLike(CommunityLikeDTO dto, int like,int community_no){	
+		if(like==1){
+		return service.insertLikeCommunity(dto);	
+		}
+		else{
+		return service.deleteLikeCommunity(community_no);
+		}
+	}
+	
+	
+	
 	
 	@RequestMapping("/multiplePhotoUpload")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response){

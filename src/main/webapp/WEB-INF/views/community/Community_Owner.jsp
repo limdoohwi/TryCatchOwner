@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="limit" value="${limit}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,26 +58,42 @@
 			        </c:choose>            
                    </div> 
                  </li>
+<c:set var="myreplycommunity_list" value="${myreplycommunity_list}"/>    
+<c:set var="myreplycommunity_size" value="${fn:length(myreplycommunity_list)}"/>             
                 <li id="My-Reply" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 단 댓글
-                  <span class="label label-primary pull-right">12</span></a>
+                  <span class="label label-primary pull-right">${myreplycommunity_size}</span></a>
                    <div id="My-Reply-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-                    <div style="display: block">
-                    	<a href="#">어떤놈이 쓴글1 - 제 생각에 님은 병신</a>
-                    </div>
-                    <div style="display: block">
-                    	<a href="#">어떤놈이 쓴글2 - 어쩔</a>
-                    </div>
+                    <c:choose>
+                    	<c:when test="${myreplycommunity_size!=0}">
+                    		<c:forEach items="${myreplycommunity_list}" var="myreplycommunity_list">
+			                    <div style="display: block">
+			                    	<a href="/owner/community_read?community_no=${myreplycommunity_list.community_no}">${myreplycommunity_list.community_no}번 게시물에 대한 댓글 - ${myreplycommunity_list.community_reply_comment}</a>
+			                    </div>
+                    		</c:forEach>
+						</c:when>
+						<c:when test="${myreplycommunity_size!=0}">
+							등록하신 댓글이 없습니다.
+						</c:when>
+                    </c:choose>
                    </div>   
-                </li>
+                </li>            
+<c:set var="mycommunity_like" value="${mycommunity_like}"/>
+<c:set var="mycommunity_like_size" value="${fn:length(mycommunity_like)}"/>                
                 <li id="Book-Mark" class="active"><a href="#"><i class="fa fa-star text-yellow"></i> 즐겨찾기
-                  <span class="label label-primary pull-right">12</span></a>
+                  <span class="label label-primary pull-right">${mycommunity_like_size}</span></a>
                     <div id="Book-Mark-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-                    	<div style="display: block">
-                    		<a href="#">작성자1 - 헉 수지 개쩜</a>
-                    	</div>
-                    	<div style="display: block">
-                    		<a href="#">작성자2 - 아이돌 유출</a>
-                    	</div>
+						<c:choose>   
+							<c:when test="${mycommunity_like_size!=0}">    
+								<c:forEach items="${mycommunity_like}" var="mycommunity_like">           
+			                    	<div style="display: block">
+			                    		<a href="/owner/community_read?community_no=${mycommunity_like.community_no}">제목 - ${mycommunity_like.community_title}</a>
+			                    	</div>
+		                    	</c:forEach> 
+                    		</c:when>
+                    		<c:when test="${mycommunity_like_size==0}">
+                    			즐겨찾기 항목 없음
+                    		</c:when>
+                    	</c:choose>
                     </div>
                 </li>
               </ul>
@@ -100,17 +117,20 @@
                   <tbody>               
 <c:set var="community_list" value="${community_list}"/>
 <c:set var="community_size" value="${fn:length(community_list)}"/>
-
+<c:set var="community_all" value="${community_all}"/>
+<c:set var="community_all_size" value="${fn:length(community_all)}"/>
 					<c:choose>
 						<c:when test="${community_size!=0}">
-							<c:forEach var = "community_list" items="${community_list}">
+							<c:forEach var = "community_list" items="${community_list}"> 
 								<tr>
 				                    <td class="mailbox-star">
-				                    	<div class="Book-Mark-Before" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
-				                    	<div class="Book-Mark-After" style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                    
+				                    	<div class="Book-Mark-Before communitylike" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
+				                    	<div class="Book-Mark-After communitynolike"  style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                  
+				                    	<div style="display: none"><input type="text" class="community_no" value="${community_list.community_no}" /></div>
 				                    </td>
-				                    <td class="mailbox-name">작성자 - ${community_list.community_writer}</td>
-				                    <td class="mailbox-subject"><b>제목 - </b><a style="text-decoration: none" href="/owner/community_read?community_no=${community_list.community_no}">${community_list.community_title}</a>
+					                    <td class="mailbox-name">작성자 - ${community_list.community_writer}</td>
+					                    <td class="mailbox-subject"><b>제목 - </b><a style="text-decoration: none" href="/owner/community_read?community_no=${community_list.community_no}">${community_list.community_title}</a>
+					                    <div style="display: none"><input type="text" class="community_title" value="${community_list.community_title}"/></div>
 				                    </td>
 				                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
 				                    <td class="mailbox-date">${community_list.community_regdate}</td>
@@ -130,10 +150,10 @@
                 <div class="btn-group"></div>
                 <button type="button" class="btn btn-default btn-sm" id="refresh"><i class="fa fa-refresh"></i></button>
                 <div class="pull-right">
-                  1-50/200
+                  ${limit}~${limit + 5} / ${community_all_size}
                   <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+                    <button type="button" id="prev5" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+                    <button type="button" id="next5" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
                   </div>
                 </div>
               </div>
@@ -148,22 +168,41 @@
 	  $.widget.bridge('uibutton', $.ui.button);
 	  
 	  $(function(){
+		  
+		  
 		  //작성자 옆 별표시 Click 즐겨찾기 추가
-		  $(".Book-Mark-Before").click(function(){
+		  $(".Book-Mark-Before").click(function(){	
+			 alert("dd");
+			 var like = 1;
 			 var index = $(".Book-Mark-Before").index(this);
+			 alert(index);
 			 var divB = $(".Book-Mark-Before").eq(index);
+			 var community_no = $(".community_no").eq(index).val();
+			 var community_title = $(".community_title").eq(index).val();
 			 var divA = $(divB).siblings(".Book-Mark-After");
-			$(divB).hide();
-			$(divA).show();
+			 var member_no = "${member_dto.member_no}";		
+			 alert(community_title);
+			 alert(community_no);
+			 $.ajax({
+				 type:"post",
+				 url:"/owner/community_like",
+				 data:{community_no:community_no , community_title:community_title , member_no:member_no, like:like},
+				 dataType : "json",
+				 success: function(data){
+					 if(data==true){
+						 alert("즐겨찾기가 추가되었습니다.");
+							$(divB).hide();
+							$(divA).show();
+					 } 
+				 },
+				 error:function(){
+					 alert("ajax실패");
+				 }
+			 }) 
 		  });
-		  //작성자 옆 별표시 Click 즐겨찾기 삭제
-		  $(".Book-Mark-After").click(function(){
-			 var index = $(".Book-Mark-After").index(this);
-			 var divA = $(".Book-Mark-After").eq(index);
-			 var divB = $(divA).siblings(".Book-Mark-Before");
-			$(divB).show();
-			$(divA).hide();
-		  });	
+		  
+
+		  	
 		  //왼쪽 패널 즐겨찾기 Click List Show
 		  $("#Book-Mark").click(function(){
 			  $("#Book-Mark-List").slideToggle(400);
@@ -178,13 +217,23 @@
 		  });
 		  $("#goinsert").click(function(){
 			  location.href="/owner/community_insert";
-		  })	  
+		  });	  
 		  $("#refresh").click(function(){
-			  location.href="/owner/community_list"
-		  })
+			  location.href="/owner/community_list?limit=0";
+		  });
 		  
-	  })
-	</script>
+		  $("#next5").click(function(){
+			  location.href="/owner/community_list?limit=${limit + 5}";
+		  });
+		  $("#prev5").click(function(){
+			  var limit = '${limit}';
+			  if( limit == 0){
+				  $("#prev5").hidden();
+			  }
+			  location.href="/owner/community_list?limit=${limit - 5}";
+		  });
+	  });
+</script>
 	<!-- Footer -->
  	<jsp:include page="../layout/Footer.jsp" />
 </body>

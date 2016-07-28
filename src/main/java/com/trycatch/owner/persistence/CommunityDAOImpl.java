@@ -1,6 +1,8 @@
 package com.trycatch.owner.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -10,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.trycatch.owner.domain.CommunityDTO;
+import com.trycatch.owner.domain.CommunityLikeDTO;
+import com.trycatch.owner.domain.CommunityReplyDTO;
 
 @Repository
 public class CommunityDAOImpl implements CommunityDAO {
@@ -21,8 +25,8 @@ public class CommunityDAOImpl implements CommunityDAO {
 	
 	
 	@Override
-	public List<CommunityDTO> getCommunityList() {
-		return sqlSession.selectList(NAMESPACE+".communityList");
+	public List<CommunityDTO> getCommunityList(Integer limit) {
+		return sqlSession.selectList(NAMESPACE+".communityList",limit);
 	}
 
 	@Override
@@ -49,6 +53,55 @@ public class CommunityDAOImpl implements CommunityDAO {
 	public List<CommunityDTO> myCommunityList(String community_name) {
 		return sqlSession.selectList(NAMESPACE+".mycommunityList", community_name);
 	}
+
+	@Override
+	public List<CommunityReplyDTO> replyCommunityList(Integer community_no) {
+		return sqlSession.selectList(NAMESPACE+".communityReplyList",community_no);
+	}
+
+	@Override
+	public List<CommunityDTO> getCommunityAll() {
+		return sqlSession.selectList(NAMESPACE+".communitylistAll");
+	}
+
+	@Override
+	public void insertCommunityReply(Map map) {
+		sqlSession.insert(NAMESPACE+".communityreplyInsert", map);
+		
+	}
+
+	@Override
+	public Integer nextCommunity(Integer community_no) {
+		return sqlSession.selectOne(NAMESPACE+".communityNext",community_no);
+	}
+
+	@Override
+	public Integer prevCommunity(Integer community_no) {
+		return sqlSession.selectOne(NAMESPACE+".communityPrev",community_no);
+	}
+
+	@Override
+	public List<CommunityReplyDTO> myreplyCommunityList(Integer member_no) {
+		return sqlSession.selectList(NAMESPACE+".mycommunityReplyList",member_no);
+	}
+
+	@Override
+	public List<CommunityLikeDTO> getCommunityLikeList(Integer member_no) {
+		return sqlSession.selectList(NAMESPACE+".communitylikeList",member_no);
+	}
+
+	@Override
+	public boolean insertLikeCommunity(CommunityLikeDTO dto) {
+		try{sqlSession.insert(NAMESPACE+".communityLikeInsert",dto);return true;}
+		catch(Exception err){return false;}
+	}
+
+	@Override
+	public boolean deleteLikeCommunity(Integer community_no) {
+		try{sqlSession.delete(NAMESPACE+".communityLikeDelete",community_no);return true;}
+		catch(Exception err){return false;}
+	}
+
 
 
 
