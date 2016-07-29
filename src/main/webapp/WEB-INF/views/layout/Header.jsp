@@ -40,6 +40,12 @@
 		//newNoticeAlarm();
 		//읽지않은 음료주문 알람을 띄움
 		
+		 $.ajax({
+			 type:"post",
+			 url:"/owner/community_list",
+			 data:{limit:0},
+			 dataType:"int",
+		  })	  
 	})
 	
 	/*

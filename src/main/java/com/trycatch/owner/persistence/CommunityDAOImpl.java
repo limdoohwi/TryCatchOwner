@@ -26,6 +26,7 @@ public class CommunityDAOImpl implements CommunityDAO {
 	
 	@Override
 	public List<CommunityDTO> getCommunityList(Integer limit) {
+		System.out.println("daolimit" + limit);
 		return sqlSession.selectList(NAMESPACE+".communityList",limit);
 	}
 
@@ -91,21 +92,30 @@ public class CommunityDAOImpl implements CommunityDAO {
 
 	@Override
 	public boolean insertLikeCommunity(CommunityLikeDTO dto) {
-		
 		try{
-			int i = sqlSession.selectOne(NAMESPACE+".communitylikecheck");
+			int i = sqlSession.selectOne(NAMESPACE+".communitylikecheck",dto);
 			if(i==0){
 				sqlSession.insert(NAMESPACE+".communityLikeInsert",dto);
+				System.out.println("인서트 완료");
 				return true;
 				}
 			else if(i>0){
-				sqlSession.delete(NAMESPACE+".communityLikeDelete");
+				System.out.println("즐찾 삭제");
+				sqlSession.delete(NAMESPACE+".communityLikeDelete",dto);
 				return false;
 			}
 			}
 		catch(Exception err){
-			sqlSession.delete(NAMESPACE+".communityLikeDelete");
+			System.out.println("익셉션"+err);
+			sqlSession.delete(NAMESPACE+".communityLikeDelete",dto);
 		}
 		return false;
+
 	}
+
+	@Override
+	public List<CommunityDTO> getCommunitySearch(String community_search) {
+		return sqlSession.selectList(NAMESPACE+".communitySearch",community_search);
+	}
+
 }

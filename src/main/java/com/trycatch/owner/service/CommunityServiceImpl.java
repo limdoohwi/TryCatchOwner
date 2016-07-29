@@ -52,6 +52,7 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public List<CommunityDTO> getCommunityList(Integer limit) {
+		System.out.println("servicelimit" + limit);
 		return dao.getCommunityList(limit);
 	}
 
@@ -88,6 +89,11 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public List<CommunityLikeDTO> getCommunityLikeList(Integer member_no) {
 		return dao.getCommunityLikeList(member_no);
+	}
+
+	@Override
+	public List<CommunityDTO> getCommunitySearch(String community_search) {
+		return dao.getCommunitySearch(community_search);
 	}
 
 }

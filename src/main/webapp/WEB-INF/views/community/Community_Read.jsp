@@ -90,7 +90,8 @@
 							<c:choose>   
 								<c:when test="${mycommunity_like_size!=0}">    
 									<c:forEach items="${mycommunity_like}" var="mycommunity_like">           
-				                    	<div style="display: block">
+				                    	<div class="like_number" style="display: block">
+				                    	<input type="hidden" value="${mycommunity_like.community_no}" />
 				                    		<a href="/owner/community_read?community_no=${mycommunity_like.community_no}">제목 - ${mycommunity_like.community_title}</a>				    
 				                    	</div>
 			                    	</c:forEach> 
@@ -119,6 +120,8 @@
 	            <div class="box-body no-padding">
 	              <div class="mailbox-read-info">
 	              <!-- Board Subject -->
+	              	<input type="hidden" class="community_number" value="${communityDTO.community_no}"/>
+	              	<input type="hidden" class="community_title" value="${communityDTO.community_title}"/>
 	                <h3>${communityDTO.community_title}</h3>
 	                <h2>${communityDTO.community_writer}</h2>
 	               	<!-- Board Writer -->
@@ -186,6 +189,72 @@ ${community_reply_size}
 	  $.widget.bridge('uibutton', $.ui.button);
 	  
 	  $(function(){
+		  
+		 	var like_no = "${communityDTO.community_no}";
+			var like_community_no = new Array();
+			$(".like_number").each(function(){
+				like_community_no.push($(this).find("input[type=hidden]").val());
+			});
+			for(var i=0; i<like_community_no.length; i++){
+				if(like_no == like_community_no[i]){
+					$(".Book-Mark-After").show();
+					$(".Book-Mark-Before").hide();
+				}
+			}
+			
+			//즐겨찾기 추가
+			 $(".Book-Mark-Before").click(function(){	
+				 var divB = $(".Book-Mark-Before").eq(0);
+				 var community_no = "${communityDTO.community_no}";
+				 var community_title = $(".community_title").val();
+				 var divA = $(divB).siblings(".Book-Mark-After");
+				 var member_no = "${member_dto.member_no}";
+				 
+				 if($(divB).show()){
+					 $.ajax({
+						 type:"post",
+						 url:"/owner/community_like",
+						 data:{community_no:community_no , community_title:community_title , member_no:member_no},
+						 dataType : "json",
+						 success: function(data){
+							 if(data==true){
+									$(divB).hide();
+									$(divA).show();
+								alert("즐겨찾기가 추가되었습니다.");
+							 }
+						 },
+						 error:function(){
+							 alert("ajax실패");
+						 }
+					 }) 
+				 }
+			  });
+			  //즐겨찾기 해제
+			  $(".Book-Mark-After").click(function(){
+					 var divA = $(".Book-Mark-After").eq(0);
+					 var community_no = "${communityDTO.community_no}"
+					 var divB = $(divA).siblings(".Book-Mark-Before");
+					 var member_no = "${member_dto.member_no}";
+				  $.ajax({
+					 type:"post",
+					 url:"/owner/community_like",
+					 data:{community_no:community_no},
+					 dataType:"json",
+					 success:function(data){
+						if($(divA).show()){
+							alert("즐겨찾기 해제되었습니다");
+							$(divA).hide();
+							$(divB).show();
+						}
+					 }
+				  })	  
+			  })
+
+			  	
+		 
+		  
+			
+		  /*
 		  //게시판 상단 즐겨찾기 Click 즐겨찾기 추가
 		  $(".Book-Mark-Before").click(function(){
 			 var index = $(".Book-Mark-Before").index(this);
@@ -194,6 +263,9 @@ ${community_reply_size}
 			$(divB).hide();
 			$(divA).show();
 		  });
+		  
+		  
+		  
 		  //게시판 상단 즐겨찾기 취소 Click 즐겨찾기 삭제
 		  $(".Book-Mark-After").click(function(){
 			 var index = $(".Book-Mark-After").index(this);
@@ -202,6 +274,8 @@ ${community_reply_size}
 			$(divB).show();
 			$(divA).hide();
 		  });	
+		  
+		  */
 		  //왼쪽 패널 즐겨찾기 Click List Show
 		  $("#Book-Mark").click(function(){
 			  $("#Book-Mark-List").slideToggle(400);
@@ -216,7 +290,13 @@ ${community_reply_size}
 		  });
 		  
 		  $("#community_del").click(function(){
-			  location.href="/owner/community_del?community_no=${communityDTO.community_no}";
+			  var conf = confirm("본인만 삭제가능합니다 삭제하시겠습니까?");
+			  if(conf){
+				 location.href="/owner/community_del?community_no=${communityDTO.community_no}";
+			  }
+			  else{
+				 
+			  }
 		  })
 	  })
 	</script>

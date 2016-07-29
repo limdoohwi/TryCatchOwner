@@ -45,12 +45,57 @@ public class CommunityController {
 	
 	@RequestMapping(value="/community_list",method=RequestMethod.GET)
 	public String CommunityList(Model model,HttpServletRequest req,int limit){
+		System.out.println("GET COMMUNITY");
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
-		model.addAttribute("community_all",service.getCommunityAll());
-		model.addAttribute("community_list",service.getCommunityList(limit));
+		String community_search = req.getParameter("community_search");
+		if(community_search!=null){
+			System.out.println(community_search);
+			model.addAttribute("community_all",service.getCommunitySearch(community_search).size());
+			model.addAttribute("community_list",service.getCommunitySearch(community_search));
+		}
+		else{
+			model.addAttribute("community_all",service.getCommunityAll().size());
+			model.addAttribute("community_list",service.getCommunityList(limit));
+		}
+			model.addAttribute("limit",limit);
+			model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
+			model.addAttribute("myreplycommunity_list",service.myreplyCommunityList(mdto.getMember_no()));
+			model.addAttribute("mycommunity_like",service.getCommunityLikeList(mdto.getMember_no()));
+		return "/community/Community_Owner";
+	}
+	
+	
+	@RequestMapping(value="/community_list",method=RequestMethod.POST)
+	public String CommunityListPOST(Model model,HttpServletRequest req,int limit){
+		System.out.println("POST COMMUNITY");
+		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
+		String community_search = req.getParameter("community_search");
+		if(community_search!=null){
+			System.out.println(community_search);
+			model.addAttribute("community_all",service.getCommunitySearch(community_search).size());
+			model.addAttribute("community_list",service.getCommunitySearch(community_search));
+		}
+		else{
+			model.addAttribute("community_all",service.getCommunityAll().size());
+			model.addAttribute("community_list",service.getCommunityList(limit));
+		}
+			model.addAttribute("limit",limit);
+			model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
+			model.addAttribute("myreplycommunity_list",service.myreplyCommunityList(mdto.getMember_no()));
+			model.addAttribute("mycommunity_like",service.getCommunityLikeList(mdto.getMember_no()));
+		return "/community/Community_Owner";
+	}
+	
+	@RequestMapping("/community_search")
+	public String CommunitySearch(Model model,HttpServletRequest req){
+		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
+		String community_search = req.getParameter("community_search");
+		System.out.println(community_search);
 		model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
 		model.addAttribute("myreplycommunity_list",service.myreplyCommunityList(mdto.getMember_no()));
-		model.addAttribute("limit",limit);
+		model.addAttribute("community_all",service.getCommunitySearch(community_search).size());
+		model.addAttribute("community_list",service.getCommunitySearch(community_search));
+		model.addAttribute("limit",0);
 		model.addAttribute("mycommunity_like",service.getCommunityLikeList(mdto.getMember_no()));
 		return "/community/Community_Owner";
 	}
@@ -64,13 +109,13 @@ public class CommunityController {
 	@RequestMapping(value="/community_insert",method=RequestMethod.POST)
 	public String CommunityInsertPOST(HttpServletRequest req) throws UnsupportedEncodingException{
 
-		System.out.println(req.getParameter("community_title"));
 		CommunityDTO dto = new CommunityDTO();
 		dto.setCommunity_content(req.getParameter("community_content"));
 		dto.setCommunity_title(req.getParameter("community_title"));
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
 		dto.setCommunity_writer(mdto.getMember_name());
-		service.insertCommunity(dto);
+		System.out.println(req.getParameter("community_title")+","+req.getParameter("community_content")+","+mdto.getMember_name());
+		service.insertCommunity(dto);		
 		return "redirect:/community_list?limit=0";
 	}
 	
@@ -118,9 +163,6 @@ public class CommunityController {
 	public @ResponseBody boolean CommunityLike(CommunityLikeDTO dto){	
 		return service.insertLikeCommunity(dto);	
 	}
-	
-	
-	
 	
 	@RequestMapping("/multiplePhotoUpload")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response){

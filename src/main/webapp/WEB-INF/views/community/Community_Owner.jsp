@@ -52,7 +52,7 @@
 			            </c:when>
 			            <c:when test="${mycommunity_size==0}">
 			            	<div style="display:block">
-			            		글을 쓰세요<button type="button" class="btn btn-default btn-sm" id="goinsert"><i class="glyphicon glyphicon-pencil"></i></button>
+			            		글을 쓰세요<button type="button" class="goinsert btn btn-default btn-sm"><i class="glyphicon glyphicon-pencil"></i></button>
 			            	</div>
 			            </c:when>
 			        </c:choose>            
@@ -71,7 +71,7 @@
 			                    </div>
                     		</c:forEach>
 						</c:when>
-						<c:when test="${myreplycommunity_size!=0}">
+						<c:when test="${myreplycommunity_size==0}">
 							등록하신 댓글이 없습니다.
 						</c:when>
                     </c:choose>
@@ -85,7 +85,8 @@
 						<c:choose>   
 							<c:when test="${mycommunity_like_size!=0}">    
 								<c:forEach items="${mycommunity_like}" var="mycommunity_like">           
-			                    	<div style="display: block">
+			                    	<div class="like_number" style="display: block">
+			                    		<input type="hidden" value="${mycommunity_like.community_no}" />
 			                    		<a href="/owner/community_read?community_no=${mycommunity_like.community_no}">제목 - ${mycommunity_like.community_title}</a>
 			                    	</div>
 		                    	</c:forEach> 
@@ -105,10 +106,13 @@
           <div class="box box-primary">
             <div class="mailbox-controls">              
                 <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm" id="goinsert"><i class="glyphicon glyphicon-pencil"></i></button>
+                <button type="button" class="goinsert btn btn-default btn-sm"><i class="glyphicon glyphicon-pencil"></i></button>
                 <div class="pull-right">
-                  <input type="text" class="form-control input-sm" placeholder="작성자 & 제목 검색">
-                  <span style="margin-top:5px;" class="glyphicon glyphicon-search form-control-feedback"></span>   
+                	<form action="/owner/community_list" method="post">
+                		<input type="hidden" name="limit" value="0"/>
+	                  <input type="text" class="form-control input-sm" name="community_search" id="community_search" placeholder="작성자 & 제목 검색">
+	                  <span style="margin-top:5px;" class="glyphicon glyphicon-search form-control-feedback" ></span>   
+                  	</form>
                 </div>
               </div>
             <div class="box-body no-padding">
@@ -118,18 +122,16 @@
 <c:set var="community_list" value="${community_list}"/>
 <c:set var="community_size" value="${fn:length(community_list)}"/>
 <c:set var="community_all" value="${community_all}"/>
-<c:set var="community_all_size" value="${fn:length(community_all)}"/>
-
 					<c:choose>
 						<c:when test="${community_size!=0}">
 							<c:forEach var = "community_list" items="${community_list}"> 
-								<tr>
+								<tr class="community_list_tr">
 				                    <td class="mailbox-star">
-				                    	<div class="Book-Mark-Before communitylike" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
-				                    	<div class="Book-Mark-After communitynolike"  style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                  
+					                    <div class="Book-Mark-Before communitynolike" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
+					                    <div class="Book-Mark-After communitylike"  style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                 
 				                    	<div style="display: none"><input type="text" class="community_no" value="${community_list.community_no}" /></div>
 				                    </td>
-					                    <td class="mailbox-name">작성자 - ${community_list.community_writer}</td>
+										<td class="mailbox-name">작성자 - ${community_list.community_writer}</td>
 					                    <td class="mailbox-subject"><b>제목 - </b><a style="text-decoration: none" href="/owner/community_read?community_no=${community_list.community_no}">${community_list.community_title}</a>
 					                    <div style="display: none"><input type="text" class="community_title" value="${community_list.community_title}"/></div>
 				                    </td>
@@ -151,9 +153,9 @@
                 <div class="btn-group"></div>
                 <button type="button" class="btn btn-default btn-sm" id="refresh"><i class="fa fa-refresh"></i></button>
                 <div class="pull-right">
-                  ${limit}~${limit + 5} / ${community_all_size}
+                  ${limit}~${limit + 5} / ${community_all}
                   <div class="btn-group">
-                    <button type="button" id="prev5" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+                    <button type="button" style="display:none;" id="prev5" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
                     <button type="button" id="next5" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
                   </div>
                 </div>
@@ -169,23 +171,38 @@
 	  $.widget.bridge('uibutton', $.ui.button);
 	  
 	  $(function(){
-		   
-			 var index = $(".Book-Mark-Before").index(this);
-			 var divB = $(".Book-Mark-Before").eq(index);
-			 var community_no = $(".community_no").eq(index).val();
-			 var community_title = $(".community_title").eq(index).val();
-			 var divA = $(divB).siblings(".Book-Mark-After");
-			 
-			<c:forEach items="${mycoummunity_like}" var="mycommunity">
-				 if("${mycommunity.community_no}" == community_no){
-						$(divB).hide();
-						$(divA).show();
-				 }				
-			 </c:forEach>
-			 
+		  // 페이징 상태
+		  var limit = "${limit}";
+		  var community_size = "${community_size}";
+		  if(limit>0){
+			  $("#prev5").show();
+		  }
+		  if(community_size < 10){
+			  $("#next5").hide();
+		  }
+		  /*
+		  switch(limit){
+		  case limit == 0 : $("#prev5").hide(); break;
+		  case community_size < 5 : $("#next5").hide();	break;
+		  default:$("#next5").show(); break;		  
+		  }
+		 */
+		  
+		//즐겨찾기 상태
+		var like_community_no = new Array();
+		$(".like_number").each(function(){
+			like_community_no.push($(this).find("input[type=hidden]").val());
+		});
+		for(var i=0; i<like_community_no.length; i++){
+			$(".community_list_tr").each(function(){
+				if($(this).find(".community_no").val() == like_community_no[i]){
+					$(this).find(".Book-Mark-After").show();
+					$(this).find(".Book-Mark-Before").hide();
+				}
+			})
+		}
 		  //작성자 옆 별표시 Click 즐겨찾기 추가
 		  $(".Book-Mark-Before").click(function(){	
-			 alert("눌림");
 			 var index = $(".Book-Mark-Before").index(this);
 			 var divB = $(".Book-Mark-Before").eq(index);
 			 var community_no = $(".community_no").eq(index).val();
@@ -193,7 +210,7 @@
 			 var divA = $(divB).siblings(".Book-Mark-After");
 			 var member_no = "${member_dto.member_no}";
 			 
-			 if($(divA).hide()){
+			 if($(divB).show()){
 				 $.ajax({
 					 type:"post",
 					 url:"/owner/community_like",
@@ -201,14 +218,9 @@
 					 dataType : "json",
 					 success: function(data){
 						 if(data==true){
-							 alert("즐겨찾기가 추가되었습니다.");
 								$(divB).hide();
 								$(divA).show();
-						 }
-						 else if(data==false){
-							 alert("즐겨찾기 해제되었습니다");
-							 $(divA).hide();
-							 $(divB).show();
+							alert("즐겨찾기가 추가되었습니다.");
 						 }
 					 },
 					 error:function(){
@@ -216,11 +228,28 @@
 					 }
 				 }) 
 			 }
-			 if($(divA).show()){
-				 
-			 }
 		  });
-		  
+		  //즐겨찾기 해제
+		  $(".Book-Mark-After").click(function(){
+				 var index = $(".Book-Mark-After").index(this);
+				 var divA = $(".Book-Mark-After").eq(index);
+				 var community_no = $(".community_no").eq(index).val();
+				 var divB = $(divA).siblings(".Book-Mark-Before");
+				 var member_no = "${member_dto.member_no}";
+			  $.ajax({
+				 type:"post",
+				 url:"/owner/community_like",
+				 data:{community_no:community_no},
+				 dataType:"json",
+				 success:function(data){
+					if($(divA).show()){
+						alert("즐겨찾기 해제되었습니다");
+						$(divA).hide();
+						$(divB).show();
+					}
+				 }
+			  })	  
+		  })
 
 		  	
 		  //왼쪽 패널 즐겨찾기 Click List Show
@@ -235,7 +264,7 @@
 		  $("#My-Reply").click(function(){
 			  $("#My-Reply-List").slideToggle(400);
 		  });
-		  $("#goinsert").click(function(){
+		  $(".goinsert").click(function(){
 			  location.href="/owner/community_insert";
 		  });	  
 		  $("#refresh").click(function(){
@@ -243,15 +272,16 @@
 		  });
 		  
 		  $("#next5").click(function(){
-			  location.href="/owner/community_list?limit=${limit + 5}";
+			  location.href="/owner/community_list?limit=${limit + 10}";
 		  });
 		  $("#prev5").click(function(){
-			  var limit = '${limit}';
-			  if( limit == 0){
-				  $("#prev5").hidden();
-			  }
-			  location.href="/owner/community_list?limit=${limit - 5}";
+			  location.href="/owner/community_list?limit=${limit - 10}";
 		  });
+		  
+		  var search = document.getElementById("community_search"); 
+		  search.onkeydown(function(){
+			  this.form.submit();
+		  })
 	  });
 </script>
 	<!-- Footer -->
