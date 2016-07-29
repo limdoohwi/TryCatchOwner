@@ -48,6 +48,10 @@
 		)
 	</insert>
 	
+	<select id="communitylikecheck" resultType="int">
+		select count(*) from communityreply where community_no = #{community_no}
+	</select>
+	
 	<insert id="communityreplyInsert" parameterType="map">
 		insert into communityreply(
 		community_reply_writer,

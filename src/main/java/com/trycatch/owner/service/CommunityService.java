@@ -22,5 +22,4 @@ public interface CommunityService {
 	public List<CommunityReplyDTO> myreplyCommunityList(Integer member_no);
 	public List<CommunityLikeDTO> getCommunityLikeList(Integer member_no);
 	public boolean insertLikeCommunity(CommunityLikeDTO dto);
-	public boolean deleteLikeCommunity(Integer community_no);
 }

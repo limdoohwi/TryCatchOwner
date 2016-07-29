@@ -115,13 +115,8 @@ public class CommunityController {
 	}
 	
 	@RequestMapping("/community_like")
-	public @ResponseBody boolean CommunityLike(CommunityLikeDTO dto, int like,int community_no){	
-		if(like==1){
+	public @ResponseBody boolean CommunityLike(CommunityLikeDTO dto){	
 		return service.insertLikeCommunity(dto);	
-		}
-		else{
-		return service.deleteLikeCommunity(community_no);
-		}
 	}
 	
 	

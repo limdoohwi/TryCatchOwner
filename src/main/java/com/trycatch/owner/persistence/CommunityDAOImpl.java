@@ -67,7 +67,6 @@ public class CommunityDAOImpl implements CommunityDAO {
 	@Override
 	public void insertCommunityReply(Map map) {
 		sqlSession.insert(NAMESPACE+".communityreplyInsert", map);
-		
 	}
 
 	@Override
@@ -92,17 +91,21 @@ public class CommunityDAOImpl implements CommunityDAO {
 
 	@Override
 	public boolean insertLikeCommunity(CommunityLikeDTO dto) {
-		try{sqlSession.insert(NAMESPACE+".communityLikeInsert",dto);return true;}
-		catch(Exception err){return false;}
+		
+		try{
+			int i = sqlSession.selectOne(NAMESPACE+".communitylikecheck");
+			if(i==0){
+				sqlSession.insert(NAMESPACE+".communityLikeInsert",dto);
+				return true;
+				}
+			else if(i>0){
+				sqlSession.delete(NAMESPACE+".communityLikeDelete");
+				return false;
+			}
+			}
+		catch(Exception err){
+			sqlSession.delete(NAMESPACE+".communityLikeDelete");
+		}
+		return false;
 	}
-
-	@Override
-	public boolean deleteLikeCommunity(Integer community_no) {
-		try{sqlSession.delete(NAMESPACE+".communityLikeDelete",community_no);return true;}
-		catch(Exception err){return false;}
-	}
-
-
-
-
 }

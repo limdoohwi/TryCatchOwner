@@ -119,6 +119,7 @@
 <c:set var="community_size" value="${fn:length(community_list)}"/>
 <c:set var="community_all" value="${community_all}"/>
 <c:set var="community_all_size" value="${fn:length(community_all)}"/>
+
 					<c:choose>
 						<c:when test="${community_size!=0}">
 							<c:forEach var = "community_list" items="${community_list}"> 
@@ -168,37 +169,56 @@
 	  $.widget.bridge('uibutton', $.ui.button);
 	  
 	  $(function(){
-		  
-		  
-		  //작성자 옆 별표시 Click 즐겨찾기 추가
-		  $(".Book-Mark-Before").click(function(){	
-			 alert("dd");
-			 var like = 1;
+		   
 			 var index = $(".Book-Mark-Before").index(this);
-			 alert(index);
 			 var divB = $(".Book-Mark-Before").eq(index);
 			 var community_no = $(".community_no").eq(index).val();
 			 var community_title = $(".community_title").eq(index).val();
 			 var divA = $(divB).siblings(".Book-Mark-After");
-			 var member_no = "${member_dto.member_no}";		
-			 alert(community_title);
-			 alert(community_no);
-			 $.ajax({
-				 type:"post",
-				 url:"/owner/community_like",
-				 data:{community_no:community_no , community_title:community_title , member_no:member_no, like:like},
-				 dataType : "json",
-				 success: function(data){
-					 if(data==true){
-						 alert("즐겨찾기가 추가되었습니다.");
-							$(divB).hide();
-							$(divA).show();
-					 } 
-				 },
-				 error:function(){
-					 alert("ajax실패");
-				 }
-			 }) 
+			 
+			<c:forEach items="${mycoummunity_like}" var="mycommunity">
+				 if("${mycommunity.community_no}" == community_no){
+						$(divB).hide();
+						$(divA).show();
+				 }				
+			 </c:forEach>
+			 
+		  //작성자 옆 별표시 Click 즐겨찾기 추가
+		  $(".Book-Mark-Before").click(function(){	
+			 alert("눌림");
+			 var index = $(".Book-Mark-Before").index(this);
+			 var divB = $(".Book-Mark-Before").eq(index);
+			 var community_no = $(".community_no").eq(index).val();
+			 var community_title = $(".community_title").eq(index).val();
+			 var divA = $(divB).siblings(".Book-Mark-After");
+			 var member_no = "${member_dto.member_no}";
+			 
+			 if($(divA).hide()){
+				 $.ajax({
+					 type:"post",
+					 url:"/owner/community_like",
+					 data:{community_no:community_no , community_title:community_title , member_no:member_no},
+					 dataType : "json",
+					 success: function(data){
+						 if(data==true){
+							 alert("즐겨찾기가 추가되었습니다.");
+								$(divB).hide();
+								$(divA).show();
+						 }
+						 else if(data==false){
+							 alert("즐겨찾기 해제되었습니다");
+							 $(divA).hide();
+							 $(divB).show();
+						 }
+					 },
+					 error:function(){
+						 alert("ajax실패");
+					 }
+				 }) 
+			 }
+			 if($(divA).show()){
+				 
+			 }
 		  });
 		  
 

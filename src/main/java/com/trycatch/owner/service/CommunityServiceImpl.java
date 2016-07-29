@@ -86,11 +86,6 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public boolean deleteLikeCommunity(Integer community_no) {
-		 return dao.deleteLikeCommunity(community_no);
-	}
-
-	@Override
 	public List<CommunityLikeDTO> getCommunityLikeList(Integer member_no) {
 		return dao.getCommunityLikeList(member_no);
 	}
