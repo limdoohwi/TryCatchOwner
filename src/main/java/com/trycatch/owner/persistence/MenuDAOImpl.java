@@ -1,6 +1,8 @@
 package com.trycatch.owner.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -29,5 +31,14 @@ public class MenuDAOImpl implements MenuDAO {
 	@Override
 	public List<String> getMenuCategoryList() {
 		return sqlSession.selectList(NAMESPACE+".getMenuCategoryList");
+	}
+	
+	@Override
+	public List<String> getMenuName_withCategory_Name(String category_name) {
+		try {
+			return sqlSession.selectList(NAMESPACE + ".getMenuName_withCategory_Name", category_name);
+		} catch (Exception err) {
+			return null;
+		}
 	}
 }

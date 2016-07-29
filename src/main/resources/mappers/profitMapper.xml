@@ -27,7 +27,7 @@
 		group by c.menu_category_num, year(p.MENU_PAYMENT_DATE);
 	</select>
 	
-	<select id="getYearTotalPrice" resultType="int">
+	<select id="getYearTotalPrice" parameterType="hashMap" resultType="int">
 	 	select sum(menu_total_price) as year_total_price from menu_payment where store_no = #{store_no} and year(MENU_PAYMENT_DATE) = #{year}
 	</select>
 	
@@ -36,26 +36,26 @@
 	</select>
 	
 	<select id="getMonthTotalPrice" resultType="ProfitMonthDTO">
-		select month(p.menu_payment_date) as month, sum(m.menu_price) as total_price
+		select month(p.menu_payment_date) as month, sum(m.menu_price * o.menu_count) as total_price
 		from menu_order o, menu m, menu_category c, menu_payment p , store s where
 		o.menu_no = m.menu_num
 		and c.menu_category_num = m.menu_category_num and o.menu_payment_no =
 		p.menu_payment_no and p.store_no = s.store_no
-		and p.store_no = #{store_no} and YEAR(p.menu_payment_date) = YEAR(curdate())
+		and p.store_no = #{store_no} and YEAR(p.menu_payment_date) = #{year}
 		and month(p.menu_payment_date) = #{month}
 		group by month(p.MENU_PAYMENT_DATE);
 	</select>
 	
 	<select id="getYearReservationDrink" parameterType="int" resultType="int">
-		select count(menu_payment_no) as reservation_drink_count from menu_payment where year(menu_payment_date) = year(curdate()) and store_no = #{store_no}
+		select count(menu_payment_no) as reservation_drink_count from menu_payment where year(menu_payment_date) = #{year} and store_no = #{store_no}
 	</select>
 	
 	<select id="getMonthReservationDrink" parameterType="hashMap" resultType="int">
-		select count(menu_payment_no) from menu_payment where month(menu_payment_date) = #{month} and year(menu_payment_date) = year(curdate()) and store_no = #{store_no}
+		select count(menu_payment_no) from menu_payment where month(menu_payment_date) = #{month} and year(menu_payment_date) = #{year} and store_no = #{store_no}
 	</select>
 	
 	<select id="getDayAverageReservationDrink" parameterType="hashMap" resultType="int">
-		select count(menu_payment_no) from menu_payment where hour(menu_payment_date) = #{hour} and year(menu_payment_date) = year(curdate()) and store_no = #{store_no}
+		select count(menu_payment_no) from menu_payment where hour(menu_payment_date) = #{hour} and year(menu_payment_date) = #{year} and store_no = #{store_no}
 	</select>
 	
 	<select id="getDayto_Curdate_withThisYear" parameterType="String" resultType="int">
@@ -67,5 +67,25 @@
 		 m.menu_num = o.menu_no and m.menu_category_num = c.menu_category_num and year(p.menu_payment_date) = #{year} and p.store_no = #{store_no} and c.menu_category_name = #{category_name}
 	</select>
 	
+	<select id="getMonthMenuPercentager" parameterType="hashMap" resultType="int">
+		select sum(m.menu_price * o.menu_count) from menu_payment p, menu m, menu_order o, menu_category c where p.menu_payment_no = o.menu_payment_no and
+		 m.menu_num = o.menu_no and m.menu_category_num = c.menu_category_num and year(p.menu_payment_date) = year(curdate()) and p.store_no = #{store_no} and c.menu_category_name = #{category_name} and month(p.menu_payment_date) = #{month}
+	</select>
+	
+	<select id="isExistProfit" resultType="int">
+		select menu_payment_no from menu_payment where year(menu_payment_date) = #{year} and store_no = #{store_no}
+	</select>
+	
+	<select id="getMenuCountAndPrice" parameterType="hashMap" resultType="MenuProfitDTO">
+		select ifnull(sum(o.menu_count), 0) as menu_count, ifnull(sum(m.menu_price * o.menu_count), 0) as menu_total_price from menu_category c, menu_payment p, menu_order o, menu m where p.menu_payment_no = o.menu_payment_no 
+		and o.menu_no = m.menu_num and m.menu_category_num = c.menu_category_num and 
+		<if test="month == 0">
+				year(p.menu_payment_date) = #{year}
+		</if>
+		<if test="month != 0">
+				month(p.menu_payment_date) = #{month} and year(p.menu_payment_date) = #{year}
+		</if>
+		and p.store_no = #{store_no} and m.menu_name = #{menu_name}
+	</select>
 	
 </mapper>
