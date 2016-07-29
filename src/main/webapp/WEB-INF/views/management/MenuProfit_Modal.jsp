@@ -10,6 +10,14 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<script>
+	$(function(){
+		$("#Menu-Percentage-Modal-Hide-Btn").click(function(){
+			menuPercentageFinalChart.length = 0;
+		});
+	})
+</script>
 
 <style>
 #Menu-Percentage-Modal{

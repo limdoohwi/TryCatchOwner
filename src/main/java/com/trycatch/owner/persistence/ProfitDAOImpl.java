@@ -62,7 +62,7 @@ public class ProfitDAOImpl implements ProfitDAO {
 	}
 	
 	@Override
-	public int getYearsTotalPrice(int store_no, String year) {
+	public int getYearsTotalPrice(int store_no, int year) {
 		Map map = new HashMap<>();
 		map.put("store_no", store_no);
 		map.put("year", year);
@@ -129,6 +129,7 @@ public class ProfitDAOImpl implements ProfitDAO {
 	
 	@Override
 	public int getYearMenuPercentager(int store_no, String category_name, int year) {
+		logger.info(category_name);
 		Map map = new HashMap<>();
 		map.put("store_no", store_no);
 		map.put("category_name", category_name);

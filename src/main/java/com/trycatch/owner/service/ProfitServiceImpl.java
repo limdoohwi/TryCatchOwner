@@ -130,7 +130,7 @@ public class ProfitServiceImpl implements ProfitService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		int year = Integer.parseInt(sdf.format(date));
 		for(int i=year-2; i<year+1; i++){
-			list.add(dao.getYearsTotalPrice(store_no, String.valueOf(year)));
+			list.add(dao.getYearsTotalPrice(store_no, i));
 		}
 		jsonRoot.put("yearPriceList", list);
 		return jsonRoot;
@@ -203,11 +203,21 @@ public class ProfitServiceImpl implements ProfitService {
 		JSONArray jsonArray = new JSONArray();
 		List<String> list = menuDao.getMenuCategoryList();
 		int year_profit = Integer.parseInt(yearProfit.replace(",", ""));
+		logger.info(yearProfit);
+		logger.info(String.valueOf(year_profit));
 		for(int i=0; i<list.size(); i++){
 			int menuProfit = dao.getYearMenuPercentager(store_no, list.get(i), year);
 			jsonTemp = new JSONObject();
 			jsonTemp.put("category_name", list.get(i));
-			double percentage = Math.ceil((double)(year_profit)/menuProfit);
+			logger.info("¸Þ´º ÃÑ¾× : " + menuProfit);
+			double percentage = 0;
+			if(menuProfit == 0){
+				jsonTemp.put("percentage", percentage);
+			}
+			else{
+				percentage = Math.ceil((double)(year_profit)/menuProfit)* 10;
+			}
+			logger.info(String.valueOf(percentage));
 			jsonTemp.put("percentage", percentage);
 			jsonArray.add(jsonTemp);
 		}

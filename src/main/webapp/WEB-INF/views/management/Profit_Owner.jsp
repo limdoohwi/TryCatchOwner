@@ -289,6 +289,7 @@
 	var dayReservationFinalChart = new Array();
 	var yearReservationDrinkCount;
 	var monthReservationFinalChart = new Array();
+	var menuPercentageFinalChart = new Array();
 	
 	var today = new Date();
 	var thisYear = String(today.getFullYear());
@@ -322,6 +323,7 @@
 				dayReservationFinalChart.length = 0;
 				yearReservationDrinkCount = 0;
 				monthReservationFinalChart.length = 0;
+				menuPercentageFinalChart.length = 0;
 				$("#More-Detail-Profit-First-Head").show();
 				var jsonData = {
 						year : year
@@ -390,7 +392,7 @@
 			yearsFinalChart.push(yearsHeadr);
 			$.each(data.yearPriceList, function(index, yearsPrice){
 				var yearsTempChart = new Array();
-				yearsTempChart.push(String(Number(thisYear)-index));
+				yearsTempChart.push(String(Number(thisYear)-2 + index));
 				yearsTempChart.push(yearsPrice);
 				yearsTempChart.push('stroke-color: #703593; stroke-width: 4; fill-color: #C5A5CF');
 				yearsFinalChart.push(yearsTempChart);
@@ -442,15 +444,21 @@
 			  alert(year);
 			  var select_year = {year:year, yearProfit:yearProfit};
 			  callList_Ajax("/owner/year_menu_percentage/profit_owner", successYearMenuPercentage, errorYearProfitOwner, select_year);
-			  $("#Menu-Percentage-Modal").show();
-			  google.charts.setOnLoadCallback(MenuChart);
 		}	
-  }
+  }		
 		function successYearMenuPercentage(data){
-			alert(data);
-			alert(data.yearMenuPercentage.length);
-			alert(data.yearMenuPercentage[0].ategory_name);
-			alert(data.yearMenuPercentage[0].percentage);
+			var menuPercentagHeader = new Array();
+			menuPercentagHeader.push('Category');
+			menuPercentagHeader.push('Hours per Day');
+			menuPercentageFinalChart.push(menuPercentagHeader);
+			$.each(data.yearMenuPercentage, function(index, data){
+				var menuPercenategeTempChart = new Array();
+				menuPercenategeTempChart.push(data.category_name);
+				menuPercenategeTempChart.push(data.percentage);
+				menuPercentageFinalChart.push(menuPercenategeTempChart);
+			});
+			$("#Menu-Percentage-Modal").show();
+			  google.charts.setOnLoadCallback(MenuChart);
 		}
 		function successMonthProfitOwner(data){
 			var monthHeader = new Array();
@@ -524,12 +532,7 @@
 		}
 		//Menu-Chart
 		function MenuChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Category', 'Hours per Day'],
-          ['커피', 33],
-          ['케이크', 27],
-          ['음료', 40],
-        ]);
+        var data = google.visualization.arrayToDataTable(menuPercentageFinalChart);
 
         var options = {
           title: '각 메뉴별 판매율(%)',
