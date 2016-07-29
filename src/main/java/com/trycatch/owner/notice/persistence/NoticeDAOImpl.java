@@ -50,5 +50,4 @@ public class NoticeDAOImpl implements NoticeDAO {
 	public void deleteReply(Integer notice_num) throws Exception {
 		sqlSession.delete(NAMESPACE + ".myreply_delete", notice_num);
 	}
-
 }

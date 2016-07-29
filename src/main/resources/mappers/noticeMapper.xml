@@ -26,6 +26,10 @@
     	select * from notice where notice_depth>0 order by notice_pos
     </select>
     
+    <select id="notice_list_size" resultType="NoticeDTO">
+    	select count(*) from notice where notice_depth=0
+    </select>
+    
     <insert id="notice_reply_insert" parameterType="NoticeDTO">
     	insert into notice(notice_content, notice_pos, notice_depth, notice_hits, notice_date,notice_group, member_name) 
     	values(#{notice_content}, #{notice_pos}+1, #{notice_depth}+1, 0, now(),#{notice_group}, #{member_name})

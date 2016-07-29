@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,8 +19,41 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
+<!-- 페이지 넘버 -->
+<c:set var="totalRecord_Board" value="${fn:length(notice_list)-fn:length(notice_reply_list)}"/>
+<c:set var="numPerPage_Board" value="5"/>
+<c:set var="pagePerBlock_Board" value="5"/>
+<fmt:formatNumber var="fmt_totalPage_Board" value="${totalRecord_Board / numPerPage_Board}" pattern="#.#" />
+<c:if test="${fmt_totalPage_Board%1 > 0}">
+	<fmt:parseNumber var="totalPage_Board" integerOnly="true" value="${(totalRecord_Board / numPerPage_Board)+1}" scope="session"/>
+</c:if>
+<c:if test="${fmt_totalPage_Board%1 == 0}">
+	<fmt:parseNumber var="totalPage_Board" integerOnly="true" value="${totalRecord_Board / numPerPage_Board}" scope="session"/>
+</c:if>
+<fmt:formatNumber var="fmt_totalBlock_Board" value="${totalPage_Board/ pagePerBlock_Board}" pattern="#.#" />
+<c:if test="${fmt_totalBlock_Board%1 > 0}">
+	<fmt:parseNumber var="totalBlock_Board" integerOnly="true" value="${(totalPage_Board / pagePerBlock_Board)+1}" scope="session"/>
+</c:if>
+<c:if test="${fmt_totalBlock_Board%1 == 0}">
+	<fmt:parseNumber var="totalBlock_Board" integerOnly="true" value="${totalPage_Board / pagePerBlock_Board}" scope="session"/>
+</c:if>
+<c:if test="${param.nowPage_Board == null }">
+	<c:set var="nowPage_Board" value="0"/>
+</c:if>
+<c:if test="${param.nowPage_Board != null }">
+	<c:set var="nowPage_Board" value="${param.nowPage_Board}"/>
+</c:if>
+<c:if test="${param.nowBlock_Board == null }">
+	<c:set var="nowBlock_Board" value="0"/>
+</c:if>
+<c:if test="${param.nowBlock_Board != null }">
+	<c:set var="nowBlock_Board" value="${param.nowBlock_Board}"/>
+</c:if>
+<c:set var="beginPerPage_Board" value="${nowPage_Board * numPerPage_Board}"/>
+
 <!-- Header -->
 <jsp:include page="../layout/Header.jsp" />
+
 <!-- Notice Write -->
 <!-- 공지사항 - 관리자 영역 -->
 <c:if test="${member_dto.member_code == 3}">
@@ -63,7 +98,11 @@
  	
 <!-- Notice -->
 <!-- 공지사항 list 영역 -->
-<c:forEach items="${notice_list}" var="notice" >
+<c:if test="${totalRecord_Board == 0 }" >
+					<td>데이터가 없습니다.</td>
+</c:if>
+<c:if test="${totalRecord_Board != 0 }" >
+<c:forEach begin="${beginPerPage_Board}" end="${(beginPerPage_Board + numPerPage_Board) -1}" items="${notice_list}" var="notice" >
 	 <div class="row">
 	        <div class="col-md-12">
 	          <div class="box box-widget">
@@ -92,10 +131,10 @@
 		            <div class="box-body">
 		             ${notice.notice_content}
 		              <c:if test="${member_dto.member_code == 3}">
-		              	<button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>삭제</button>
+		              	<button type="submit" class="delete_button btn btn-danger btn-xs" id="delete_button"><i class="fa fa-trash-o"></i>삭제</button>
 		              </c:if>
 		              <!-- 좋아요 및 댓글 Count Number -->
-		              <span class="pull-right text-muted"> 3 comments</span>
+		              <span class="pull-right text-muted"></span>
 		            </div>
 	            <input type="hidden" value="${notice.notice_num}" name="notice_num">
 	            </form>
@@ -105,17 +144,18 @@
 	                <div class="comment-text">
 	                <c:forEach items="${notice_reply_list}" var="reply" >
 		              	<c:if test="${notice.notice_num == reply.notice_group }">
-		        		<form method="post" action="/owner/notice.reply.delete">  
-		                      <span class="username">
-		                       ${reply.member_name }
+		        		<form method="post" action="/owner/notice.reply.delete" id="reply_delete_form">  
+		                      <span class="reply_username">
+		                       ${reply.member_name } 
 		                      <c:if test="${member_dto.member_code == 3 || member_dto.member_name == reply.member_name}">
-		                      	<button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>삭제</button>
+		                      	<button type="submit" class="delete_reply_button btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>삭제</button>
 		                      </c:if>
 		                        <span class="text-muted pull-right">${reply.notice_date}</span>
-		                      </span>
+		                      </span><br/>
 		                  <!-- Reply Content -->
 		                      ${reply.notice_content }
-		                 	<input type="hidden" name="reply_delete_num" value="${reply.notice_num }"/>      
+		        		 	<hr/>
+		                 	<input type="hidden" name="reply_delete_num" value="${reply.notice_num}"/>      
 		        		 </form>
 		                 </c:if>     
 	                 </c:forEach> 
@@ -137,7 +177,32 @@
 	          </div>
 	        </div>
 	 	</div>
+	 	
 </c:forEach>
+	 	<!-- 페이지 번호 -->
+	<div class="span6 offset3">
+		<div class="pagination">
+	  			<ul>
+	  				<c:if test="${nowBlock_Board > 0}">
+			    				<td><a href="/owner/notice/Notice?beginPerPage_Board">Prev</a></td>
+			    	</c:if>	
+			    	<c:set var="BlockisCreate_Board" value="true"/>
+			    	<c:forEach var="index_Board" begin="0" end="${pagePerBlock_Board-1}" varStatus="BlockNum_Board">
+			   			<c:if test="${BlockisCreate_Board}">
+			   				<c:if test="${(nowBlock_Board * pagePerBlock_Board) + index_Board == totalPage_Board-1}">
+			   					<c:set var="BlockisCreate_Board" value="false"/>
+			   				</c:if>
+			   					<td width="30px">
+			   					<a href="/owner/notice/Notice?nowPage_Board=${(nowBlock_Board* pagePerBlock_Board) + index_Board}&nowBlock_Board=${nowBlock_Board}"><button class="btn btn-primary">${(nowBlock_Board * pagePerBlock_Board) + index_Board + 1}</button></a></td>
+			   				</c:if>
+			   			</c:forEach>
+			   			<c:if test="${totalBlock_Board > nowBlock_Board + 1}">
+			    			<td><a href="/owner/notice/Notice?nowPage_Board=${(nowBlock_Board + 1) * pagePerBlock_Board}&nowBlock_Board=${nowBlock_Board + 1}">Next</a></td>
+			    		</c:if>
+	  		  	</ul>
+		</div>
+	</div>
+</c:if>
 </div>	 
  <!-- jQuery 2.2.0 -->
 <script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
@@ -147,6 +212,7 @@
 	  $.widget.bridge('uibutton', $.ui.button);
 	  
 	  $(function(){
+		 
 		  //관리자 - 글쓰기 버튼 클릭
 		  $("#Notice-Write-Btn").click(function(){
 			 var notice_content = $("#Notice-Write-Text-Area").val();
@@ -175,14 +241,23 @@
 			  }
 		  });
 		  
-		  $().click(function(){
+		  $(".delete_button").click(function(){
+				  if(confirm("삭제 하시겠습니까?") == true){
+					  document.form.submit();
+				  }
+				  else{
+					  return false;
+				  }
+		  });
+		  
+		  $(".delete_reply_button").click(function(){
 			  if(confirm("삭제 하시겠습니까?") == true){
-				  
+				 $("#reply_delete_form").submit();
 			  }
 			  else{
-				  return;
+				  return false;
 			  }
-		  });
+	  	  });
 	  });
 </script>
  <!-- Footer -->
