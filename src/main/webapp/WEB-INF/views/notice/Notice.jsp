@@ -20,7 +20,8 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 <!-- 페이지 넘버 -->
-<c:set var="totalRecord_Board" value="${fn:length(notice_list)-fn:length(notice_reply_list)}"/>
+<c:set var="totalRecord_Board" value="${fn:length(notice_list)}"/>
+
 <c:set var="numPerPage_Board" value="5"/>
 <c:set var="pagePerBlock_Board" value="5"/>
 <fmt:formatNumber var="fmt_totalPage_Board" value="${totalRecord_Board / numPerPage_Board}" pattern="#.#" />
@@ -102,7 +103,7 @@
 					<td>데이터가 없습니다.</td>
 </c:if>
 <c:if test="${totalRecord_Board != 0 }" >
-<c:forEach begin="${beginPerPage_Board}" end="${(beginPerPage_Board + numPerPage_Board) -1}" items="${notice_list}" var="notice" >
+<c:forEach begin="${beginPerPage_Board}" end="${(beginPerPage_Board + numPerPage_Board)-1}" items="${notice_list}" var="notice" >
 	 <div class="row">
 	        <div class="col-md-12">
 	          <div class="box box-widget">
@@ -145,7 +146,7 @@
 	                <c:forEach items="${notice_reply_list}" var="reply" >
 		              	<c:if test="${notice.notice_num == reply.notice_group }">
 		        		<form method="post" action="/owner/notice.reply.delete" id="reply_delete_form">  
-		                      <span class="reply_username">
+		                      <span class="Notice-Writer-User-Name">
 		                       ${reply.member_name } 
 		                      <c:if test="${member_dto.member_code == 3 || member_dto.member_name == reply.member_name}">
 		                      	<button type="submit" class="delete_reply_button btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>삭제</button>
@@ -158,7 +159,7 @@
 		                 	<input type="hidden" name="reply_delete_num" value="${reply.notice_num}"/>      
 		        		 </form>
 		                 </c:if>     
-	                 </c:forEach> 
+	               </c:forEach> 
 	               </div>
 	              </div>
 	            </div>
