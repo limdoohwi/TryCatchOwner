@@ -1,5 +1,7 @@
 package com.trycatch.owner.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trycatch.owner.domain.StoreDTO;
 import com.trycatch.owner.service.StoreService;
+
+import net.sf.json.JSONObject;
 
 @Controller
 public class StoreController {
@@ -35,5 +39,14 @@ public class StoreController {
 		}
 		req.getSession().setAttribute("store_dto", dto);
 		return true;
+	}
+	
+	@RequestMapping("/store/search")
+	public @ResponseBody Object getStoreList(String store_name) throws Exception{
+		StoreDTO dto = new StoreDTO();
+		dto.setSearch_store_value(store_name);
+		JSONObject store_list = new JSONObject();
+		store_list.put("storeList",service.getStoreList(dto));
+		return store_list;
 	}
 }

@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trycatch.owner.domain.MemberDTO;
+import com.trycatch.owner.domain.MessengerContentDTO;
 import com.trycatch.owner.domain.StoreDTO;
 import com.trycatch.owner.service.MemberService;
+import com.trycatch.owner.service.MessengerService;
 import com.trycatch.owner.service.OrderService;
 import com.trycatch.owner.service.StoreService;
 
@@ -30,6 +32,9 @@ public class HomeController {
 	private OrderService orderService;
 	@Inject
 	private StoreService storeService;
+	@Inject
+	private MessengerService messengerService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	
@@ -59,7 +64,12 @@ public class HomeController {
 		MemberDTO dto = (MemberDTO)req.getSession().getAttribute("member_dto");
 		//클라이언트가 주문한 내역 호출
 		model.addAttribute("orderList", orderService.getOrder_Information(dto.getMember_no()));
+		test();
 		return "Main";
+	}
+	public void test(){
+		MessengerContentDTO dto =messengerService.getRecentContent();
+		System.out.println(dto.toString());
 	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() throws Exception {
