@@ -40,7 +40,7 @@ public class CommunityController {
 	 * 
 	 * @category 
 	 * @param 
-	 * @param req
+	 * @param req ,ajax
 	 * @return
 	 * @throws Exception
 	 */
@@ -73,6 +73,12 @@ public class CommunityController {
 		JSONObject like_list = new JSONObject();
 		like_list.put("mycommunity_like", service.getCommunityLikeList(mdto.getMember_no()));
 		return like_list;
+	}
+	
+	@RequestMapping("/community_like")
+	public @ResponseBody boolean CommunityLike(CommunityLikeDTO dto){	
+		System.out.println(dto.toString());
+		return service.insertLikeCommunity(dto);	
 	}
 	
 	@RequestMapping(value="/community_list",method=RequestMethod.POST)
@@ -170,10 +176,6 @@ public class CommunityController {
 		return "redirect:/community_read?community_no="+service.nextCommunity(community_no);
 	}
 	
-	@RequestMapping("/community_like")
-	public @ResponseBody boolean CommunityLike(CommunityLikeDTO dto){	
-		return service.insertLikeCommunity(dto);	
-	}
 	
 	@RequestMapping("/multiplePhotoUpload")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response){

@@ -31,6 +31,12 @@ public class CommunityLikeDTO {
 	public void setCommunity_title(String community_title) {
 		this.community_title = community_title;
 	}
+	@Override
+	public String toString() {
+		return "CommunityLikeDTO [community_like_no=" + community_like_no + ", community_no=" + community_no
+				+ ", member_no=" + member_no + ", community_title=" + community_title + "]";
+	}
+	
 
 
 }
