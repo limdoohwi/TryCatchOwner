@@ -77,24 +77,10 @@
                     </c:choose>
                    </div>   
                 </li>            
-<c:set var="mycommunity_like" value="${mycommunity_like}"/>
-<c:set var="mycommunity_like_size" value="${fn:length(mycommunity_like)}"/>                
+<c:set var="mycommunity_like_size" value="${fn:length(mycommunity_like)}"/>
                 <li id="Book-Mark" class="active"><a href="#"><i class="fa fa-star text-yellow"></i> 즐겨찾기
                   <span class="label label-primary pull-right">${mycommunity_like_size}</span></a>
-                    <div id="Book-Mark-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-						<c:choose>   
-							<c:when test="${mycommunity_like_size!=0}">    
-								<c:forEach items="${mycommunity_like}" var="mycommunity_like">           
-			                    	<div class="like_number" style="display: block">
-			                    		<input type="hidden" value="${mycommunity_like.community_no}" />
-			                    		<a href="/owner/community_read?community_no=${mycommunity_like.community_no}">제목 - ${mycommunity_like.community_title}</a>
-			                    	</div>
-		                    	</c:forEach> 
-                    		</c:when>
-                    		<c:when test="${mycommunity_like_size==0}">
-                    			즐겨찾기 항목 없음
-                    		</c:when>
-                    	</c:choose>
+                    <div id="Book-Mark-List-Div" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none;">
                     </div>
                 </li>
               </ul>
@@ -127,8 +113,8 @@
 							<c:forEach var = "community_list" items="${community_list}"> 
 								<tr class="community_list_tr">
 				                    <td class="mailbox-star">
-					                    <div class="Book-Mark-Before communitynolike" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
-					                    <div class="Book-Mark-After communitylike"  style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                 
+					                    <div class="Book-Mark-Before" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
+					                    <div class="Book-Mark-After"  style="display:none; cursor:pointer"><i style="cursor:pointer;" class="fa fa-star text-yellow"></i></div>                 
 				                    	<div style="display: none"><input type="text" class="community_no" value="${community_list.community_no}" /></div>
 				                    </td>
 										<td class="mailbox-name">작성자 - ${community_list.community_writer}</td>
@@ -171,6 +157,38 @@
 	  $.widget.bridge('uibutton', $.ui.button);
 	  
 	  $(function(){
+		  
+		  $.ajax({
+			  type:"post",
+			  url:"/owner/community_like_list",
+			  success: function(data){
+				 $.each(data.mycommunity_like, function(index, like){        
+					 var likehtml =	'<div class="like_number">';
+                    	 likehtml +='<input type="hidden" value=' + like.community_no +'/>';
+                    	 likehtml +='<a href="/owner/community_read?community_no='+ like.community_no + '">title -' + like.community_title +'</a>';
+                    	 likehtml +='</div>';			
+					 $("#Book-Mark-List-Div").append(likehtml);
+				 });
+					//즐겨찾기 상태
+					alert("Ddd");
+					var like_community_no = new Array();
+					$(".like_number").each(function(){
+						like_community_no.push($(this).find("input[type=hidden]").val());
+						alert(like_community_no.push($(this).find("input[type=hidden]").val()));
+					});
+					for(var i=0; i<like_community_no.length; i++){
+						$(".community_list_tr").each(function(){
+							if($(this).find(".community_no").val() == like_community_no[i]){
+								$(this).find(".Book-Mark-After").show();
+								$(this).find(".Book-Mark-Before").hide();
+							}
+						})
+					}
+			  }
+		  })
+		  
+		  
+		  
 		  // 페이징 상태
 		  var limit = "${limit}";
 		  var community_size = "${community_size}";
@@ -180,27 +198,7 @@
 		  if(community_size < 10){
 			  $("#next5").hide();
 		  }
-		  /*
-		  switch(limit){
-		  case limit == 0 : $("#prev5").hide(); break;
-		  case community_size < 5 : $("#next5").hide();	break;
-		  default:$("#next5").show(); break;		  
-		  }
-		 */
 		  
-		//즐겨찾기 상태
-		var like_community_no = new Array();
-		$(".like_number").each(function(){
-			like_community_no.push($(this).find("input[type=hidden]").val());
-		});
-		for(var i=0; i<like_community_no.length; i++){
-			$(".community_list_tr").each(function(){
-				if($(this).find(".community_no").val() == like_community_no[i]){
-					$(this).find(".Book-Mark-After").show();
-					$(this).find(".Book-Mark-Before").hide();
-				}
-			})
-		}
 		  //작성자 옆 별표시 Click 즐겨찾기 추가
 		  $(".Book-Mark-Before").click(function(){	
 			 var index = $(".Book-Mark-Before").index(this);
@@ -254,7 +252,7 @@
 		  	
 		  //왼쪽 패널 즐겨찾기 Click List Show
 		  $("#Book-Mark").click(function(){
-			  $("#Book-Mark-List").slideToggle(400);
+			  $("#Book-Mark-List-Div").slideToggle(400);
 		  });
 		  //왼쪽 패널 내가 쓴 글 Click List Show
 		  $("#My-Write").click(function(){

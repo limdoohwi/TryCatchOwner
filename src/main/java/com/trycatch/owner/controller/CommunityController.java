@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,6 +66,14 @@ public class CommunityController {
 		return "/community/Community_Owner";
 	}
 	
+	@RequestMapping("/community_like_list")
+	public @ResponseBody Object CommunityLikeList(Model model,HttpServletRequest req){
+		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");		
+		service.getCommunityLikeList(mdto.getMember_no());
+		JSONObject like_list = new JSONObject();
+		like_list.put("mycommunity_like", service.getCommunityLikeList(mdto.getMember_no()));
+		return like_list;
+	}
 	
 	@RequestMapping(value="/community_list",method=RequestMethod.POST)
 	public String CommunityListPOST(Model model,HttpServletRequest req,int limit){
@@ -154,6 +164,7 @@ public class CommunityController {
 	public String CommunityPrev(int community_no){
 		return "redirect:/community_read?community_no="+service.prevCommunity(community_no);
 	}
+	
 	@RequestMapping("/community_next")
 	public String CommunityNext(int community_no){
 		return "redirect:/community_read?community_no="+service.nextCommunity(community_no);
