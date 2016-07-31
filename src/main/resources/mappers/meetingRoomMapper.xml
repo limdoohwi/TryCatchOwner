@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.trycatch.owner.mappers.meetingRoomMapper">
+	<select id="getMeetingResrevationLIst_withStore_no" parameterType="int" resultType="MeetingRoomDTO">
+		select m.meeting_reservation_date, m.meeting_no, mem.member_name,
+		mem.member_tel, m.meeting_reservation_time from
+		meeting_reservation m, member mem, meeting_room mr where m.member_no = mem.member_no and
+		mr.store_no = #{store_no}
+	</select>
+	<select id="getMeetingResrevationLIstToday_withStore_no" parameterType="hashMap" resultType="MeetingRoomDTO">
+		select m.meeting_reservation_date, m.meeting_reservation_time, m.meeting_no, mem.member_name, mem.member_tel from
+		meeting_reservation m, member mem, meeting_room mr where m.member_no = mem.member_no and
+		mr.store_no = #{store_no} and date(m.meeting_reservation_date) = curdate() and m.meeting_reservation_time = #{time}
+	</select>
+</mapper>

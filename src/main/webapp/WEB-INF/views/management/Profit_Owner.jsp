@@ -110,6 +110,7 @@
 						</tbody>
 					</table>
 				</div>
+				<div id="More-Detail-Profit-Hide-Div" class="text-center" style="display:none"><button type="button" class="btn btn-success">닫기</button></div>
 			</div>
 		</div>
 	</div>
@@ -128,6 +129,7 @@
 	var yearTotalPrice;
 	var selectYear;
 	
+	var monthReservationCount = new Array();
 	var yearsFinalChart = new Array();
 	var monthFinalChart = new Array();
 	var dayReservationFinalChart = new Array();
@@ -150,9 +152,17 @@
 			
 			//매출액 상세 보기 클릭시 Table 생성
 			$("#Want-More-Detail-Profit-Btn").click(function(){
+				$("#More-Detail-Profit-Hide-Div").show();
 				$("#Wait-Modal").show();
 				//첫 시작시 해당 연도 상세보기
 				anotherMonthDetailProfit(selectYear);
+			});
+			
+			//매출액 상세 보기 닫기 클릭
+			$("#More-Detail-Profit-Hide-Div button").click(function(){
+				$("#More-Detail-Profit-Hide-Div").hide();
+				$("#More-Detail-Profit-First-Head").show();
+				$("#More-Detail-Profit-Table-Div").slideUp(400);
 			});
 			
 			//Select-Year 클릭
@@ -164,33 +174,52 @@
 			//상세 보기 테이블의 다른 월 클릭시 이벤트 발생
 			function anotherMonthDetailProfit(date){
 				var select_year;
-				alert(date);
+				var month;
+				var reservationCount;
+				var detailDayReservationDrinkCount;
 				//연도일 때
 				if(date.length == 4){
 					select_year = {year : selectYear, month : 0};
+					month = "";
+					reservationCount = yearReservationDrinkCount;
+					detailDayReservationDrinkCount = dayAverageReservationDrinkCount;
+					
 				}
 				//월일 때
 				else if(date.length <4){
 					select_year = {year : selectYear, month : date};
+					month = date + "월";
+					for(var i=0; i<monthReservationCount.length; i++){
+						if(i==date-1){
+							reservationCount = monthReservationCount[i];
+						}
+					}
+					detailDayReservationDrinkCount = Math.ceil(reservationCount/13);
 				}
 				$("#Wait-Modal").show();
 				$("#More-Detail-Profit-First-Head").hide();
 				$("#More-Detail-Profit-Table-Div").slideDown(400);
-				$(".Select-Year").eq(0).text(select_year.year +"년");
-				$(".Select-Year-Search").text(select_year.year +"년");
-				$(".Select-Year-Online-Reservation-Count").text(yearReservationDrinkCount + "건");
-				$(".Select-Year-Online-Day-Average-Reservation-Count").text(dayAverageReservationDrinkCount + "건");
-					
+				$(".Select-Year").eq(0).text(select_year.year +"년 ");
+				$(".Select-Year-Search").text(select_year.year +"년 " + month);
+				$(".Select-Year-Online-Reservation-Count").text(reservationCount + "건");
+				$(".Select-Year-Online-Day-Average-Reservation-Count").text(detailDayReservationDrinkCount + "건");
+				//해당 연도 혹은 월별 예약 건수
+				
+				//카테고리별 판매액
 				callList_Ajax("/owner/year_menu_percentage/profit_owner", successYearMenuPrice, errorYearProfitOwner, select_year);
 				function successYearMenuPrice(data){
+					//초기화
+					$(".Category-Menu-Price-tr").remove();
 					$.each(data.yearMenuPercentage, function(index, data){
 						var html = "<tr class='Category-Menu-Price-tr'><td>"+data.category_name+"</td><td><a href='#'>"+data.percentage+"원</a></td></tr>";
 						$(".Day-Average-Tr").after(html);
 					});
 				}
-					
+				//메뉴별 판매액				
 				callList_Ajax("/owner/menu_countAndPrice/profit_owner", successMenucountAndPrice, errorYearProfitOwner, select_year);
 				function successMenucountAndPrice(data){
+					//초기화
+					$(".Menu-Count-Price-Panel").remove();
 					$.each(data.menuCountAndPrice, function(index, data1){
 						var panel = '<div class="Menu-Count-Price-Panel panel panel-default panel-table"></div>';
 						$("#Material-Order-Table").after(panel);
@@ -234,6 +263,7 @@
 				menuPercentageFinalChart.length = 0;
 				dayAverageReservationDrinkCount = 0;
 				selectYearMenuProfit.length = 0;
+				monthReservationCount.length = 0;
 				$("#More-Detail-Profit-First-Head").show();
 				selectYear = String(data.selectYear);
 				var jsonData = {
@@ -523,6 +553,7 @@
 				var monthReservationChart = new Array();
 				monthReservationChart.push((index+1)+"월");
 				monthReservationChart.push(data);
+				monthReservationCount.push(data);
 				monthReservationChart.push('stroke-color: #703593; stroke-width: 4; fill-color: #871B47');
 				monthReservationFinalChart.push(monthReservationChart);
 			});

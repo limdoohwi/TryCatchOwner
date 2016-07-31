@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trycatch.owner.domain.MemberDTO;
 import com.trycatch.owner.domain.StoreDTO;
+import com.trycatch.owner.service.MeetingRoomService;
 import com.trycatch.owner.service.MenuService;
 import com.trycatch.owner.service.ProfitService;
 

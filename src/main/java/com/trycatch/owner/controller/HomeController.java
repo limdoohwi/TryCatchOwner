@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trycatch.owner.domain.MemberDTO;
 import com.trycatch.owner.domain.StoreDTO;
+import com.trycatch.owner.service.MeetingRoomService;
 import com.trycatch.owner.service.MemberService;
 import com.trycatch.owner.service.OrderService;
 import com.trycatch.owner.service.StoreService;
@@ -30,6 +31,8 @@ public class HomeController {
 	private OrderService orderService;
 	@Inject
 	private StoreService storeService;
+	@Inject
+	private MeetingRoomService meetingRoomService;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	
@@ -88,8 +91,9 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/management/MeetingRoom")
-	public void meetingRoomGET() throws Exception{
-		
+	public void meetingRoomGET(HttpServletRequest req, Model model) throws Exception{
+		StoreDTO dto = (StoreDTO)req.getSession().getAttribute("store_dto");
+		model.addAttribute("meetingRoomReservationTodayList", meetingRoomService.getMeetingResrevationLIstToday_withStore_no(dto.getStore_no()));
 	}
 	
 	@RequestMapping("/management/Profit_Owner")
