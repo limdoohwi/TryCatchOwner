@@ -25,7 +25,7 @@ public class NoticeController {
 		model.addAttribute("notice_reply_list", service.getNoticeReplyList());
 	}
 	
-	@RequestMapping("/notice.delete")
+	@RequestMapping("/notice/delete")
 	public String delete(int notice_num,RedirectAttributes rttr, HttpServletRequest req) throws Exception{
 		notice_num = Integer.parseInt(req.getParameter("notice_num"));
 		service.deleteNotice(notice_num);
@@ -33,7 +33,7 @@ public class NoticeController {
 		return "redirect:/notice/Notice";
 	}
 	
-	@RequestMapping("/notice.insert")
+	@RequestMapping("/notice/insert")
 	public String insert(NoticeDTO notice,RedirectAttributes rttr, HttpServletRequest req, String member_name) throws Exception{
 		String notice_content;
 		notice_content = req.getParameter("notice_content");
@@ -44,7 +44,7 @@ public class NoticeController {
 		return "redirect:/notice/Notice";
 	}
 	
-	@RequestMapping("/notice.reply.insert")
+	@RequestMapping("/notice/reply_insert")
 	public String insertReply(NoticeDTO notice,RedirectAttributes rttr, HttpServletRequest req) throws Exception{
 		String notice_content = req.getParameter("reply_content");
 		int notice_pos = Integer.parseInt(req.getParameter("notice_pos"));
@@ -56,10 +56,9 @@ public class NoticeController {
 		return "redirect:/notice/Notice";
 	}
 	
-	@RequestMapping("/notice.reply.delete")
+	@RequestMapping("/notice/reply_delete")
 	public String deleteReply(RedirectAttributes rttr, HttpServletRequest req) throws Exception{
 		int notice_num = Integer.parseInt(req.getParameter("reply_delete_num"));
-		System.out.println(notice_num);
 		service.deleteReply(notice_num);;
 		rttr.addFlashAttribute("msg", "SUCCESS");
 		return "redirect:/notice/Notice";

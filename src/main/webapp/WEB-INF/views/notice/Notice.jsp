@@ -86,7 +86,7 @@
               </div>
             </div>
             <div class="Notice-Write-Div box-body">
-              <form id="notice_insert_form" method="post" action="/owner/notice.insert">
+              <form id="notice_insert_form" method="post" action="/owner/notice/insert">
               <textarea name="notice_content" id="Notice-Write-Text-Area" rows="10" cols="334" placeholder="글쓰기" required="required" wrap="hard"></textarea>
                <input type="hidden" value="${member_dto.member_name}" name="member_name">
               <button type="button" id="Notice-Write-Btn" class="btn btn-success btn-xs">글쓰기</button>              
@@ -128,7 +128,7 @@
 	                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 	              </div>
 	            </div>
-	            <form method="post" action="/owner/notice.delete">
+	            <form method="post" action="/owner/notice/delete">
 		            <div class="box-body">
 		             ${notice.notice_content}
 		              <c:if test="${member_dto.member_code == 3}">
@@ -145,7 +145,7 @@
 	                <div class="comment-text">
 	                <c:forEach items="${notice_reply_list}" var="reply" >
 		              	<c:if test="${notice.notice_num == reply.notice_group }">
-		        		<form method="post" action="/owner/notice.reply.delete" id="reply_delete_form">  
+		        		<form method="post" action="/owner/notice/reply_delete" id="reply_delete_form">  
 		                      <span class="Notice-Writer-User-Name">
 		                       ${reply.member_name } 
 		                      <c:if test="${member_dto.member_code == 3 || member_dto.member_name == reply.member_name}">
@@ -164,7 +164,7 @@
 	              </div>
 	            </div>
 	    		<!-- Reply 작성하는 곳 -->
-	    		<form action="/owner/notice.reply.insert" method="post" id="notice_insert_reply_form">
+	    		<form action="/owner/notice/reply_insert" method="post" id="notice_insert_reply_form">
 	            <div class="box-footer">
 	                <div class="img-push">
 	                  <input type="text" name="reply_content" class="Notice-Reply-Text form-control input-sm" placeholder="Press enter to post comment">
