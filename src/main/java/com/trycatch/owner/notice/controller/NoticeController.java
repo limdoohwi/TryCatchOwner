@@ -59,7 +59,6 @@ public class NoticeController {
 	@RequestMapping("/notice.reply.delete")
 	public String deleteReply(RedirectAttributes rttr, HttpServletRequest req) throws Exception{
 		int notice_num = Integer.parseInt(req.getParameter("reply_delete_num"));
-		System.out.println(notice_num);
 		service.deleteReply(notice_num);;
 		rttr.addFlashAttribute("msg", "SUCCESS");
 		return "redirect:/notice/Notice";
