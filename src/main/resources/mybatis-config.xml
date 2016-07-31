@@ -7,6 +7,5 @@
 <configuration>
 	<typeAliases>
 		<package name="com.trycatch.owner.domain" />
-		<package name="com.trycatch.owner.notice.domain" />
 	</typeAliases>
 </configuration>

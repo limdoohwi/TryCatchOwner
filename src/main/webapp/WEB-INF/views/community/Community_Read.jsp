@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,45 +41,65 @@
 	            <div class="box-body no-padding">
 	              <ul class="nav nav-pills nav-stacked">
 	                <!-- 내가 쓴 글 -->
-	                <li id="My-Write" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 쓴 글
-	                  <!-- 내가 쓴 글 Count Number -->
-	                  <span class="label label-primary pull-right">12</span></a>
-	                  <!-- 내가 쓴 글 List -->
-	                  <div id="My-Write-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-	                    <div style="display: block">
-	                    	<a href="#">2016년 6월 17일 - 이거어떰?</a>
-	                    </div>
-	                    <div style="display: block">
-	                    	<a href="#">2016년 6월 7일 - 아 존나</a>
-	                    </div>
-	                   </div> 
-	                 </li>
-	                <!-- 내가 단 댓글 -->
+	              <li id="My-Write" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 쓴 글
+                  <span class="label label-primary pull-right">${fn:length(mycommunity_list)}</span></a>
+                  <div id="My-Write-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
+<c:set var="mycommunity_list" value="${mycommunity_list}"/>
+<c:set var="mycommunity_size" value="${fn:length(mycommunity_list)}"/>
+					<c:choose>
+						<c:when test="${mycommunity_size!=0}">
+							<c:forEach var = "mycommunity_list" items="${mycommunity_list}">
+			                    <div style="display: block">
+			                    	<a href="/owner/community_read?community_no=${mycommunity_list.community_no}">내용 - ${mycommunity_list.community_title}</a>
+			                    </div>
+			                </c:forEach>
+			            </c:when>
+			            <c:when test="${mycommunity_size==0}">
+			            	<div style="display:block">
+			            		글을 쓰세요<button type="button" class="btn btn-default btn-sm" id="goinsert"><i class="glyphicon glyphicon-pencil"></i></button>
+			            	</div>
+			            </c:when>
+			        </c:choose>            
+                   </div> 
+                 </li>
+<c:set var="myreplycommunity_list" value="${myreplycommunity_list}"/>    
+<c:set var="myreplycommunity_size" value="${fn:length(myreplycommunity_list)}"/>             
 	                <li id="My-Reply" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 단 댓글
-	                  <!-- 내가 단 댓글 Count Number -->
-	                  <span class="label label-primary pull-right">12</span></a>
-	                   <!-- 내가 단 댓글 List -->
+	                  <span class="label label-primary pull-right">${myreplycommunity_size}</span></a>
 	                   <div id="My-Reply-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-	                    <div style="display: block">
-	                    	<a href="#">어떤놈이 쓴글1 - 제 생각에 님은 병신</a>
-	                    </div>
-	                    <div style="display: block">
-	                    	<a href="#">어떤놈이 쓴글2 - 어쩔</a>
-	                    </div>
+	                    <c:choose>
+	                    	<c:when test="${myreplycommunity_size!=0}">
+	                    		<c:forEach items="${myreplycommunity_list}" var="myreplycommunity_list">
+				                    <div style="display: block">
+				                    	<a href="/owner/community_read?community_no=${myreplycommunity_list.community_no}">${myreplycommunity_list.community_no}번 게시물에 대한 댓글 - ${myreplycommunity_list.community_reply_comment}</a>
+				                    </div>
+	                    		</c:forEach>
+							</c:when>
+							<c:when test="${myreplycommunity_size!=0}">
+								등록하신 댓글이 없습니다.
+							</c:when>
+	                    </c:choose>
 	                   </div>   
 	                </li>
 	                <!-- 즐겨찾기 -->
+<c:set var="mycommunity_like" value="${mycommunity_like}"/>
+<c:set var="mycommunity_like_size" value="${fn:length(mycommunity_like)}"/>                
 	                <li id="Book-Mark" class="active"><a href="#"><i class="fa fa-star text-yellow"></i> 즐겨찾기
-	                  <!-- 즐겨찾기 Count Number -->
-	                  <span class="label label-primary pull-right">12</span></a>
-	                    <!-- 즐겨찾기 List -->
+	                  <span class="label label-primary pull-right">${mycommunity_like_size}</span></a>
 	                    <div id="Book-Mark-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-	                    	<div style="display: block">
-	                    		<a href="#">작성자1 - 헉 수지 개쩜</a>
-	                    	</div>
-	                    	<div style="display: block">
-	                    		<a href="#">작성자2 - 아이돌 유출</a>
-	                    	</div>
+							<c:choose>   
+								<c:when test="${mycommunity_like_size!=0}">    
+									<c:forEach items="${mycommunity_like}" var="mycommunity_like">           
+				                    	<div class="like_number" style="display: block">
+				                    	<input type="hidden" value="${mycommunity_like.community_no}" />
+				                    		<a href="/owner/community_read?community_no=${mycommunity_like.community_no}">제목 - ${mycommunity_like.community_title}</a>				    
+				                    	</div>
+			                    	</c:forEach> 
+	                    		</c:when>
+	                    		<c:when test="${mycommunity_like_size==0}">
+	                    			즐겨찾기 항목 없음
+	                    		</c:when>
+	                    	</c:choose>
 	                    </div>
 	                </li>
 	              </ul>
@@ -88,25 +110,28 @@
 	        <div class="col-md-9">
 	          <div class="box box-primary">
 	            <div class="box-header with-border">
-	              <h3 class="box-title">Read</h3>
+	              <h3 class="box-title">READ</h3>
 	
 	              <div class="box-tools pull-right">
-	                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="Previous"><i class="fa fa-chevron-left"></i></a>
-	                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="Next"><i class="fa fa-chevron-right"></i></a>
+	                <a href="/owner/community_prev?community_no=${communityDTO.community_no}" class="btn btn-box-tool" data-toggle="tooltip" title="Previous"><i class="fa fa-chevron-left"></i></a>
+	                <a href="/owner/community_next?community_no=${communityDTO.community_no}" class="btn btn-box-tool" data-toggle="tooltip" title="Next"><i class="fa fa-chevron-right"></i></a>
 	              </div>
 	            </div>
 	            <div class="box-body no-padding">
 	              <div class="mailbox-read-info">
 	              <!-- Board Subject -->
-	                <h3>SDK깔았당 다뒤졋어</h3>
+	              	<input type="hidden" class="community_number" value="${communityDTO.community_no}"/>
+	              	<input type="hidden" class="community_title" value="${communityDTO.community_title}"/>
+	                <h3>${communityDTO.community_title}</h3>
+	                <h2>${communityDTO.community_writer}</h2>
 	               	<!-- Board Writer -->
-	                <h5>컨츄리꼬꼬
-	                  <span class="mailbox-read-time pull-right">2016년 7월 4일 오후 13시 16분</span></h5>
+	                <h5>
+	                  <span class="mailbox-read-time pull-right">${communityDTO.community_regdate}</span></h5>
 	              </div>
 	              <div class="mailbox-controls with-border text-center">
 	                <div class="btn-group">
 	                <!-- Delte -->
-	                  <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="삭제">
+	                  <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" id="community_del" data-container="body" title="삭제">
 	                    <i class="fa fa-trash-o"></i></button>
 		              	<!-- 즐겨찾기 --> 
 		                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="즐겨찾기">
@@ -118,109 +143,40 @@
 	              </div>
 	              <!-- Board Content -->
 	              <div class="mailbox-read-message">
-	                <p>Hello John,</p>
-	
-	                <p>Keffiyeh blog actually fashion axe vegan, irony biodiesel. Cold-pressed hoodie chillwave put a bird
-	                  on it aesthetic, bitters brunch meggings vegan iPhone. Dreamcatcher vegan scenester mlkshk. Ethical
-	                  master cleanse Bushwick, occupy Thundercats banjo cliche ennui farm-to-table mlkshk fanny pack
-	                  gluten-free. Marfa butcher vegan quinoa, bicycle rights disrupt tofu scenester chillwave 3 wolf moon
-	                  asymmetrical taxidermy pour-over. Quinoa tote bag fashion axe, Godard disrupt migas church-key tofu
-	                  blog locavore. Thundercats cronut polaroid Neutra tousled, meh food truck selfies narwhal American
-	                  Apparel.</p>
-	
-	                <p>Raw denim McSweeney's bicycle rights, iPhone trust fund quinoa Neutra VHS kale chips vegan PBR&amp;B
-	                  literally Thundercats +1. Forage tilde four dollar toast, banjo health goth paleo butcher. Four dollar
-	                  toast Brooklyn pour-over American Apparel sustainable, lumbersexual listicle gluten-free health goth
-	                  umami hoodie. Synth Echo Park bicycle rights DIY farm-to-table, retro kogi sriracha dreamcatcher PBR&amp;B
-	                  flannel hashtag irony Wes Anderson. Lumbersexual Williamsburg Helvetica next level. Cold-pressed
-	                  slow-carb pop-up normcore Thundercats Portland, cardigan literally meditation lumbersexual crucifix.
-	                  Wayfarers raw denim paleo Bushwick, keytar Helvetica scenester keffiyeh 8-bit irony mumblecore
-	                  whatever viral Truffaut.</p>
-	
-	                <p>Post-ironic shabby chic VHS, Marfa keytar flannel lomo try-hard keffiyeh cray. Actually fap fanny
-	                  pack yr artisan trust fund. High Life dreamcatcher church-key gentrify. Tumblr stumptown four dollar
-	                  toast vinyl, cold-pressed try-hard blog authentic keffiyeh Helvetica lo-fi tilde Intelligentsia. Lomo
-	                  locavore salvia bespoke, twee fixie paleo cliche brunch Schlitz blog McSweeney's messenger bag swag
-	                  slow-carb. Odd Future photo booth pork belly, you probably haven't heard of them actually tofu ennui
-	                  keffiyeh lo-fi Truffaut health goth. Narwhal sustainable retro disrupt.</p>
-	
-	                <p>Skateboard artisan letterpress before they sold out High Life messenger bag. Bitters chambray
-	                  leggings listicle, drinking vinegar chillwave synth. Fanny pack hoodie American Apparel twee. American
-	                  Apparel PBR listicle, salvia aesthetic occupy sustainable Neutra kogi. Organic synth Tumblr viral
-	                  plaid, shabby chic single-origin coffee Etsy 3 wolf moon slow-carb Schlitz roof party tousled squid
-	                  vinyl. Readymade next level literally trust fund. Distillery master cleanse migas, Vice sriracha
-	                  flannel chambray chia cronut.</p>
-	
-	                <p>Thanks,<br>Jane</p>
+					${communityDTO.community_content}
 	              </div>
-	            </div>
-	            <!-- File Upload List -->
-	            <div class="box-footer">
-	              <ul class="mailbox-attachments clearfix">
-	                <li>
-	                  <span class="mailbox-attachment-icon"><i class="fa fa-file-pdf-o"></i></span>
-	
-	                  <div class="mailbox-attachment-info">
-	                    <a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i> Sep2014-report.pdf</a>
-	                        <span class="mailbox-attachment-size">
-	                          1,245 KB
-	                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
-	                        </span>
-	                  </div>
-	                </li>
-	                <li>
-	                  <span class="mailbox-attachment-icon"><i class="fa fa-file-word-o"></i></span>
-	
-	                  <div class="mailbox-attachment-info">
-	                    <a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i> App Description.docx</a>
-	                        <span class="mailbox-attachment-size">
-	                          1,245 KB
-	                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
-	                        </span>
-	                  </div>
-	                </li>
-	                <li>
-	                  <span class="mailbox-attachment-icon has-img"><img src="dist/img/photo1.png" alt="Attachment"></span>
-	
-	                  <div class="mailbox-attachment-info">
-	                    <a href="#" class="mailbox-attachment-name"><i class="fa fa-camera"></i> photo1.png</a>
-	                        <span class="mailbox-attachment-size">
-	                          2.67 MB
-	                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
-	                        </span>
-	                  </div>
-	                </li>
-	                <li>
-	                  <span class="mailbox-attachment-icon has-img"><img src="dist/img/photo2.png" alt="Attachment"></span>
-	
-	                  <div class="mailbox-attachment-info">
-	                    <a href="#" class="mailbox-attachment-name"><i class="fa fa-camera"></i> photo2.png</a>
-	                        <span class="mailbox-attachment-size">
-	                          1.9 MB
-	                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
-	                        </span>
-	                  </div>
-	                </li>
-	              </ul>
 	            </div>
 	            <!-- Reply -->
 	            <div class="box-footer box-comments">
 	              <div class="box-comment">
 	                <div class="comment-text">
-	                      <span class="username">
-	                        Maria Gonzales
-	                        <span class="text-muted pull-right">2016년 7월 3일 16시 26분</span>
-	                      </span>
-	                  <!-- Reply Content -->
-	                      	ㅇㅅㅇ
+
+<c:set var="community_reply_size" value="${fn:length(community_reply_list)}"/>
+${community_reply_size}
+						<c:choose>
+							<c:when test="${community_reply_size!=0}">
+								<c:forEach end="${community_reply_size}" items="${community_reply_list}" var="community_reply">
+			                      <span class="username">
+			                        ${community_reply.community_reply_writer}
+			                        <span class="text-muted pull-right">${community_reply.community_reply_date}</span>
+			                      </span>
+		                  <!-- Reply Content -->
+	                      			${community_reply.community_reply_comment}
+	                      		</c:forEach>
+	                   	 	</c:when>  	
+	                 	<c:when test="${community_reply_size==0}">
+	                 		댓글이 없습니다.
+	                 	</c:when>
+	                  </c:choose>    	
 	               </div>
 	              </div>
 	            </div>
 	            <!-- Reply 작성하는 곳 -->
 	            <div class="box-footer">
-	              <form action="#" method="post">
+	              <form action="/owner/community_reply" method="post">
+	              	<input type="hidden" name ="community_no" value="${communityDTO.community_no}"/>
 	                <div class="img-push">
-	                  <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+	                  <input type="text" name="community_reply_comment"class="form-control input-sm" placeholder="Press enter to post comment">
 	                </div>
 	              </form>
 	            </div>
@@ -229,14 +185,76 @@
 	    </section>
 	</div>
 
- 	<!-- jQuery 2.2.0 -->
-	<script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
-	<!-- jQuery UI 1.11.4 -->
-	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 	<script>
 	  $.widget.bridge('uibutton', $.ui.button);
 	  
 	  $(function(){
+		  
+		 	var like_no = "${communityDTO.community_no}";
+			var like_community_no = new Array();
+			$(".like_number").each(function(){
+				like_community_no.push($(this).find("input[type=hidden]").val());
+			});
+			for(var i=0; i<like_community_no.length; i++){
+				if(like_no == like_community_no[i]){
+					$(".Book-Mark-After").show();
+					$(".Book-Mark-Before").hide();
+				}
+			}
+			
+			//즐겨찾기 추가
+			 $(".Book-Mark-Before").click(function(){	
+				 var divB = $(".Book-Mark-Before").eq(0);
+				 var community_no = "${communityDTO.community_no}";
+				 var community_title = $(".community_title").val();
+				 var divA = $(divB).siblings(".Book-Mark-After");
+				 var member_no = "${member_dto.member_no}";
+				 
+				 if($(divB).show()){
+					 $.ajax({
+						 type:"post",
+						 url:"/owner/community_like",
+						 data:{community_no:community_no , community_title:community_title , member_no:member_no},
+						 dataType : "json",
+						 success: function(data){
+							 if(data==true){
+									$(divB).hide();
+									$(divA).show();
+								alert("즐겨찾기가 추가되었습니다.");
+							 }
+						 },
+						 error:function(){
+							 alert("ajax실패");
+						 }
+					 }) 
+				 }
+			  });
+			  //즐겨찾기 해제
+			  $(".Book-Mark-After").click(function(){
+					 var divA = $(".Book-Mark-After").eq(0);
+					 var community_no = "${communityDTO.community_no}"
+					 var divB = $(divA).siblings(".Book-Mark-Before");
+					 var member_no = "${member_dto.member_no}";
+				  $.ajax({
+					 type:"post",
+					 url:"/owner/community_like",
+					 data:{community_no:community_no},
+					 dataType:"json",
+					 success:function(data){
+						if($(divA).show()){
+							alert("즐겨찾기 해제되었습니다");
+							$(divA).hide();
+							$(divB).show();
+						}
+					 }
+				  })	  
+			  })
+
+			  	
+		 
+		  
+			
+		  /*
 		  //게시판 상단 즐겨찾기 Click 즐겨찾기 추가
 		  $(".Book-Mark-Before").click(function(){
 			 var index = $(".Book-Mark-Before").index(this);
@@ -245,6 +263,9 @@
 			$(divB).hide();
 			$(divA).show();
 		  });
+		  
+		  
+		  
 		  //게시판 상단 즐겨찾기 취소 Click 즐겨찾기 삭제
 		  $(".Book-Mark-After").click(function(){
 			 var index = $(".Book-Mark-After").index(this);
@@ -253,6 +274,8 @@
 			$(divB).show();
 			$(divA).hide();
 		  });	
+		  
+		  */
 		  //왼쪽 패널 즐겨찾기 Click List Show
 		  $("#Book-Mark").click(function(){
 			  $("#Book-Mark-List").slideToggle(400);
@@ -265,6 +288,16 @@
 		  $("#My-Reply").click(function(){
 			  $("#My-Reply-List").slideToggle(400);
 		  });
+		  
+		  $("#community_del").click(function(){
+			  var conf = confirm("본인만 삭제가능합니다 삭제하시겠습니까?");
+			  if(conf){
+				 location.href="/owner/community_del?community_no=${communityDTO.community_no}";
+			  }
+			  else{
+				 
+			  }
+		  })
 	  })
 	</script>
 	<!-- Footer -->

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.trycatch.owner.mappers.communityMapper">
+	<select id="communityList" resultType="CommunityDTO">
+		select * from community where community_no>0 order by community_no desc limit #{limit},10
+	</select>
+	<select id = "communitySearch" resultType="CommunityDTO">
+		select * from community where 
+		community_title like concat("%",#{community_search},"%") or
+		community_writer like concat("%",#{community_search},"%")
+		order by community_no desc limit 0,10
+	</select>
+	<select id="communitylistAll" resultType="CommunityDTO">
+		select * from community
+	</select>
+	<select id="communityNext" resultType="int">
+		select community_no from community where community_no=(select min(community_no) from community where community_no>#{community_no})
+	</select>
+	<select id="communityPrev" resultType="int">
+		select community_no from community where community_no=(select min(community_no) from community where community_no <![CDATA[<]]> #{community_no})
+	</select>
+	
+	
+	<select id="mycommunityList" resultType="CommunityDTO">
+		select * from community where community_writer = #{writer}
+	</select>
+	
+	<select id="communityRead" resultType="CommunityDTO">
+		select * from community where community_no = #{community_no}
+	</select>
+	
+	<select id="communityReplyList" resultType="CommunityReplyDTO">
+		select * from communityreply join community on communityreply.community_no = community.community_no where community.community_no = #{community_no};
+	</select>
+	
+	<select id="mycommunityReplyList" resultType="CommunityReplyDTO">
+		select * from communityreply where member_no =  #{member_no};
+	</select>
+	
+	<insert id="communityInsert" parameterType="CommunityDTO">
+		insert into community(
+		community_title,
+		community_content,
+		community_writer
+		)
+		values(
+		#{community_title},
+		#{community_content},
+		#{community_writer}
+		)
+	</insert>
+	
+	<select id="communitylikecheck" resultType="int">
+		select count(*) from communitylike where community_no = #{community_no}
+	</select>
+	
+	<insert id="communityreplyInsert" parameterType="map">
+		insert into communityreply(
+		community_reply_writer,
+		community_reply_comment,
+		community_no,
+		member_no
+		)
+		values(
+		#{community_reply_writer},
+		#{community_reply_comment},
+		#{community_no},
+		#{member_no}
+		)
+	</insert>
+	
+	<insert id="communityLikeInsert">
+		insert into communitylike(
+		community_no,
+		community_title,
+		member_no
+		)
+		values(
+		#{community_no},
+		#{community_title},
+		#{member_no}
+		)
+	</insert>
+	
+	<delete id = "communityLikeDelete">
+		delete from communitylike where community_no = #{community_no}  
+	</delete>
+	
+	<select id = "communitylikeList" resultType="CommunityLikeDTO">
+		select * from 
+		communitylike l,member m,community c where m.member_no = #{member_no} and l.community_no = c.community_no; 
+	</select>
+
+	
+	<update id="communityUpdate">
+		update community set community_title = #{community_title},
+		community_content = #{community_content} where community_no = #{community_no}
+	</update>
+	
+	<delete id="communityDelete">
+	
+		delete from community where community_no = #{community_no}
+	</delete>
+	
+	
+</mapper>    
