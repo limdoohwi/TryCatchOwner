@@ -92,7 +92,6 @@
 
 								<c:set var="community_reply_size"
 									value="${fn:length(community_reply_list)}" />
-								${community_reply_size}
 								<c:choose>
 									<c:when test="${community_reply_size!=0}">
 										<c:forEach end="${community_reply_size}"
