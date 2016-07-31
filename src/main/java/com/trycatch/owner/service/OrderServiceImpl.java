@@ -1,5 +1,6 @@
 package com.trycatch.owner.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,7 +13,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.trycatch.owner.domain.MenuDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
 import com.trycatch.owner.persistence.MenuDAO;
 import com.trycatch.owner.persistence.OrderDAO;
@@ -32,27 +32,33 @@ public class OrderServiceImpl implements OrderService {
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 		
 	@Override
-	public List<Order_InformationDTO> getOrder_Information(int member_no) {
+	public List<Order_InformationDTO> getOrder_Information(int member_no, int store_no, int start_Page, boolean asce, String search_order_info) {
 		transaction.setName("owner_order_transaction");
 		transaction.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		status = transactionManager.getTransaction(transaction);
-		String[] menu_name;
-		MenuDTO menuDto = null;
 		try {
-			List<Order_InformationDTO> list = dao.getOrder_Information(member_no);
-			for(int i=0; i<list.size(); i++){
-				menu_name = new String[list.get(i).getMenu_no().length];
-				for(int j=0; j<list.get(i).getMenu_no().length; j++){
-					int menu_num = Integer.parseInt((list.get(i).getMenu_no()[j]));
-					logger.info("∏ﬁ¥∫ π¯»£ : " + menu_num);
-					menuDto = menuDao.getMenu_withMenu_num(menu_num);
-					menu_name[j] = menuDto.getMenu_name();
+			List<Integer> numberList = dao.getMenu_Payment_noList(store_no);
+			List<Order_InformationDTO> list = null;
+			List<Order_InformationDTO> resultList = new ArrayList();
+
+			int menu_payment_no = 0;
+			for(int i=0; i<numberList.size(); i++){
+				menu_payment_no = numberList.get(i);
+				list = dao.getOrder_Information(menu_payment_no, member_no, store_no, start_Page, asce, search_order_info);
+				for(int j=0; ; j++){
+					if(j==0){
+						list.get(j).setMenu_total_list(list.get(j).getMenu_name() + "/" + list.get(j).getMenu_count() +"¿‹/" + list.get(j).getMenu_option() +",");
+					}
+					if(j+1 >= list.size()){
+						j = 0;
+						resultList.add(list.get(j));
+						break;
+					}
+					list.get(0).setMenu_total_list(list.get(0).getMenu_total_list() + list.get(j+1).getMenu_name() + "/" + list.get(j+1).getMenu_count() +"¿‹/" + list.get(j+1).getMenu_option() +",");
 				}
-				logger.info("∏ﬁ¥∫ : " + menu_name.length + ", " + list.get(i).getMenu_count().length + ", " + list.get(i).getMenu_option().length);
-				list.get(i).setMenu_total_list(menu_name, list.get(i).getMenu_count(), list.get(i).getMenu_option());
 			}
 			transactionManager.commit(status);
-			return list;
+			return resultList;
 		} catch (Exception err) {
 			err.printStackTrace();
 			transactionManager.rollback(status);

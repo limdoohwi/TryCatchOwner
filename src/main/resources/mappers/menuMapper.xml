@@ -17,4 +17,7 @@
     <select id="getMenuCategoryList" resultType="String">
         select menu_category_name from menu_category 
     </select>
+    <select id="getMenuName_withCategory_Name" parameterType="String" resultType="String">
+		select m.menu_name from menu m, menu_category c where m.menu_category_num = c.menu_category_num and c.menu_category_name = #{category_name}
+	</select>
 </mapper>

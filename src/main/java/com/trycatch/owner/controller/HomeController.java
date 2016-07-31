@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.trycatch.owner.domain.MemberDTO;
 import com.trycatch.owner.domain.MessengerContentDTO;
 import com.trycatch.owner.domain.StoreDTO;
+import com.trycatch.owner.service.MeetingRoomService;
 import com.trycatch.owner.service.MemberService;
 import com.trycatch.owner.service.MessengerService;
 import com.trycatch.owner.service.OrderService;
@@ -29,12 +30,12 @@ public class HomeController {
 	@Inject
 	private MemberService service;
 	@Inject
-	private OrderService orderService;
-	@Inject
 	private StoreService storeService;
 	@Inject
 	private MessengerService messengerService;
 	
+	@Inject
+	private MeetingRoomService meetingRoomService;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	
@@ -62,8 +63,6 @@ public class HomeController {
 	@RequestMapping(value = "/log_in", method = RequestMethod.GET)
 	public String log_in(HttpServletRequest req, Model model) throws Exception {
 		MemberDTO dto = (MemberDTO)req.getSession().getAttribute("member_dto");
-		//클라이언트가 주문한 내역 호출
-		model.addAttribute("orderList", orderService.getOrder_Information(dto.getMember_no()));
 		test();
 		return "Main";
 	}
@@ -100,12 +99,12 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/management/MeetingRoom")
-	public void meetingRoomGET() throws Exception{
-		
+	public void meetingRoomGET(HttpServletRequest req, Model model) throws Exception{
+		StoreDTO dto = (StoreDTO)req.getSession().getAttribute("store_dto");
+		model.addAttribute("meetingRoomReservationTodayList", meetingRoomService.getMeetingResrevationLIstToday_withStore_no(dto.getStore_no()));
 	}
 	
 	@RequestMapping("/management/Profit_Owner")
 	public void profit_OwnerGET() throws Exception{
-		
 	}
 }

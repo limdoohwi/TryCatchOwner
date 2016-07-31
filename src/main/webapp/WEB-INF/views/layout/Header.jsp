@@ -67,6 +67,12 @@
 			//newNoticeAlarm();
 			//읽지않은 음료주문 알람을 띄움
 			noReadMsgList();
+			$(".Select-Store-Btn").click(function(){
+				var index = $(".Select-Store-Btn").index(this);
+				var store_no = $(".My-Store-No-List").eq(index).val();
+				var jsonData = {store_no : store_no};
+				callList_Ajax("/owner/set/owner_store", successSetStore, null, jsonData);
+			});
 		});
 		// 읽지 않은 메시지 리스트를 서버에서 가져와 출력해주는 함수 
 		function noReadMsgList() {
@@ -87,7 +93,6 @@
 					});
 					$("#messageAlarmCount").text(count + "개의 알람이 있습니다.");
 					$("#messageAlarmCount2").text(count);
-	
 				}
 			});
 		}
@@ -124,9 +129,13 @@
 			} else {
 				console.log('Websocket not supported');
 			}
-		}
-		function disconnect() {
-			console.log("Disconnected");
+		function successSetStore(data){
+			if(data==true){
+				location.reload();
+			}
+			else if(data==false){
+				alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
+			}
 		}
 		/*
 			message를 받았을 때 messenger에 접속해 있지 않다면 실행 되는 함수로 알람을 띄워주는 역할을 한다. 
@@ -156,9 +165,9 @@
 			$("#messenger_member_name").val($(".alarm_member_name").eq(eq).val());
 			$("#messenger_member_no").val($(".alarm_member_no").eq(eq).val());
 			$("#messenger_confirm").submit();
-		})
-	</script>
-
+		});
+  </script>
+  
 <header class="main-header">
 	
     <!-- Logo -->

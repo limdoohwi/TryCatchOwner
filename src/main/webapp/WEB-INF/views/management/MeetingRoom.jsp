@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,12 +43,14 @@
 						<div class="box-body">
 							<!-- 예약 목록 -->
 							<div id="external-events">
-								<div class="external-event bg-green">10:00~12:00<div style="margin-right:0px">고객1</div></div>
-								<div class="external-event bg-green">12:00~14:00<div style="margin-right:0px">고객1</div></div>
-								<div class="external-event bg-red">14:00~16:00<div style="margin-right:0px">없음</div></div>
-								<div class="external-event bg-green">16:00~18:00<div style="margin-right:0px">고객1</div></div>
-								<div class="external-event bg-green">18:00~20:00<div style="margin-right:0px">고객1</div></div>
-								<div class="external-event bg-red">20:00~22:00<div style="margin-right:0px">없음</div></div>
+								<c:forEach var="todayMeetingRoom_dto" items="${meetingRoomReservationTodayList}">
+									<c:if test="${todayMeetingRoom_dto.member_name == '없음'}">
+										<div class="external-event bg-red">${todayMeetingRoom_dto.meeting_reservation_time}<div style="margin-right:0px">${todayMeetingRoom_dto.member_name}</div></div>
+									</c:if>
+									<c:if test="${todayMeetingRoom_dto.member_name != '없음'}">
+										<div class="external-event bg-green">${todayMeetingRoom_dto.meeting_reservation_time}<div style="margin-right:0px">${todayMeetingRoom_dto.member_name}</div></div>
+									</c:if>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
@@ -71,6 +76,8 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 	<script src="/owner/resources/plugins/fullcalendar/fullcalendar.min.js"></script>
 	<!-- Page specific script -->
+	<script src="/owner/resources/Owner_js/ListAjax.js"></script>
+	
 	<script>
   $(function () {
 
@@ -78,7 +85,6 @@
      -----------------------------------------------------------------*/
     function ini_events(ele) {
       ele.each(function () {
-
         // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
         // it doesn't need to have a start or end
         var eventObject = {
@@ -91,114 +97,81 @@
     }
 
     
+    //미팅룸 예약 리스트 호출
+    callList_Ajax("/owner/meetingRoom_list/meetingRoom/owner", successMeetingRoomList, null, null);
+    
+    function successMeetingRoomList(data){
+    	alert("들어옴")
+    	//Date for the calendar events (dummy data)
+        var date = new Date();
+        var d = date.getDate(),
+            m = date.getMonth(),
+            y = date.getFullYear();
+        var eventsArray = new Array();
+    	$.each(data.meetingRoomList, function(index, jsonData){
+    		var meetingDate = jsonData.meeting_reservation_date.substring(0,10);
+    		var finalMeetingDate = meetingDate.split("-");
+    		var time = jsonData.meeting_reservation_time.split(",");
+    		var event = {
+    				title: "예약 리스트",
+    				start: new Date(Number(finalMeetingDate[0]), Number(finalMeetingDate[1]-1), Number(finalMeetingDate[2]), Number(time[0]), 0),
+    				end: new Date(Number(finalMeetingDate[0]), Number(finalMeetingDate[1]-1), Number(finalMeetingDate[2]), Number(time[1]), 0),
+    				backgroundColor: "#00a65a", //Success (green)
+    	            borderColor: "#00a65a" //Success (green)
+    		};
+    		eventsArray.push(event);
+    		
+    	});
+    	 alert(eventsArray.length);
+    	/* initialize the calendar
+        -----------------------------------------------------------------*/
+        $('#calendar').fullCalendar({
+            header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+            },
+            
+         buttonText: {
+           today: 'today',
+           month: 'month',
+           week: 'week',
+           day: 'day'
+         },
+         //Random default events
+         events: eventsArray,
+         editable: false,
+         droppable: true, // this allows things to be dropped onto the calendar !!!
+         drop: function (date, allDay) { // this function is called when something is dropped
 
-    /* initialize the calendar
-     -----------------------------------------------------------------*/
-    //Date for the calendar events (dummy data)
-    var date = new Date();
-    var d = date.getDate(),
-        m = date.getMonth(),
-        y = date.getFullYear();
-  
-    $('#calendar').fullCalendar({
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'month,agendaWeek,agendaDay'
-      },
-      buttonText: {
-        today: 'today',
-        month: 'month',
-        week: 'week',
-        day: 'day'
-      },
-      //Random default events
-      events: [
-        {
-          title: 'All Day Event',
-          start: new Date(y, m, 1),
-          backgroundColor: "#f56954", //red
-          borderColor: "#f56954" //red
-        },
-        {
-          title: 'Long Event',
-          start: new Date(y, m, d - 5),
-          end: new Date(y, m, d - 2),
-          backgroundColor: "#f39c12", //yellow
-          borderColor: "#f39c12" //yellow
-        },
-        {
-          title: 'Meeting',
-          start: new Date(y, m, d, 10, 30),
-          end : new Date(y, m, d, 12, 30),
-          allDay: false,
-          backgroundColor: "#0073b7", //Blue
-          borderColor: "#0073b7" //Blue
-        },
-        {
-          title: 'Lunch',
-          start: new Date(y, m, d, 12, 0),
-          end: new Date(y, m, d, 14,	 0),
-          allDay: false,
-          backgroundColor: "#00c0ef", //Info (aqua)
-          borderColor: "#00c0ef" //Info (aqua)
-        },
-        {
-          title: 'Birthday Party',
-          start: new Date(y, m, d + 1, 19, 0),
-          end: new Date(y, m, d + 1, 22, 30),
-          allDay: false,
-          backgroundColor: "#00a65a", //Success (green)
-          borderColor: "#00a65a" //Success (green)
-        },
-        {
-          title: 'Click for Google',
-          start: new Date(y, m, 28),
-          end: new Date(y, m, 29),
-          url: 'http://google.com/',
-          backgroundColor: "#3c8dbc", //Primary (light-blue)
-          borderColor: "#3c8dbc" //Primary (light-blue)
-        },
-        {
-          title: 'Click for Google2',
-          start: new Date(y, m, 28),
-          end: new Date(y, m, 29),
-          url: 'http://google.com/',
-          backgroundColor: "#3c8dbc", //Primary (light-blue)
-          borderColor: "#3c8dbc" //Primary (light-blue)
-        }
-      ],
-      editable: false,
-      droppable: true, // this allows things to be dropped onto the calendar !!!
-      drop: function (date, allDay) { // this function is called when something is dropped
+           // retrieve the dropped element's stored Event Object
+           var originalEventObject = $(this).data('eventObject');
 
-        // retrieve the dropped element's stored Event Object
-        var originalEventObject = $(this).data('eventObject');
+           // we need to copy it, so that multiple events don't have a reference to the same object
+           var copiedEventObject = $.extend({}, originalEventObject);
 
-        // we need to copy it, so that multiple events don't have a reference to the same object
-        var copiedEventObject = $.extend({}, originalEventObject);
+           // assign it the date that was reported
+           copiedEventObject.start = date;
+           copiedEventObject.allDay = allDay;
+           copiedEventObject.backgroundColor = $(this).css("background-color");
+           copiedEventObject.borderColor = $(this).css("border-color");
 
-        // assign it the date that was reported
-        copiedEventObject.start = date;
-        copiedEventObject.allDay = allDay;
-        copiedEventObject.backgroundColor = $(this).css("background-color");
-        copiedEventObject.borderColor = $(this).css("border-color");
+           // render the event on the calendar
+           // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+           $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+         }
+       });
 
-        // render the event on the calendar
-        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-      }
-    });
-
-    /* ADDING EVENTS */
-    var currColor = "#3c8dbc"; //Red by default
-    //Color chooser button
-    var colorChooser = $("#color-chooser-btn");
-    $("#color-chooser > li > a").click(function (e) {
-      e.preventDefault();
-      //Save color
-      currColor = $(this).css("color");
-    });
+       /* ADDING EVENTS */
+       var currColor = "#3c8dbc"; //Red by default
+       //Color chooser button
+       var colorChooser = $("#color-chooser-btn");
+       $("#color-chooser > li > a").click(function (e) {
+         e.preventDefault();
+         //Save color
+         currColor = $(this).css("color");
+       });
+    }
   });
 </script>
 <!-- Footer -->
