@@ -1,4 +1,4 @@
-package com.trycatch.owner.notice.persistence;
+package com.trycatch.owner.persistence;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.trycatch.owner.notice.domain.NoticeDTO;
+import com.trycatch.owner.domain.NoticeDTO;
 
 @Repository
 public class NoticeDAOImpl implements NoticeDAO {

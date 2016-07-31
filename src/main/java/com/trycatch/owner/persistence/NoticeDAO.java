@@ -1,8 +1,8 @@
-package com.trycatch.owner.notice.persistence;
+package com.trycatch.owner.persistence;
 
 import java.util.List;
 
-import com.trycatch.owner.notice.domain.NoticeDTO;
+import com.trycatch.owner.domain.NoticeDTO;
 
 
 

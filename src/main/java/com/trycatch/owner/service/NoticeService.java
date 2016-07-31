@@ -1,8 +1,8 @@
-package com.trycatch.owner.notice.service;
+package com.trycatch.owner.service;
 
 import java.util.List;
 
-import com.trycatch.owner.notice.domain.NoticeDTO;
+import com.trycatch.owner.domain.NoticeDTO;
 
 public interface NoticeService {
 	public List<NoticeDTO> getNoticeList();

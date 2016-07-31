@@ -1,4 +1,4 @@
-package com.trycatch.owner.notice.service;
+package com.trycatch.owner.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import org.springframework.beans.factory.support.ReplaceOverride;
 import org.springframework.stereotype.Service;
 
-import com.trycatch.owner.notice.domain.NoticeDTO;
-import com.trycatch.owner.notice.persistence.NoticeDAO;
+import com.trycatch.owner.domain.NoticeDTO;
+import com.trycatch.owner.persistence.NoticeDAO;
 
 @Service
 public class NoticeServiceImpl implements NoticeService {

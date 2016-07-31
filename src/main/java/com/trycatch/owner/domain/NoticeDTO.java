@@ -1,4 +1,4 @@
-package com.trycatch.owner.notice.domain;
+package com.trycatch.owner.domain;
 
 public class NoticeDTO {
 	private int notice_num;
