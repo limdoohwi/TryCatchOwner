@@ -79,10 +79,10 @@ public class HomeController {
 	public void messengerGET() throws Exception{
 	}
 	
-	@RequestMapping("/notice/Notice")
-	public void noticeGET() throws Exception{
+//	@RequestMapping("/notice/Notice")
+//	public void noticeGET(Model model) throws Exception{
 		
-	}
+//	}
 	
 	@RequestMapping("/community/Community_Owner")
 	public void communityGET() throws Exception{
