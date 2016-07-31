@@ -1,3 +1,26 @@
+<!-- 
+/*
+ * 	JSP: TryCoffee_Owner.jsp
+ *  Description: Notice에 모든 것을 출력 및 저장하는 JSP 페이지 
+ *  Created: 2016­07­20
+ *	Author: 이준영
+ *  Mail: 13nfri@naver.com
+ * 	Copyrights 2016-07-18 by Try{}Catch
+ *
+ *	Revisions:
+ * 	1. When & Who : 2016-07-20 by 이준영
+ * 	2. What		  : 전반적인  UI구현
+ *  
+ * 	1. When & Who : 2016-07-25 by 이준영
+ * 	2. What		  : 공지사항글 저장 및 삭제 구현, 댓글 저장 및 삭제 구현
+ *  
+ * 	1. When & Who : 2016-07-27 by 이준영
+ * 	2. What		  : 공지사항글 삭제 시 해당하는 댓글 삭제 구현, 해당하는 글에 달린 댓글 출력 구현
+ *
+ * 	1. When & Who : 2016-07-30 by 이준영
+ * 	2. What		  : 페이징 구현
+ */
+ -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -134,7 +157,6 @@
 		              <c:if test="${member_dto.member_code == 3}">
 		              	<button type="submit" class="delete_button btn btn-danger btn-xs" id="delete_button"><i class="fa fa-trash-o"></i>삭제</button>
 		              </c:if>
-		              <!-- 좋아요 및 댓글 Count Number -->
 		              <span class="pull-right text-muted"></span>
 		            </div>
 	            <input type="hidden" value="${notice.notice_num}" name="notice_num">
@@ -154,7 +176,7 @@
 		                        <span class="text-muted pull-right">${reply.notice_date}</span>
 		                      </span><br/>
 		                  <!-- Reply Content -->
-		                      ${reply.notice_content }
+		                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${reply.notice_content }
 		        		 	<hr/>
 		                 	<input type="hidden" name="reply_delete_num" value="${reply.notice_num}"/>      
 		        		 </form>
