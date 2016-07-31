@@ -6,7 +6,7 @@
     
 <mapper namespace="com.trycatch.owner.mappers.noticeMapper">  
     <select id="notice_list" resultType="NoticeDTO">
-        select * from notice order by notice_pos
+        select * from notice where notice_depth=0 order by notice_pos
     </select>
     
     <insert id="notice_insert" parameterType="NoticeDTO">
