@@ -5,9 +5,19 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.trycatch.owner.mappers.orderMapper">  
-	<select id="getOrder_Information" parameterType="int" resultType="Order_InformationDTO">
-	    select order_name, order_tel, menu_reserve_time, menu_total_price, menu_order.menu_no, menu_count, menu_option, store_name from menu_payment
-	    inner join menu_order on menu_payment.menu_payment_no = menu_order.menu_payment_no inner join store on menu_payment.store_no = store.store_no
-	    inner join menu on menu_order.menu_no = menu.menu_num where store.member_no = #{member_no} date(menu_reserve_time) = curdate() group by menu_reserve_time desc;
+	<insert id="insertMaterial_Payment" parameterType="MaterialPaymentDTO">
+		INSERT INTO material_payment(material_total_price, member_no, store_no) values (#{material_total_price}, #{member_no}, #{store_no});
+	</insert>
+	<insert id="insertMaterial_Order" parameterType="hashMap">
+		INSERT INTO material_order(material_payment_no, material_no, material_count) values (#{material_payment_no}, #{material_no}, #{material_count})
+	</insert>
+	<select id="getMaterialPaymentList" parameterType="hashMap" resultType="MaterialPaymentDTO">
+		select p.material_payment_no, p.material_total_price, p.material_payment_date, s.store_name, m.member_name from material_payment p, store s, member m where p.store_no = s.store_no and 
+		p.member_no = m.member_no and s.store_no = #{store_no} and date(p.material_payment_date) = #{date}
+	</select>
+	<select id="getMaterialPaymentDetailList" parameterType="int" resultType="MaterialPaymentDetailDTO">
+		select m.material_name, m.material_price, o.material_count, m.material_price * o.material_count as material_total_price from 
+material_payment p, material_order o, material m where 
+p.material_payment_no = o.material_payment_no and o.material_no = m.material_no and p.material_payment_no = #{material_payment_no};
 	</select>
 </mapper>

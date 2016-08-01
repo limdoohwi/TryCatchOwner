@@ -1,15 +1,8 @@
-<!-- 
-/*
- *  Description :  메뉴 관리 페이지
- *  Created : 2016-06-29
- *  Author : 김준혁
- *  
- *  Revisions :
- */
- -->
+
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +25,10 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
 	rel='stylesheet' type='text/css'>
 <script>
+var store_no;
+var date;
 $(function(){
+	
 	$("#Show-Order-List").hide();
 	$(".Show-Order-List-Btn").click(function(){
 		var index = $(".Show-Order-List-Btn").index(this);
@@ -45,6 +41,63 @@ $(function(){
 	
 	$("#orderlist-Store-Btn").click(function() {
 		$("#order-list").css("display","block");
+	});
+	
+	//매장 선택
+	$(".select_store_btn").click(function(){
+		var index = $(".select_store_btn").index(this);
+		store_no = $(".select_store_no").eq(index).val();
+		$(".material_list_tr").remove();
+		$(".material_detail_list_tr").remove();
+	});
+	
+	//날짜 선택 후 확인 클릭
+	$("#show_material_list_btn").click(function(){
+		$("select").each(function(){
+			if($(this).find("option:selected").val() == "선택"){
+				alert("날짜 선택을 확인해주세요");
+				$(this).focus();
+				return false;
+			}
+			var year = $("#Select-Material-Order-Year option:selected").val();
+			var month = $("#Select-Material-Order-Month option:selected").val();
+			var day = $("#Select-Material-Order-Day option:selected").text();
+			date = year + "-" + month + "-" + day;
+		});
+		$.ajax({
+			url:"/owner/delivery/payment/list",
+			type:"post",
+			data:{store_no : store_no, date:date},
+			success:function(data){
+				alert(data);
+				alert(data.materialPaymentList.length)
+				$.each(data.materialPaymentList, function(index, list){
+					var html = '<tr class="material_list_tr"><td>'+list.member_name+'</td><td>'+list.material_payment_date+'</td><td>'+list.store_name+'</td><td><a id="'+list.material_payment_no+'" class="Show-Order-List-Btn" href="#" style="cursor:pointer;">목록 보기</a></td><td>'+list.material_total_price+'원</td></tr>';
+					$("#Material-Order-Table tbody").append(html);
+				});
+			}
+		});
+	});
+	
+	//상세보기 클릭
+	$(document).on("click", ".Show-Order-List-Btn", function(){
+		$(".material_detail_list_tr").remove();
+		var index = $(".Show-Order-List-Btn").index(this);
+		var material_payment_no = $(".Show-Order-List-Btn").eq(index).attr("id");
+		$.ajax({
+			url:"/owner/delivery/payment/detail/list",
+			type:"post",
+			data:{material_payment_no:material_payment_no},
+			success:function(data){
+				alert(data);
+				alert(data.materialPaymentDetailList.length)
+				$.each(data.materialPaymentDetailList, function(index, list){
+					var html = '<tr class="material_detail_list_tr"><td>'+list.material_name+'</td><td>'+list.material_price+'</td><td>'+list.material_count+'</td><td>'+list.material_total_price+'</td></tr>';
+					$("#material_detail_table tbody").append(html);
+				});
+			}
+		});
+		$("#Show-Order-List").show();
 	});
 });
 </script>
@@ -76,8 +129,12 @@ a{
 		<div class="dropdown">
 				<a  href="#" data-toggle="dropdown" aria-haspopup="ture" aria-expanded="true">매장을 선택하세요.<span class="caret"></span></a>
 				 <ul id="orderlist-Store-Btn" class="dropdown-menu" role="menu" aria-labelledby="Select-Store-Btn" >
-				    <li><a href="#">회기점</a></li>
-				    <li><a href="#">강남점</a></li>
+				    <c:forEach var="storeDto" items="${storeList}">
+				    	 <li>
+				    	 	<a class="select_store_btn" href="#">${storeDto.store_name}</a>
+				    	 	<input class="select_store_no" type="hidden" value="${storeDto.store_no}"/>
+				    	 </li>
+				    </c:forEach>
 				 </ul>
 		</div>
 		<div id="order-list" style="display:none;">
@@ -89,24 +146,67 @@ a{
 							<option>선택</option>
 							<option>2016</option>
 							<option>2017</option>
+							<option>2018</option>
+							<option>2019</option>
+							<option>2020</option>
 					</select>
 				</label> 
 				<label style="margin-left: 30px">월 
 					<select name="c"
 						id="Select-Material-Order-Month" class="form-control">
 							<option>선택</option>
-							<option>1월</option>
+							<option value="1">1월</option>
+							<option value="2">2월</option>
+							<option value="3">3월</option>
+							<option value="4">4월</option>
+							<option value="5">5월</option>
+							<option value="6">6월</option>
+							<option value="7">7월</option>
+							<option value="8">8월</option>
+							<option value="9">9월</option>
+							<option value="10">10월</option>
+							<option value="11">11월</option>
+							<option value="12">12월</option>
 					</select>
 				</label>
 				<label style="margin-left: 30px">일 
-					<select name="Select-Material-Order-Day"
-						id="c" class="form-control">
+					<select id="Select-Material-Order-Day" class="form-control">
 							<option>선택</option>
 							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+							<option>11</option>
+							<option>12</option>
+							<option>13</option>
+							<option>14</option>
+							<option>15</option>
+							<option>16</option>
+							<option>17</option>
+							<option>18</option>
+							<option>19</option>
+							<option>20</option>
+							<option>21</option>
+							<option>22</option>
+							<option>23</option>
+							<option>24</option>
+							<option>25</option>
+							<option>26</option>
+							<option>27</option>
+							<option>28</option>
+							<option>29</option>
+							<option>30</option>
+							<option>31</option>
 					</select>
 				</label>
 	
-				<button type="button" class="btn btn-success"
+				<button id="show_material_list_btn" type="button" class="btn btn-success"
 					style="margin-left: 30px">확인</button>
 			</form>
 	
@@ -119,22 +219,29 @@ a{
 					<tr>
 						<td width="10%">주문자</td>
 						<td width="10%">주문날짜</td>
-						<td width="10%">배송날짜</td>
 						<td width="10%">매장명</td>
 						<td width="10%">상품목록</td>
 						<td width="10%">결제금액</td>
 					</tr>
-					<tr>
-						<td>김준혁</td>
-						<td>2016-07-10</td>
-						<td>2016-07-15</td>
-						<td>종각점</td>
-						<td><a class="Show-Order-List-Btn" href="#" style="cursor:pointer;">목록 보기</a></td>
-						<td>100,000원</td>
-					</tr>
 				</tbody>
 			</table>
 		</div>
+
+		<nav>
+			<ul class="pagination">
+				<li class="disabled"><span> <span aria-hidden="true">&laquo;</span>
+				</span></li>
+				<li class="active"><span>1 <span class="sr-only">(current)</span></span>
+				<li class="active"><span>2 <span class="sr-only">(current)</span></span>
+				<li class="active"><span>3 <span class="sr-only">(current)</span></span>
+				<li class="active"><span>4 <span class="sr-only">(current)</span></span>
+				<li class="active"><span>5 <span class="sr-only">(current)</span></span>
+
+
+					...</ul>
+		</nav>
+
+			
 	</div>
 	
 	<jsp:include page="Order_List_Modal.jsp"></jsp:include>

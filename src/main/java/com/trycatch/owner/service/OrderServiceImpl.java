@@ -12,8 +12,13 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.trycatch.owner.domain.MaterialCartDTO;
+import com.trycatch.owner.domain.MaterialOrderDTO;
+import com.trycatch.owner.domain.MaterialPaymentDTO;
 import com.trycatch.owner.domain.MenuDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
+import com.trycatch.owner.persistence.MaterialCartDAO;
+import com.trycatch.owner.persistence.MaterialDAO;
 import com.trycatch.owner.persistence.MenuDAO;
 import com.trycatch.owner.persistence.OrderDAO;
 
@@ -23,6 +28,10 @@ public class OrderServiceImpl implements OrderService {
 	private OrderDAO dao;
 	@Inject
 	private MenuDAO menuDao;
+	@Inject
+	private MaterialDAO materialDao;
+	@Inject
+	private MaterialCartDAO cartDao;
 	
 	@Inject
 	private DataSourceTransactionManager transactionManager;
@@ -57,6 +66,23 @@ public class OrderServiceImpl implements OrderService {
 			err.printStackTrace();
 			transactionManager.rollback(status);
 			return null;
+		}
+	}
+	
+	@Override
+	public boolean insertMaterial_Payment(MaterialPaymentDTO dto, MaterialOrderDTO orderDto) {
+		try{
+			System.out.println(dao.insertMaterial_Payment(dto) + "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+			MaterialPaymentDTO materialDto = materialDao.getNowMaterialPayment();
+			System.out.println("페이먼트 넘버좀 가져와봐 : " + materialDto.getMaterial_payment_no());
+			MaterialCartDTO cart = new MaterialCartDTO();
+			cart.setMember_no(dto.getMember_no());
+			cartDao.deleteCart(cart);
+			orderDto.setMaterial_payment_no(materialDto.getMaterial_payment_no());
+			System.out.println("시발 : " + dao.insertMaterial_Order(orderDto));
+			return true;
+		}catch(Exception err){
+			return false;
 		}
 	}
 }

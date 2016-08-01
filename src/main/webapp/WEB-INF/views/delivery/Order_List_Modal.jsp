@@ -1,12 +1,3 @@
-<!-- 
-/*
- *  Description :  회원 구매 내역 상품 리스트 모달
- *  Created : 2016-07-08
- *  Author : 김준혁
- *  
- *  Revisions :
- */
- -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -33,7 +24,7 @@
 
 <div id="Show-Order-List">
 	<div>
-		<table class="table table-striped table-bordered table-list">
+		<table id="material_detail_table" class="table table-striped table-bordered table-list">
 			<!-- Member-Purchase-Table-Header -->
 			<thead>
 				<tr>
@@ -45,19 +36,7 @@
 			</thead>
 			<!-- Member-Purchase-Table-Body -->
 			<tbody>
-				<tr>
-					<td>계피</td>
-					<td>300원</td>
-					<td>5개</td>
-					<td>1,500원</td>
-				</tr>
-				
-				<tr>
-					<td>시럽</td>
-					<td>5,000원</td>
-					<td>1개</td>
-					<td>5,000원</td>
-				</tr>
+			
 			</tbody>
 		</table>
 	</div>

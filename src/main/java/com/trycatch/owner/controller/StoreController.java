@@ -3,6 +3,7 @@ package com.trycatch.owner.controller;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,5 +36,13 @@ public class StoreController {
 		}
 		req.getSession().setAttribute("store_dto", dto);
 		return true;
+	}
+	@RequestMapping("/findownerstore")
+	public @ResponseBody Object findownerstorelist(int member_no) throws Exception{
+		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&" + member_no);
+		JSONObject json = new JSONObject();
+		System.out.println(service.getStoreList_member_no(member_no));
+		json.put("storelist", service.getStoreList_member_no(member_no));
+		return json;
 	}
 }
