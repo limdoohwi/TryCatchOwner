@@ -26,7 +26,6 @@ public class CommunityDAOImpl implements CommunityDAO {
 	
 	@Override
 	public List<CommunityDTO> getCommunityList(Integer limit) {
-		System.out.println("daolimit" + limit);
 		return sqlSession.selectList(NAMESPACE+".communityList",limit);
 	}
 
@@ -95,18 +94,16 @@ public class CommunityDAOImpl implements CommunityDAO {
 		try{
 			int i = sqlSession.selectOne(NAMESPACE+".communitylikecheck",dto);
 			if(i==0){
+				System.out.println("�μ�Ʈ");
 				sqlSession.insert(NAMESPACE+".communityLikeInsert",dto);
-				System.out.println("인서트 완료");
 				return true;
 				}
 			else if(i>0){
-				System.out.println("즐찾 삭제");
 				sqlSession.delete(NAMESPACE+".communityLikeDelete",dto);
 				return false;
 			}
 			}
 		catch(Exception err){
-			System.out.println("익셉션"+err);
 			sqlSession.delete(NAMESPACE+".communityLikeDelete",dto);
 		}
 		return false;

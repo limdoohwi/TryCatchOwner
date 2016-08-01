@@ -46,13 +46,11 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public List<CommunityReplyDTO> replyCommunityList(Integer community_no) {
-		System.out.println(dao.replyCommunityList(community_no).size());
 		return dao.replyCommunityList(community_no);
 	}
 
 	@Override
 	public List<CommunityDTO> getCommunityList(Integer limit) {
-		System.out.println("servicelimit" + limit);
 		return dao.getCommunityList(limit);
 	}
 
