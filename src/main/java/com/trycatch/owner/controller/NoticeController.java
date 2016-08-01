@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +34,14 @@ public class NoticeController {
 	@Inject
 	private NoticeService service;
 	
+	private Logger logger = LoggerFactory.getLogger(NoticeController.class);
 	/**
 	 * @author Leejunyung
 	 * 모든 공지사항 글 불러오는 함수
 	 */
 	@RequestMapping("/notice/Notice")
 	public void listAll(Model model, NoticeDTO notice, HttpServletRequest req)throws Exception{
+		logger.info("Notice 들어옴");
 		model.addAttribute("notice_list", service.getNoticeList());
 		model.addAttribute("notice_reply_list", service.getNoticeReplyList());
 	}
@@ -75,6 +79,7 @@ public class NoticeController {
 	 */
 	@RequestMapping("/notice/reply_insert")
 	public String insertReply(NoticeDTO notice,RedirectAttributes rttr, HttpServletRequest req) throws Exception{
+		logger.info("reply_insert 들어옴");
 		String notice_content = req.getParameter("reply_content");
 		int notice_pos = Integer.parseInt(req.getParameter("notice_pos"));
 		int notice_group = Integer.parseInt(req.getParameter("notice_num"));

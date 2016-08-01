@@ -186,16 +186,16 @@
 	              </div>
 	            </div>
 	    		<!-- Reply 작성하는 곳 -->
-	    		<form action="/owner/notice/reply_insert" method="post" id="notice_insert_reply_form">
 	            <div class="box-footer">
 	                <div class="img-push">
-	                  <input type="text" name="reply_content" class="Notice-Reply-Text form-control input-sm" placeholder="Press enter to post comment">
-	                  <input type="hidden" name="notice_pos" value="${notice.notice_pos }">
-	                  <input type="hidden" value="${notice.notice_num}" name="notice_num">
-	                  <input type="hidden" value="${member_dto.member_name}" name="reply_member_name">
+	    			  <form action="/owner/notice/reply_insert" method="post" id="notice_insert_reply_form">
+	                    <input type="text" name="reply_content" class="Notice-Reply-Text form-control input-sm" placeholder="Press enter to post comment">
+	                  	<input type="hidden" name="notice_pos" value="${notice.notice_pos }">
+	                  	<input type="hidden" value="${notice.notice_num}" name="notice_num">
+	                  	<input type="hidden" value="${member_dto.member_name}" name="reply_member_name">
+	                  </form>
 	                </div>
 	            </div>
-	            </form>
 	            </c:if>
 	          </div>
 	        </div>
@@ -259,7 +259,8 @@
 						 return false;
 					 }
 					 else{
-						 $("#notice_insert_reply_form").submit();
+						 alert("여기도 두번이나 들어오나?");
+						// $("#notice_insert_reply_form").submit();
 					 }
 			  }
 		  });

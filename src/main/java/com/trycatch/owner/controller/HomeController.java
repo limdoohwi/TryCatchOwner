@@ -63,13 +63,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/log_in", method = RequestMethod.GET)
 	public String log_in(HttpServletRequest req, Model model) throws Exception {
-		MemberDTO dto = (MemberDTO)req.getSession().getAttribute("member_dto");
-		test();
 		return "Main";
-	}
-	public void test(){
-		MessengerContentDTO dto =messengerService.getRecentContent();
-		System.out.println(dto.toString());
 	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() throws Exception {
