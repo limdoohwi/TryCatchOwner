@@ -1,3 +1,26 @@
+<!-- 
+/*
+ * 	JSP: TryCoffee_Owner.jsp
+ *  Description: Notice에 모든 것을 출력 및 저장하는 JSP 페이지 
+ *  Created: 2016­07­20
+ *	Author: 이준영
+ *  Mail: 13nfri@naver.com
+ * 	Copyrights 2016-07-18 by Try{}Catch
+ *
+ *	Revisions:
+ * 	1. When & Who : 2016-07-20 by 이준영
+ * 	2. What		  : 전반적인  UI구현
+ *  
+ * 	1. When & Who : 2016-07-25 by 이준영
+ * 	2. What		  : 공지사항글 저장 및 삭제 구현, 댓글 저장 및 삭제 구현
+ *  
+ * 	1. When & Who : 2016-07-27 by 이준영
+ * 	2. What		  : 공지사항글 삭제 시 해당하는 댓글 삭제 구현, 해당하는 글에 달린 댓글 출력 구현
+ *
+ * 	1. When & Who : 2016-07-30 by 이준영
+ * 	2. What		  : 페이징 구현
+ */
+ -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -86,7 +109,7 @@
               </div>
             </div>
             <div class="Notice-Write-Div box-body">
-              <form id="notice_insert_form" method="post" action="/owner/notice.insert">
+              <form id="notice_insert_form" method="post" action="/owner/notice/insert">
               <textarea name="notice_content" id="Notice-Write-Text-Area" rows="10" cols="334" placeholder="글쓰기" required="required" wrap="hard"></textarea>
                <input type="hidden" value="${member_dto.member_name}" name="member_name">
               <button type="button" id="Notice-Write-Btn" class="btn btn-success btn-xs">글쓰기</button>              
@@ -128,13 +151,12 @@
 	                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 	              </div>
 	            </div>
-	            <form method="post" action="/owner/notice.delete">
+	            <form method="post" action="/owner/notice/delete">
 		            <div class="box-body">
 		             ${notice.notice_content}
 		              <c:if test="${member_dto.member_code == 3}">
 		              	<button type="submit" class="delete_button btn btn-danger btn-xs" id="delete_button"><i class="fa fa-trash-o"></i>삭제</button>
 		              </c:if>
-		              <!-- 좋아요 및 댓글 Count Number -->
 		              <span class="pull-right text-muted"></span>
 		            </div>
 	            <input type="hidden" value="${notice.notice_num}" name="notice_num">
@@ -145,7 +167,7 @@
 	                <div class="comment-text">
 	                <c:forEach items="${notice_reply_list}" var="reply" >
 		              	<c:if test="${notice.notice_num == reply.notice_group }">
-		        		<form method="post" action="/owner/notice.reply.delete" id="reply_delete_form">  
+		        		<form method="post" action="/owner/notice/reply_delete" id="reply_delete_form">  
 		                      <span class="Notice-Writer-User-Name">
 		                       ${reply.member_name } 
 		                      <c:if test="${member_dto.member_code == 3 || member_dto.member_name == reply.member_name}">
@@ -154,7 +176,7 @@
 		                        <span class="text-muted pull-right">${reply.notice_date}</span>
 		                      </span><br/>
 		                  <!-- Reply Content -->
-		                      ${reply.notice_content }
+		                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${reply.notice_content }
 		        		 	<hr/>
 		                 	<input type="hidden" name="reply_delete_num" value="${reply.notice_num}"/>      
 		        		 </form>
@@ -164,7 +186,7 @@
 	              </div>
 	            </div>
 	    		<!-- Reply 작성하는 곳 -->
-	    		<form action="/owner/notice.reply.insert" method="post" id="notice_insert_reply_form">
+	    		<form action="/owner/notice/reply_insert" method="post" id="notice_insert_reply_form">
 	            <div class="box-footer">
 	                <div class="img-push">
 	                  <input type="text" name="reply_content" class="Notice-Reply-Text form-control input-sm" placeholder="Press enter to post comment">
