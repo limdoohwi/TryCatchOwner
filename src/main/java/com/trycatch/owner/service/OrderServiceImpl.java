@@ -13,8 +13,12 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.trycatch.owner.domain.MaterialCartDTO;
+import com.trycatch.owner.domain.MaterialOrderDTO;
+import com.trycatch.owner.domain.MaterialPaymentDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
-import com.trycatch.owner.persistence.MenuDAO;
+import com.trycatch.owner.persistence.MaterialCartDAO;
+import com.trycatch.owner.persistence.MaterialDAO;
 import com.trycatch.owner.persistence.OrderDAO;
 
 @Service
@@ -22,7 +26,9 @@ public class OrderServiceImpl implements OrderService {
 	@Inject
 	private OrderDAO dao;
 	@Inject
-	private MenuDAO menuDao;
+	private MaterialCartDAO cartDao;
+	@Inject
+	private MaterialDAO materialDao;
 	
 	@Inject
 	private DataSourceTransactionManager transactionManager;
@@ -39,22 +45,22 @@ public class OrderServiceImpl implements OrderService {
 		try {
 			List<Integer> numberList = dao.getMenu_Payment_noList(store_no);
 			List<Order_InformationDTO> list = null;
-			List<Order_InformationDTO> resultList = new ArrayList();
-
+			List<Order_InformationDTO> resultList = new ArrayList<>();
+			
 			int menu_payment_no = 0;
 			for(int i=0; i<numberList.size(); i++){
 				menu_payment_no = numberList.get(i);
 				list = dao.getOrder_Information(menu_payment_no, member_no, store_no, start_Page, asce, search_order_info);
 				for(int j=0; ; j++){
 					if(j==0){
-						list.get(j).setMenu_total_list(list.get(j).getMenu_name() + "/" + list.get(j).getMenu_count() +"ÀÜ/" + list.get(j).getMenu_option() +",");
+						list.get(j).setMenu_total_list(list.get(j).getMenu_name() + "/" + list.get(j).getMenu_count() +"ï¿½ï¿½/" + list.get(j).getMenu_option() +",");
 					}
 					if(j+1 >= list.size()){
 						j = 0;
 						resultList.add(list.get(j));
 						break;
 					}
-					list.get(0).setMenu_total_list(list.get(0).getMenu_total_list() + list.get(j+1).getMenu_name() + "/" + list.get(j+1).getMenu_count() +"ÀÜ/" + list.get(j+1).getMenu_option() +",");
+					list.get(0).setMenu_total_list(list.get(0).getMenu_total_list() + list.get(j+1).getMenu_name() + "/" + list.get(j+1).getMenu_count() +"ï¿½ï¿½/" + list.get(j+1).getMenu_option() +",");
 				}
 			}
 			transactionManager.commit(status);
@@ -63,6 +69,21 @@ public class OrderServiceImpl implements OrderService {
 			err.printStackTrace();
 			transactionManager.rollback(status);
 			return null;
+		}
+	}
+	
+	@Override
+	public boolean insertMaterial_Payment(MaterialPaymentDTO dto, MaterialOrderDTO orderDto) {
+		try{
+			System.out.println(dao.insertMaterial_Payment(dto) + "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+			MaterialPaymentDTO materialDto = materialDao.getNowMaterialPayment();
+			MaterialCartDTO cart = new MaterialCartDTO();
+			cart.setMember_no(dto.getMember_no());
+			cartDao.deleteCart(cart);
+			orderDto.setMaterial_payment_no(materialDto.getMaterial_payment_no());
+			return true;
+		}catch(Exception err){
+			return false;
 		}
 	}
 }

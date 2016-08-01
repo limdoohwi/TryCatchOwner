@@ -316,7 +316,7 @@
         </li>
         <li>
         <!-- 재료 주문 -->
-          <a href="#">
+          <a href="/owner/delivery/Delivery">
             <i class="fa fa-cart-plus"></i> <span>재료 주문</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>

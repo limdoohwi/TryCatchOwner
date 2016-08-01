@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,27 +13,86 @@
 <meta name="author" content="">
 
 <!-- Bootstrap Core CSS -->
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/owner/resources/bootstrap_delivery/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="bootstrap/css/stylish-portfolio.css" rel="stylesheet">
+<link href="/owner/resources/bootstrap_delivery/css/stylish-portfolio.css" rel="stylesheet">
 
 <!-- Custom Fonts -->
-<link href="bootstrap/font-awesome/css/font-awesome.min.css"
+<link href="/owner/resources/bootstrap_delivery/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-<link
-	href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
+<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
 	rel="stylesheet" type="text/css">
 
 <!-- jQuery -->
-<script src="bootstrap/js/jquery.js"></script>
+<script src="/owner/resources/bootstrap_delivery/js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="/owner/resources/bootstrap_delivery/js/bootstrap.min.js"></script>
 <!-- Custom Theme JavaScript -->
 <script>
-	// Scrolls to the selected menu item on the page
-	$(function() {
+	$(
+		function(){
+			$.ajax({
+				url:"/owner/list.cart",
+				type:"post",
+				success:function(data){
+					cart_list(data);
+				},
+			error:function(){
+				alert("리스트  실패")
+				}
+			}); 
+			
+			$(".btn-cart-material").click(
+				function(){
+					var index = $(".btn-cart-material").index(this);
+					var material_no = $(".btn-cart-material").eq(index).val();
+					if($(".form-count").eq(index).val()==''){
+						alert("수량을 입력하세요.");
+					}else{
+						var material_cnt = $(".material_cnt").eq(index).val();						
+					$.ajax({
+						url:"/owner/insert.cart",
+						type:"post",	
+						data:{
+							material_no:material_no,
+							material_cnt:material_cnt,
+						},
+						success:function(data){
+							cart_list(data);
+						},
+						error:function(){
+							alert("인서트 실패")
+							return false;
+						}
+					});
+				  }
+				}	
+			);
+			//
+			function cart_list(data){	
+				
+				var html = "<h4>장바구니</h4>";
+				$.each(data.cartlist, function(index,jsonData){
+					html +='<ul class="list-group" style="color:black">'
+					html += '<div>';
+					html += '<li class="list-group-item">'
+					html += '<input class="material_no_hidden" type="hidden" name="material_name" value='+jsonData.material_no + ' />'
+					html += '<span class="Material-Quantity badge">'+jsonData.material_count+'</span>'
+					html += jsonData.material_name
+					html += '</li>'
+					html += '<a data-toggle="tooltip" data-placement="top" title="수량 +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>'
+					html += '<a data-toggle="tooltip" data-placement="top" title="수량 -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>'
+					html += '<a data-toggle="tooltip" data-placement="top" title="상품 취소" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>'
+					html += '</div>'
+					html += '</ul>'	
+				});
+				$("#cart_list").html(html);
+			}
+			
+			
+					
 		//ToolTip
 		$('[data-toggle="tooltip"]').tooltip();
 
@@ -84,49 +144,128 @@
 		});
 		//Coffee-Product-Order-Btn Click Show Confrim Order
 		$("#Coffee-Product-Order-Btn").click(function(){
+			var size = $(".list-group").length;
+			if(size==0){
+				alert("장바구니 상품이 없습니다.");
+				return false;
+			}
 			if(confirm("이대로 주문하시겠습니까?")){
-				$(this).attr("href", "front?cmd=material_order_confirm")
+				alert("주문해 이 시뷜레몬아")
+				 location.href = "/owner/delivery/Order";
 			}
 		});
 		//Cake-Product-Order-Btn Click Show Confrim Order
 		$("#Cake-Product-Order-Btn").click(function(){
 			if(confirm("이대로 주문하시겠습니까?")){
+				alert("낢 ㅗㅅ믿어?")
 				$(this).attr("href", "front?cmd=material_order_confirm")
 			}
 		});
 		//Material-Quantity-Plus-Btn Click Quantity +1
-		$(".Material-Quantity-Plus-Btn").click(function(){
-			var index = $(".Material-Quantity-Plus-Btn").index(this);
-			var quantity = $(".Material-Quantity").eq(index);
-			$(quantity).text(Number($(quantity).text()) + 1);
+		$(document).on('click',".Material-Quantity-Plus-Btn", function(){
+			var eq = $(".Material-Quantity-Plus-Btn").index(this);
+			$.ajax({
+				url:"/owner/update.cart",
+				type:"post",
+				data:{
+					param: "plus",
+					material_no:$(".material_no_hidden").eq(eq).val(),	
+				},
+				success:function(data){
+					cart_list(data);
+				},
+				error:function(){
+					alert("plus update 실패");
+					return false;
+				}
+			});
 		});
+		
+		$(document).on('blur',".Material-Quantity badge", function(){	
+			var eq = $(".Material-Quantity badge").index(this);
+			$.ajax({
+				url:"/owner/update.cart",
+				type:"post",
+				data: {
+					param: "count",
+					material_no:$(".material_no_hidden").eq(eq).val(),
+					material_count:$(".Material-Quantity badge").eq(eq).val()
+				},
+				success:function(data){
+					cart_list(data);
+				},
+				error:function(){
+					alert("update 오류");
+					return false;
+				}
+			});	
+		});
+		
+		
 		//Material-Quantity-Minus-Btn Click Quantity -1
-		$(".Material-Quantity-Minus-Btn").click(function(){
-			var index = $(".Material-Quantity-Minus-Btn").index(this);
-			var quantity = $(".Material-Quantity").eq(index);
-			if($(quantity).text() == 1){
-				alert("더 이상 수량을 감소시킬 수 없습니다.");
-				return false;
-			}
-			$(quantity).text(Number($(quantity).text()) -1);
-		});
+		//$(".Material-Quantity-Minus-Btn").click(function(){
+			$(document).on('click',".Material-Quantity-Minus-Btn", function(){
+				var eq = $(".Material-Quantity-Minus-Btn").index(this);
+				if($(".Material-Quantity").eq(eq).text()=='1'){
+					alert("더 이상 줄일 수 없습니다.");
+					return false;
+				}
+				else{
+				$.ajax({
+						url:"/owner/update.cart",
+						type:"post",
+						data: {
+							param: "minus",
+							material_no:$(".material_no_hidden").eq(eq).val(),	
+						},
+						success:function(data){
+							cart_list(data);
+						},
+						error:function(){
+							alert("minus update 오류");
+							return false;
+						}
+				});	
+				}
+			});
+
+		
 		//Material-Cart-List-Remove-Btn Click List Remove
-		$(".Material-Cart-List-Remove-Btn").click(function(){
-			var index = $(".Material-Cart-List-Remove-Btn").index(this);
-			$(".Material-Cart-List-Remove-Btn").eq(index).parent().remove();
+		$(document).on('click',".Material-Cart-List-Remove-Btn",function(){
+			var eq = $(".Material-Cart-List-Remove-Btn").index(this);
+			alert($(".material_no_hidden").eq(eq).val());
+			$.ajax({
+					url:"/owner/delete.cart",
+					type:"post",
+					data:{
+						material_no:$(".material_no_hidden").eq(eq).val(),
+					},
+					success:function(data){
+						cart_list(data);
+						alert("물품이 삭제 되었습니다.")
+					},
+					error:function(){
+						alert("delet 오류");
+						return false;
+					}
+			});
 		});
 		
 		$(window).scroll(function () {
 			var scroll = $(document).scrollTop();
 			//Scroll In Services Area Show Cart Div 
 			if(scroll > 825 && scroll < 1800){
-				$("#Material-Cart-Div").show();
+				$("#cart_list").show();
 			}
 			else{
-				$("#Material-Cart-Div").hide();
+				$("#cart_list").hide();
 			}
 		}); 
+		
+		
 	});
+	
+	
 </script>
 <style>
 .btn-success {
@@ -137,48 +276,18 @@
 
 <body>
 	<!-- Cart -->
-	<div id="Material-Cart-Div" class="col-sm-2" style="color:white; display:none; background-color:black; opacity: 0.5; margin-right: 0px !important; position: fixed;">
-		<h4>장바 구니</h4>
-		<ul class="list-group" style="color:black">
-		  <div>
-			  <li class="list-group-item">
-			    <span class="Material-Quantity badge">14</span>
-			    계피가루
-			  </li>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="상품 취소" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>
-		  </div>
-		  <div>
-			  <li class="list-group-item">
-			    <span class="Material-Quantity badge">14</span>
-			    송진가루
-			  </li>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="상품 취소" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>
-		  </div>
-		  <div>
-			  <li class="list-group-item">
-			    <span class="Material-Quantity badge">14</span>
-			    원두
-			  </li>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="수량 -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>
-			  <a data-toggle="tooltip" data-placement="top" title="상품 취소" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>
-		  </div>
-		</ul>
+	<div id="cart_list" class="col-sm-2" style="color:white; background-color:black; opacity: 0.5; margin-right: 0px !important; position: fixed;">
 	</div>
 	<!-- Navigation -->
 	<a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i
 		class="fa fa-bars"></i></a>
 	<nav id="sidebar-wrapper">
 		<ul class="sidebar-nav">
-			<a id="menu-close" href="#"
-				class="btn btn-light btn-lg pull-right toggle"><i
-				class="fa fa-times"></i></a>
+			<a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle">
+				<i class="fa fa-times"></i>
+			</a>
 			<li class="sidebar-brand"><a href="#top">TryCatch Delivery</a></li>
-			<li><a href="#top">주문 내역 보기</a></li>
+			<li><a href="/owner/delivery/Order_list">주문 내역 보기</a></li>
 			<li>
 			<div class="dropdown">
 				<a id="Select-Store-Btn" href="#" data-toggle="dropdown" aria-haspopup="ture" aria-expanded="true">매장 선택<span class="caret"></span></a>
@@ -222,11 +331,11 @@
 	<!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
 	<section id="services" class="services bg-primary">
 		<div class="container">
-			<div class="row text-center">
-				<div class="col-lg-10 col-lg-offset-1">
+			<div class="col-lg-12 text-center" >
+				<div class="col-lg-12" >
 					<h2>Our Services</h2>
 					<hr class="small">
-					<div class="row col-md-offset-4">
+					<div class="row col-md-offset-4" >
 						<div class="col-md-3 col-sm-6">
 							<div class="service-item">
 								<span class="fa-stack fa-4x"> <i
@@ -274,39 +383,45 @@
 						<!-- Material -->
 						<div class="col-md-4">
 							<div class="portfolio-item">
-								<div class="row">
-									<img class="img-portfolio img-responsive"
-										src="bootstrap/img/portfolio-1.jpg">
-								</div>
+								<!-- 담기 -->
 								<div class="row" style="margin-top: 5px">
-									<form class="form-horizontal">
-										<!-- Material Name -->
-										<div class="form-group">
-											<h3>계피 가루(20kg)</h3>
-										</div>
-										<!-- Material Price -->
-										<div class="form-group">
-											<h4>300원</h4>
-										</div>
-										<!-- Material Quantity -->
-										<div class="form-group">
-											<label for="inputEmail3" class="col-sm-2 control-label">수량</label>
-											<div class="col-sm-8">
-												<input type="email" class="form-control" id="inputEmail3"
-													placeholder="상품 수량">
+									<c:set var="material_coffee" value="${materialcoffee}"/>
+									<c:forEach items="${material_coffee}" var="coffeelist" varStatus="material_status">							
+										<form class="form-horizontal" method="post" action="add">
+											<div style="display:inline-block;">
+												<!-- Material Name -->
+												<div class="form-group">
+													<h3>${coffeelist.material_name}</h3>
+												</div>
+												<!-- Material Price -->
+												<div class="form-group">
+													<h4>${coffeelist.material_price}원</h4>
+												</div>
+												<!-- Material Quantity -->
+												<div class="form-group">
+													<label  class="col-sm-2 control-label"></label>
+													<div class="col-sm-8">														
+														<input class="form-count material_cnt" 
+															placeholder="상품 수량" >
+													</div>
+												</div>
+						
+												<!-- 담기 button -->
+												<div class="form-group">
+													<div class="col-sm-2 col-sm-offset-2">
+														<button id="Cart-add-btn" type="button"
+															class="btn btn-danger btn-cart-material" value="${coffeelist.material_no}">담기</button>
+														&nbsp;&nbsp;
+													</div>
+												</div>
 											</div>
-										</div>
-										<!-- 담기 button -->
-										<div class="form-group">
-											<div class="col-sm-2 col-sm-offset-2">
-												<button id="User-Log-In-Btn" type="button"
-													class="btn btn-danger btn-cart-material">담기</button>
-												&nbsp;&nbsp;
-											</div>
-										</div>
-									</form>
+											<c:if test="${material_status.count == 3}">
+												<br/>
+											</c:if>
+										</form>
+									</c:forEach>
 								</div>
-							</div>
+							</div> 
 						</div>
 					</div>
 					<a id="Coffee-Product-Order-Btn" class="btn btn-success btn-lg">주문</a>
@@ -329,44 +444,43 @@
 						<!-- Material -->
 						<div class="col-md-4">
 							<div class="portfolio-item">
-								<div class="row">
-									<img class="img-portfolio img-responsive"
-										src="bootstrap/img/portfolio-1.jpg">
-								</div>
+								<!-- 담기 -->
 								<div class="row" style="margin-top: 5px">
+								<c:set var="material_cake" value="${materialcake}"/>
+									<c:forEach items="${material_cake}" var="cakelist" varStatus="material_status">
 									<form class="form-horizontal">
 										<!-- Material Name -->
 										<div class="form-group">
-											<h3>밀가루(20kg)</h3>
+											<h3>${cakelist.material_name}</h3>
 										</div>
 										<!-- Material Price -->
 										<div class="form-group">
-											<h4>300원</h4>
+											<h4>${cakelist.material_price}원</h4>
 										</div>
 										<!-- Material Quantity -->
 										<div class="form-group">
-											<label for="inputEmail3" class="col-sm-2 control-label">수량</label>
+											<label for="inputEmail3" class="col-sm-2 control-label"></label>
 											<div class="col-sm-8">
-												<input type="email" class="form-control" id="inputEmail3"
+												<input type="email" class="form-count material_cnt" id="inputEmail3"
 													placeholder="상품 수량">
 											</div>
 										</div>
 										<!-- 담기 button -->
 										<div class="form-group">
-											<div class="col-sm-2 col-sm-offset-2">
-												<button id="User-Log-In-Btn" type="button"
-													class="btn btn-danger btn-cart-material">담기</button>
+											<div style="margin-left:95px"class="col-sm-2 col-sm-offset-2">
+												<button id="Cart-add-btn" type="button"
+													class="btn btn-danger btn-cart-material" value="${cakelist.material_no}">담기</button>
 												&nbsp;&nbsp;
 											</div>
 										</div>
 									</form>
+									</c:forEach>
 								</div>
 							</div>
 						</div>
 					</div>
 					<a id="Cake-Product-Order-Btn" class="btn btn-success btn-lg">주문</a>
 					<button id="Cake-Order-Cancel-Btn" class="btn btn-dark btn-lg">취소</button>
-					<input id="test" type="text" />
 				</div>
 				<!-- /.col-lg-10 -->
 			</div>
@@ -417,5 +531,4 @@
 		</div>
 	</footer>
 </body>
-
 </html>

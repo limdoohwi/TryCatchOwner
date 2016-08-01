@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.trycatch.owner.domain.StoreDTO;
 import com.trycatch.owner.service.StoreService;
 
-import net.sf.json.JSONObject;
 
 @Controller
 public class StoreController {
@@ -23,8 +23,8 @@ public class StoreController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
 	/**
-	 * @author ±èÁØÇõ
-	 * ¸ÞÀÎ ¸Þ´º My Store¿¡¼­ ¸ÅÀå ¸®½ºÆ®Áß ÇÏ³ª¸¦ ¼±ÅÃÇßÀ» ¶§ ¼±ÅÃµÈ ¸ÅÀåÀ» Session¿¡ ÀúÀå
+	 * @author ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ My Storeï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Sessionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	 * @category Ajax
 	 * @param store_no
 	 * @param req
@@ -33,7 +33,7 @@ public class StoreController {
 	 */
 	@RequestMapping("/set/owner_store")
 	public @ResponseBody boolean setStorePOST(int store_no, HttpServletRequest req) throws Exception{
-		logger.info("¼±ÅÃµÈ ¸ÅÀå ¹øÈ£(setStorePost) : " + store_no);
+		logger.info("ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£(setStorePost) : " + store_no);
 		StoreDTO dto = service.getStore_store_no(store_no);
 		logger.info("setOwnerStor : " + dto.equals(null));
 		if(dto == null){
@@ -43,7 +43,7 @@ public class StoreController {
 			req.getSession().removeAttribute("store_dto");
 		}
 		req.getSession().setAttribute("store_dto", dto);
-		logger.info("¸ÅÀå ¼¼¼Ç¿¡ ÀúÀå..");
+		logger.info("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¿ï¿½ ï¿½ï¿½ï¿½ï¿½..");
 		return true;
 	}
 	
@@ -54,5 +54,13 @@ public class StoreController {
 		JSONObject store_list = new JSONObject();
 		store_list.put("storeList",service.getStoreList(dto));
 		return store_list;
+	}
+	@RequestMapping("/findownerstore")
+	public @ResponseBody Object findownerstorelist(int member_no) throws Exception{
+		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&" + member_no);
+		JSONObject json = new JSONObject();
+		System.out.println(service.getStoreList_member_no(member_no));
+		json.put("storelist", service.getStoreList_member_no(member_no));
+		return json;
 	}
 }

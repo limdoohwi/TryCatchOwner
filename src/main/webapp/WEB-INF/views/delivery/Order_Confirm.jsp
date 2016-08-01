@@ -1,12 +1,3 @@
-<!-- 
-/*
- *  Description :  메뉴 관리 페이지
- *  Created : 2016-06-29
- *  Author : 김준혁
- *  
- *  Revisions :
- */
- -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>

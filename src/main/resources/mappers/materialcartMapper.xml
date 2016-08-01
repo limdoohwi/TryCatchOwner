@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 보류 -->
+<mapper namespace="com.trycatch.owner.mappers.materialcartMapper">  
+	<select id="getCartList" resultType="MaterialCartDTO">
+	    select c.material_cart_no, c.member_no, c.material_no, m.material_name, m.material_price, c.material_count from material_cart c, material m where m.material_no = c.material_no and c.member_no=#{member_no}
+		<if test="material_no != 0">
+		    and c.material_no = #{material_no}
+		</if>
+	</select>
+	
+	<insert id="insertCart"> 
+	    insert into material_cart(member_no,material_no, material_count) values(#{member_no},#{material_no},#{material_count})
+	</insert>
+
+	<update id="updateCart">
+	    update material_cart 
+	    <set>
+	        <if test="material_count == 0">material_count=material_count+1</if>
+	        <if test="material_count &lt; 0">material_count=material_count-1</if>
+	        <if test="material_count &gt; 0">material_count=#{material_count}</if>
+	    </set>
+	    where material_no= #{material_no} and member_no = #{member_no}
+	</update>
+	
+	<delete id="deleteCart">
+		delete from material_cart where member_no = #{member_no}
+	</delete>
+</mapper>
+
