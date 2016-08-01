@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.trycatch.owner.domain.MemberDTO;
 import com.trycatch.owner.domain.MessengerContentDTO;
 import com.trycatch.owner.domain.StoreDTO;
@@ -63,13 +62,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/log_in", method = RequestMethod.GET)
 	public String log_in(HttpServletRequest req, Model model) throws Exception {
-		MemberDTO dto = (MemberDTO)req.getSession().getAttribute("member_dto");
-		test();
 		return "Main";
-	}
-	public void test(){
-		MessengerContentDTO dto =messengerService.getRecentContent();
-		System.out.println(dto.toString());
 	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() throws Exception {
