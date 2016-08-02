@@ -72,14 +72,14 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public boolean insertMaterial_Payment(MaterialPaymentDTO dto, MaterialOrderDTO orderDto) {
 		try{
-			System.out.println(dao.insertMaterial_Payment(dto) + "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+			//System.out.println(dao.insertMaterial_Payment(dto) + "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 			MaterialPaymentDTO materialDto = materialDao.getNowMaterialPayment();
-			System.out.println("페이먼트 넘버좀 가져와봐 : " + materialDto.getMaterial_payment_no());
+			//System.out.println("페이먼트 넘버좀 가져와봐 : " + materialDto.getMaterial_payment_no());
 			MaterialCartDTO cart = new MaterialCartDTO();
 			cart.setMember_no(dto.getMember_no());
 			cartDao.deleteCart(cart);
 			orderDto.setMaterial_payment_no(materialDto.getMaterial_payment_no());
-			System.out.println("시발 : " + dao.insertMaterial_Order(orderDto));
+			//System.out.println("시발 : " + dao.insertMaterial_Order(orderDto));
 			return true;
 		}catch(Exception err){
 			return false;

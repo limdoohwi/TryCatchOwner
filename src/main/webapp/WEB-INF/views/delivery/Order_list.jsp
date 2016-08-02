@@ -25,11 +25,56 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
 	rel='stylesheet' type='text/css'>
 <script>
-var store_no;
-var date;
+var store_no = 0;
+var date = "";
+var orderList_page = 0;
+var pagePer_num = 5;
 $(function(){
+	$(".pagination").html("");
+	var prebtn =  '<li class="page_pre_next_li"><a id="pre_btn" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+	var nextbtn = '<li class="page_pre_next_li"><a id="next_btn" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+
 	
-	$("#Show-Order-List").hide();
+	//페이지 블록 생성
+	$(".pagination").append(prebtn);
+	for(var i=orderList_page; i<pagePer_num; i++){
+		$(".pagination").append('<li class="orderList_pageNum active"><a style="cursor:pointer" class="pageNum">'+(i+1)+'</a></li>');
+	}
+	$(".pagination").append(nextbtn);
+	//페이지 버튼 클릭
+	$(document).on("click", ".pageNum", function(){
+		var page_no = $(this).text();
+		orderList_page = (Number(page_no)-1) * Number(pagePer_num);
+		$("#Material-Order-Table tr").not("#material_order_header_tr").remove();
+		callMaterialOrderList();
+	});
+	//페이지 뒤로 가기 버튼 클릭
+	$(document).on("click", "#pre_btn", function(){
+		if($(".pageNum").eq(0).text() == 1)
+			alert("더이상 뒤로갈 페이지가 없습니다.");
+		else{
+				var start = Number($(".pageNum").eq(0).text())-5;
+				var end = start+5;
+				$(".pagination").html("");
+				$(".pagination").append(prebtn);
+				for(var i=start; i<end; i++){
+					$(".pagination").append('<li class="orderList_pageNum active"><a class="pageNum">'+(i)+'</a></li>');
+			}
+				$(".pagination").append(nextbtn);
+		}
+	});
+		//페이지 앞으로 가기 버튼 클릭
+	$(document).on("click", "#next_btn", function(){
+		var start = Number($(".pageNum").eq(4).text());
+		var end = start+5;
+		$(".pagination").html("");
+		$(".pagination").append(prebtn);
+		for(var i=start; i<end; i++){
+			$(".pagination").append('<li class="orderList_pageNum active"><a class="pageNum">'+(i+1)+'</a></li>');
+	}
+		$(".pagination").append(nextbtn);
+	});
+		$("#Show-Order-List").hide();
 	$(".Show-Order-List-Btn").click(function(){
 		var index = $(".Show-Order-List-Btn").index(this);
 		$("#Show-Order-List").show();
@@ -49,6 +94,7 @@ $(function(){
 		store_no = $(".select_store_no").eq(index).val();
 		$(".material_list_tr").remove();
 		$(".material_detail_list_tr").remove();
+		callMaterialOrderList();
 	});
 	
 	//날짜 선택 후 확인 클릭
@@ -64,19 +110,6 @@ $(function(){
 			var day = $("#Select-Material-Order-Day option:selected").text();
 			date = year + "-" + month + "-" + day;
 		});
-		$.ajax({
-			url:"/owner/delivery/payment/list",
-			type:"post",
-			data:{store_no : store_no, date:date},
-			success:function(data){
-				alert(data);
-				alert(data.materialPaymentList.length)
-				$.each(data.materialPaymentList, function(index, list){
-					var html = '<tr class="material_list_tr"><td>'+list.member_name+'</td><td>'+list.material_payment_date+'</td><td>'+list.store_name+'</td><td><a id="'+list.material_payment_no+'" class="Show-Order-List-Btn" href="#" style="cursor:pointer;">목록 보기</a></td><td>'+list.material_total_price+'원</td></tr>';
-					$("#Material-Order-Table tbody").append(html);
-				});
-			}
-		});
 	});
 	
 	//상세보기 클릭
@@ -89,8 +122,10 @@ $(function(){
 			type:"post",
 			data:{material_payment_no:material_payment_no},
 			success:function(data){
-				alert(data);
-				alert(data.materialPaymentDetailList.length)
+				//alert(data);
+				//alert(data.materialPaymentDetailList.length)
+				var materialPaymentlength = data.materialPaymentDetailList.length;
+				
 				$.each(data.materialPaymentDetailList, function(index, list){
 					var html = '<tr class="material_detail_list_tr"><td>'+list.material_name+'</td><td>'+list.material_price+'</td><td>'+list.material_count+'</td><td>'+list.material_total_price+'</td></tr>';
 					$("#material_detail_table tbody").append(html);
@@ -100,6 +135,20 @@ $(function(){
 		$("#Show-Order-List").show();
 	});
 });
+
+function callMaterialOrderList(){
+	$.ajax({
+		url:"/owner/delivery/payment/list",
+		type:"post",
+		data:{store_no : store_no, date:date, start_page : orderList_page},
+		success:function(data){
+			$.each(data.materialPaymentList, function(index, list){
+				var html = '<tr class="material_list_tr"><td>'+list.member_name+'</td><td>'+list.material_payment_date+'</td><td>'+list.store_name+'</td><td><a id="'+list.material_payment_no+'" class="Show-Order-List-Btn" href="#" style="cursor:pointer;">목록 보기</a></td><td>'+list.material_total_price+'원</td></tr>';
+				$("#Material-Order-Table tbody").append(html);
+			});
+		}
+	});
+}
 </script>
 
 <style type="text/css">
@@ -125,6 +174,7 @@ a{
 
 	<div style="width: 80%; margin: auto;">
 		<h1>주문 내역보기</h1>
+		<a href="/owner/delivery/Delivery" type="button" class="btn btn-success" style="margin-left: 1400px">홈으로 가기</a>
 		<hr>
 		<div class="dropdown">
 				<a  href="#" data-toggle="dropdown" aria-haspopup="ture" aria-expanded="true">매장을 선택하세요.<span class="caret"></span></a>
@@ -214,9 +264,9 @@ a{
 	
 			<h2>내역</h2><br/>
 			<table id="Material-Order-Table" class="table table-bordered table-striped"
-				style="clear: both">
+				style="clear: both;">
 				<tbody>
-					<tr>
+					<tr id="material_order_header_tr">
 						<td width="10%">주문자</td>
 						<td width="10%">주문날짜</td>
 						<td width="10%">매장명</td>
@@ -225,21 +275,16 @@ a{
 					</tr>
 				</tbody>
 			</table>
+			
+			<nav>
+				<ul class="pagination" style="margin-left:600px">
+				</ul>
+			</nav>
+			
+			
 		</div>
 
-		<nav>
-			<ul class="pagination">
-				<li class="disabled"><span> <span aria-hidden="true">&laquo;</span>
-				</span></li>
-				<li class="active"><span>1 <span class="sr-only">(current)</span></span>
-				<li class="active"><span>2 <span class="sr-only">(current)</span></span>
-				<li class="active"><span>3 <span class="sr-only">(current)</span></span>
-				<li class="active"><span>4 <span class="sr-only">(current)</span></span>
-				<li class="active"><span>5 <span class="sr-only">(current)</span></span>
-
-
-					...</ul>
-		</nav>
+		
 
 			
 	</div>

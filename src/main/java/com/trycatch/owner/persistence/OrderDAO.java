@@ -11,6 +11,6 @@ public interface OrderDAO {
 	public List<Order_InformationDTO> getOrder_Information(int member_no);
 	public boolean insertMaterial_Payment(MaterialPaymentDTO dto);
 	public boolean insertMaterial_Order(MaterialOrderDTO dto);
-	public List<MaterialPaymentDTO> getMaterialPaymentList(int store_no, String date);
+	public List<MaterialPaymentDTO> getMaterialPaymentList(int store_no, String date, int start_page);
 	public List<MaterialPaymentDetailDTO> getMaterialPaymentDetailList(int material_payment_no);
 }

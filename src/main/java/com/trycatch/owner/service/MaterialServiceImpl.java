@@ -55,9 +55,9 @@ public class MaterialServiceImpl implements MaterialService {
 	}
 	
 	@Override
-	public JSONObject getMaterialPaymentList(int store_no, String date) {
+	public JSONObject getMaterialPaymentList(int store_no, String date, int start_page) {
 		JSONObject json = new JSONObject();
-		json.put("materialPaymentList", orderDao.getMaterialPaymentList(store_no, date));
+		json.put("materialPaymentList", orderDao.getMaterialPaymentList(store_no, date, start_page));
 		return json;
 	}
 	

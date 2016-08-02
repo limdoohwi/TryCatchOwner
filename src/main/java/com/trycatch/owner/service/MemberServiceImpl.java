@@ -31,7 +31,10 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public MemberDTO login(String member_email, String member_pw) throws Exception {
+		System.out.println(member_email);
+		System.out.println(member_pw);
 		MemberDTO dto =dao.getMember_WithPW(member_email, member_pw);
+		
 		dto.toString();
 		return dto;
 		

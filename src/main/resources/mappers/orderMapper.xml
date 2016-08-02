@@ -13,7 +13,10 @@
 	</insert>
 	<select id="getMaterialPaymentList" parameterType="hashMap" resultType="MaterialPaymentDTO">
 		select p.material_payment_no, p.material_total_price, p.material_payment_date, s.store_name, m.member_name from material_payment p, store s, member m where p.store_no = s.store_no and 
-		p.member_no = m.member_no and s.store_no = #{store_no} and date(p.material_payment_date) = #{date}
+		p.member_no = m.member_no and s.store_no = #{store_no} 
+		<if test="date != ''">
+			and date(p.material_payment_date) = #{date}
+		</if>
 	</select>
 	<select id="getMaterialPaymentDetailList" parameterType="int" resultType="MaterialPaymentDetailDTO">
 		select m.material_name, m.material_price, o.material_count, m.material_price * o.material_count as material_total_price from 

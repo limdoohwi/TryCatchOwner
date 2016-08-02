@@ -66,12 +66,14 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 	
 	@Override
-	public List<MaterialPaymentDTO> getMaterialPaymentList(int store_no, String date) {
+	public List<MaterialPaymentDTO> getMaterialPaymentList(int store_no, String date, int start_page) {
 		Map map = new HashMap();
 		map.put("store_no", store_no);
 		map.put("date", date);
+		int end_page = start_page + 5;
+		RowBounds row = new RowBounds(start_page, end_page);
 		try {
-			return sqlSession.selectList(NAMESPACE + ".getMaterialPaymentList", map);
+			return sqlSession.selectList(NAMESPACE + ".getMaterialPaymentList", map, row);
 		} catch (Exception err) {
 			return null;
 		}

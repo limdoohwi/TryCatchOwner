@@ -63,8 +63,8 @@ public class DeliveryController {
 	}
 	
 	@RequestMapping("/delivery/payment/list")
-	public @ResponseBody Object getMaterialPaymentList(int store_no, String date) throws Exception{
-		org.json.simple.JSONObject json = service.getMaterialPaymentList(store_no, date);
+	public @ResponseBody Object getMaterialPaymentList(int store_no, String date, int start_page) throws Exception{
+		org.json.simple.JSONObject json = service.getMaterialPaymentList(store_no, date, start_page);
 		return json;
 	}
 	
@@ -112,7 +112,8 @@ public class DeliveryController {
 	
 	/**
 	  * @author 손현민
-	  *	 
+	  *	 checkCart 리스트에 같은 목록이 존재 할 시 upDateCart로 뿌려주고
+	  *	 같은 목록이 존재 하지 않을 때 insertCart로 뿌려준다.
 	  */
 	@RequestMapping(value="/insert.cart", method=RequestMethod.POST)
 	public @ResponseBody Object insertCart(HttpServletRequest req, int material_no, int material_cnt){
