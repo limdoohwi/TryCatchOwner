@@ -89,39 +89,15 @@
 					<div class="box-footer box-comments">
 						<div class="box-comment">
 							<div class="comment-text">
-
-								<c:set var="community_reply_size"
-									value="${fn:length(community_reply_list)}" />
-								<c:choose>
-									<c:when test="${community_reply_size!=0}">
-										<c:forEach end="${community_reply_size}"
-											items="${community_reply_list}" var="community_reply">
-											<span class="username">
-												${community_reply.community_reply_writer} <span
-												class="text-muted pull-right">${community_reply.community_reply_date}</span>
-											</span>
-											<!-- Reply Content -->
-	                      			${community_reply.community_reply_comment}
-	                      		</c:forEach>
-									</c:when>
-									<c:when test="${community_reply_size==0}">
-	                 		댓글이 없습니다.
-	                 	</c:when>
-								</c:choose>
 							</div>
 						</div>
 					</div>
 					<!-- Reply 작성하는 곳 -->
 					<div class="box-footer">
-						<form action="/owner/community_reply" method="post">
-							<input type="hidden" name="community_no"
-								value="${communityDTO.community_no}" />
 							<div class="img-push">
-								<input type="text" name="community_reply_comment"
+								<input type="text" id="community_reply_comment"
 									class="form-control input-sm"
 									placeholder="Press enter to post comment">
-							</div>
-						</form>
 					</div>
 				</div>
 			</div>
@@ -132,8 +108,8 @@
 	  $.widget.bridge('uibutton', $.ui.button);
 	  $(function(){
 		  	bookmarkList();
-			
-			
+		  	community_reply_list();
+		  	replyList();
 			//즐겨찾기 추가
 			 $(".Book-Mark-Before").click(function(){	
 				 var divB = $(".Book-Mark-Before").eq(0);
@@ -185,7 +161,7 @@
 					 }
 				  })	  
 			  })
-		  
+		  // 해당 커뮤니티 삭제	  
 		  $("#community_del").click(function(){
 			  var conf = confirm("본인만 삭제가능합니다 삭제하시겠습니까?");
 			  if(conf){
@@ -196,6 +172,55 @@
 			  }
 		  })
 	  })
+	  	
+	  
+	  	 //댓글 쓰기
+	  	 $(document).on("keyup",$("#community_reply_comment"),function community_reply_insert(e){
+	  		 if(e.keyCode == 13){
+			  	var community_reply_comment =  $("#community_reply_comment").val();
+			  	var community_no =  $(".community_number").val();
+			  	$.ajax({
+			  		type:"post",
+			  		url:"/owner/community_reply",
+			  		data:{community_reply_comment:community_reply_comment,community_no :community_no},
+			  		datatype:"json",
+			  		success:function(data){
+							if(data == true){
+
+								$("#community_reply_comment").val("");
+								$(".comment-text").html("");								
+								community_reply_list();		
+								$("#My-Reply-List").html("");
+								replyList();
+
+							}
+			  			}
+			  		})
+	  			 }
+	 		 })
+	  
+	  
+	  	  // 댓글 리스트 불러오기
+		  function community_reply_list(){
+		  	
+				var community_no = 	$(".community_number").val();
+				
+				  $.ajax({
+					  type:"post",
+					  url:"/owner/community/replylist",
+					  data:{community_no:community_no},
+					  datatype: "json",
+					  success: function(data){
+						  $.each(data.communityreplylist, function(index , replelist){
+							  alert("날짜" + replelist.community_reply_date);
+							  var replyhtml = 	'<span class="username">'+ replelist.community_reply_writer +'<br/>'+replelist.community_reply_comment +
+													'<span class="text-muted pull-right">'+ replelist.community_reply_date +'</span>'
+												'</span>';
+								$(".comment-text").append(replyhtml);		
+						  })
+					  }
+				  })
+			  }
 	</script>
 	<!-- Footer -->
 	<jsp:include page="../layout/Footer.jsp" />

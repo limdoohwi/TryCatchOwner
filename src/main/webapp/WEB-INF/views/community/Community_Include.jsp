@@ -36,27 +36,12 @@
 			            </c:when>
 			        </c:choose>            
                    </div> 
-                 </li>
-<c:set var="myreplycommunity_list" value="${myreplycommunity_list}"/>    
-<c:set var="myreplycommunity_size" value="${fn:length(myreplycommunity_list)}"/>             
+                 </li>            
                 <li id="My-Reply" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 단 댓글
-                  <span class="label label-primary pull-right">${myreplycommunity_size}</span></a>
-                   <div id="My-Reply-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-                    <c:choose>
-                    	<c:when test="${myreplycommunity_size!=0}">
-                    		<c:forEach items="${myreplycommunity_list}" var="myreplycommunity_list">
-			                    <div style="display: block">
-			                    	<a href="/owner/community_read?community_no=${myreplycommunity_list.community_no}">${myreplycommunity_list.community_no}번 게시물에 대한 댓글 - ${myreplycommunity_list.community_reply_comment}</a>
-			                    </div>
-                    		</c:forEach>
-						</c:when>
-						<c:when test="${myreplycommunity_size==0}">
-							등록하신 댓글이 없습니다.
-						</c:when>
-                    </c:choose>
+                  <span id = "My-Reply-Size" class="label label-primary pull-right"></span></a>
+                   <div id="My-Reply-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">                                   		
                    </div>   
                 </li>            
-<c:set var="mycommunity_like_size" value="${fn:length(mycommunity_like)}"/>
                 <li id="Book-Mark" class="active"><a href="#"><i class="fa fa-star text-yellow"></i> 즐겨찾기
                   <span id="communitylike_span" class="label label-primary pull-right"></span></a>
                     <div id="Book-Mark-List-Div" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none;">
@@ -68,14 +53,35 @@
         </div>
         
         <script>
-        function bookmarkList(){
+        
+        
+        // 내가 단 댓글 상태업데이트
+        function replyList(){
+        	$.ajax({
+				  type:"post",
+				  url:"/owner/community/myreplylist",
+				  success: function(data){
+					  $("#My-Reply-Size").html(data.myreplyList.length);
+					  $.each(data.myreplyList, function(index , myreplyList){
+						  var myreplyhtml ='<div style="display: block">'+
+							  					'<a href="/owner/community_read?community_no=' + myreplyList.community_no +'">'+
+						 						 myreplyList.community_no + '번 게시물에 대한 댓글 -' + myreplyList.community_reply_comment +'</a>'+
+						 				   '</div>';						  
+						  $("#My-Reply-List").append(myreplyhtml);						  
+					  })
+				  }
+			  })
+        }
+        
+        function bookmarkList(){        	
     		//즐겨찾기 상태 업데이트
     		  $.ajax({
     			  type:"post",
     			  url:"/owner/community_like_list",
     			  success: function(data){
+    				 $("#communitylike_span").html(data.mycommunity_like.length);
     				 $.each(data.mycommunity_like, function(index, like){        
-    					 var likehtml =	'<div class="like_number">';
+    					 	 likehtml =	'<div class="like_number">';
                         	 likehtml +='<input type="hidden" value="' + like.community_no +'"/>';
                         	 likehtml +='<a href="/owner/community_read?community_no='+ like.community_no + '">title -' + like.community_title +'</a>';
                         	 likehtml +='</div>';
@@ -86,7 +92,7 @@
     							like_community_no.push($(this).find("input[type=hidden]").val());
     						});
     						
-    						$("#communitylike_span").html(like_community_no.length);
+  
     						for(var i=0; i<like_community_no.length; i++){
     							$(".community_list_tr").each(function(){
     								if($(this).find(".community_no").val() == like_community_no[i]){

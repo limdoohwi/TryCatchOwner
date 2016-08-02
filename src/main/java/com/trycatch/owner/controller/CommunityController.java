@@ -36,7 +36,7 @@ public class CommunityController {
 	@Inject
 	private CommunityService service;
 	/**
-	 * @author �ڿϼ�
+	 * @author �ڿϼ�
 	 * 
 	 * @category 
 	 * @param 
@@ -58,22 +58,21 @@ public class CommunityController {
 		else{
 			model.addAttribute("community_all",service.getCommunityAll().size());
 			model.addAttribute("community_list",service.getCommunityList(limit));
+			model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
 		}
 			model.addAttribute("limit",limit);
-			model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
-			model.addAttribute("myreplycommunity_list",service.myreplyCommunityList(mdto.getMember_no()));
-			model.addAttribute("mycommunity_like",service.getCommunityLikeList(mdto.getMember_no()));
 		return "/community/Community_Owner";
 	}
 	
+	
 	@RequestMapping("/community_like_list")
-	public @ResponseBody Object CommunityLikeList(Model model,HttpServletRequest req){
+	public @ResponseBody Object CommunityLikeList(HttpServletRequest req){
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");		
-		service.getCommunityLikeList(mdto.getMember_no());
 		JSONObject like_list = new JSONObject();
 		like_list.put("mycommunity_like", service.getCommunityLikeList(mdto.getMember_no()));
 		return like_list;
 	}
+	
 	
 	@RequestMapping("/community_like")
 	public @ResponseBody boolean CommunityLike(CommunityLikeDTO dto){	
@@ -97,8 +96,7 @@ public class CommunityController {
 		}
 			model.addAttribute("limit",limit);
 			model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
-			model.addAttribute("myreplycommunity_list",service.myreplyCommunityList(mdto.getMember_no()));
-			model.addAttribute("mycommunity_like",service.getCommunityLikeList(mdto.getMember_no()));
+
 		return "/community/Community_Owner";
 	}
 	
@@ -139,7 +137,7 @@ public class CommunityController {
 	public String CommunityRead(int community_no,Model model,HttpServletRequest req){
 		model.addAttribute("community_list",service.getCommunityList(0));
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
-		model.addAttribute("community_reply_list",service.replyCommunityList(community_no));
+		//model.addAttribute("community_reply_list",service.replyCommunityList(community_no));
 		model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
 		model.addAttribute("myreplycommunity_list",service.myreplyCommunityList(mdto.getMember_no()));
 		model.addAttribute(service.readCommunity(community_no));
@@ -153,17 +151,33 @@ public class CommunityController {
 		service.deleteCommunity(community_no);
 		return "redirect:/community_list?limit=0";
 	}
+			
+	@RequestMapping("/community/replylist")
+	public @ResponseBody Object CommunityReplyList(int community_no,HttpServletRequest req){
+		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
+		JSONObject replyList = new JSONObject(); 
+		replyList.put("communityreplylist", service.replyCommunityList(community_no));
+		return replyList;
+	}
+	
+	
+	@RequestMapping("/community/myreplylist")
+	public @ResponseBody Object MyCommunityReplyList(HttpServletRequest req){
+		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
+		JSONObject myreplyList = new JSONObject();
+		myreplyList.put("myreplyList",service.myreplyCommunityList(mdto.getMember_no()));		
+		return myreplyList;
+	}
 	
 	@RequestMapping("/community_reply")
-	public String CommunityReply(int community_no,HttpServletRequest req){
+	public @ResponseBody Object CommunityReply(int community_no,String community_reply_comment,HttpServletRequest req){
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
 		Map<String, Object> map = new HashMap<>();
 		map.put("community_reply_writer", mdto.getMember_name());
-		map.put("community_reply_comment",req.getParameter("community_reply_comment"));
+		map.put("community_reply_comment",community_reply_comment);
 		map.put("community_no", community_no);
 		map.put("member_no", mdto.getMember_no());
-		service.insertCommunityReply(map);
-		return "redirect:/community_read?community_no="+community_no;
+		return service.insertCommunityReply(map);
 	}
 	
 	@RequestMapping("/community_prev")

@@ -6,8 +6,9 @@
     
 <mapper namespace="com.trycatch.owner.mappers.communityMapper">
 	<select id="communityList" resultType="CommunityDTO">
-		select * from community where community_no>0 order by community_no desc limit #{limit},10
+ 		select * from community where community_no>0 order by community_no desc limit #{limit},10 
 	</select>
+	
 	<select id = "communitySearch" resultType="CommunityDTO">
 		select * from community where 
 		community_title like concat("%",#{community_search},"%") or
