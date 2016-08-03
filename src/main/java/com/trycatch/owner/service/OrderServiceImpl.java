@@ -53,14 +53,14 @@ public class OrderServiceImpl implements OrderService {
 				list = dao.getOrder_Information(menu_payment_no, member_no, store_no, start_Page, asce, search_order_info);
 				for(int j=0; ; j++){
 					if(j==0){
-						list.get(j).setMenu_total_list(list.get(j).getMenu_name() + "/" + list.get(j).getMenu_count() +"��/" + list.get(j).getMenu_option() +",");
+						list.get(j).setMenu_total_list(list.get(j).getMenu_name() + "/" + list.get(j).getMenu_count() +"잔/" + list.get(j).getMenu_option() +",");
 					}
 					if(j+1 >= list.size()){
 						j = 0;
 						resultList.add(list.get(j));
 						break;
 					}
-					list.get(0).setMenu_total_list(list.get(0).getMenu_total_list() + list.get(j+1).getMenu_name() + "/" + list.get(j+1).getMenu_count() +"��/" + list.get(j+1).getMenu_option() +",");
+					list.get(0).setMenu_total_list(list.get(0).getMenu_total_list() + list.get(j+1).getMenu_name() + "/" + list.get(j+1).getMenu_count() +"잔/" + list.get(j+1).getMenu_option() +",");
 				}
 			}
 			transactionManager.commit(status);

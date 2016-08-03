@@ -62,7 +62,7 @@
 							</div>
 							<div class="mailbox-controls with-border text-center">
 								<div class="btn-group">
-									<!-- Delte -->
+									<!-- Delete -->
 									<button type="button" class="btn btn-default btn-sm"
 										data-toggle="tooltip" id="community_del" data-container="body"
 										title="삭제">

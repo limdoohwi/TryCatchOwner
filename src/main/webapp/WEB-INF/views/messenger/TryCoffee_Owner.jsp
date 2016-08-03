@@ -232,8 +232,10 @@
 		html += '<div class="direct-chat-info clearfix">';
 		html +=	'<span class="direct-chat-name pull-left">나<span><br /> <span class="direct-chat-timestamp pull-left">'+content_regdate+'</span>';
 		html += '</div>';
-		html += '<span><i class="fa fa-user fa-3x"></i></span>';
-		html += '<div class="direct-chat-text">';
+		html += '<div style="display: block">'
+		html += '<span class="pull-left"><i class="fa fa-user fa-3x"></i></span>';
+		html += '</div>'
+		html += '<div style="display: block"  class="direct-chat-text">';
 		html += message;
 		html += '</div></div>';
 		$("#Message-Div-"+member_no+" .direct-chat-messages").prepend(html);

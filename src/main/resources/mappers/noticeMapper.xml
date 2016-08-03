@@ -6,40 +6,24 @@
     
 <mapper namespace="com.trycatch.owner.mappers.noticeMapper">  
     <select id="notice_list" resultType="NoticeDTO">
-        select * from notice where notice_depth=0 order by notice_pos
+        select n.notice_no, n.notice_content, n.notice_parent_no, n.notice_regdate, n.member_no, m.member_name from notice n, member m where n.notice_parent_no= 0 and m.member_no= n.member_no order by notice_regdate desc
     </select>
     
-    <insert id="notice_insert" parameterType="NoticeDTO">
-    	insert into notice(notice_content, notice_pos, notice_depth, notice_date, notice_group, member_name) 
-    	values(#{notice_content}, 0, 0, now(),0, #{member_name})
-    </insert>
-    
-    <update id="notice_pos_up">
-    	update notice set notice_pos=notice_pos+1
-    </update>
-    
-    <update id="notice_reply_pos_up">
-		update notice set notice_pos=notice_pos+1 where notice_pos>#{notice_pos}
-	</update>
-	
     <select id="notice_reply_list" resultType="NoticeDTO">
-    	select * from notice where notice_depth>0 order by notice_pos
+    	select n.notice_no, n.notice_content, n.notice_parent_no, n.notice_regdate, n.member_no, m.member_name from notice n, member m where n.notice_parent_no>0 and m.member_no = n.member_no order by notice_regdate desc
     </select>
-    
-    <insert id="notice_reply_insert" parameterType="NoticeDTO">
-    	insert into notice(notice_content, notice_pos, notice_depth, notice_date,notice_group, member_name) 
-    	values(#{notice_content}, #{notice_pos}+1, #{notice_depth}+1,now(),#{notice_group}, #{member_name})
+    <select id="get_reply_count" resultType="int">
+        select count(*) from notice where notice_parent_no=#{notice_parent_no}
+    </select>
+    <insert id="notice_insert" parameterType="NoticeDTO">
+    	insert into notice(notice_content, member_no) values(#{notice_content}, #{member_no})
     </insert>
-   
+    <insert id="notice_reply_insert" parameterType="NoticeDTO">
+    	insert into notice(notice_content, notice_parent_no, member_no) 
+    	values(#{notice_content},#{notice_parent_no}, #{member_no})
+    </insert>
+    
    <delete id="notice_delete">
-   		delete from notice where notice_num=#{notice_num}
-   </delete>
-   
-   <delete id="notice_delete_reply">
-  		delete from notice where notice_group=#{notice_num}
-   </delete>
-   
-   <delete id="myreply_delete">
-   		delete from notice where notice_num=#{notice_num}
+   		delete from notice where notice_no=#{notice_no} or notice_parent_no=#{notice_no}
    </delete>
 </mapper>

@@ -18,6 +18,7 @@ import com.trycatch.owner.domain.StoreDTO;
 import com.trycatch.owner.service.MeetingRoomService;
 import com.trycatch.owner.service.MemberService;
 import com.trycatch.owner.service.MessengerService;
+import com.trycatch.owner.service.NoticeService;
 import com.trycatch.owner.service.OrderService;
 import com.trycatch.owner.service.StoreService;
 
@@ -32,6 +33,8 @@ public class HomeController {
 	private StoreService storeService;
 	@Inject
 	private MessengerService messengerService;
+	@Inject
+	private NoticeService noticeService;
 	
 	@Inject
 	private MeetingRoomService meetingRoomService;
@@ -66,17 +69,19 @@ public class HomeController {
 	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() throws Exception {
-		return "log_in";
+		return "/log_in";
 	}
 	
 	@RequestMapping("/messenger/TryCoffee_Owner")
 	public void messengerGET() throws Exception{
 	}
-	
-//	@RequestMapping("/notice/Notice")
-//	public void noticeGET(Model model) throws Exception{
-		
-//	}
+	/**
+	 *  @author Leejunyung
+	 *  모든 공지사항 글 불러오는 함수
+	 */
+	@RequestMapping("/notice/Notice")
+	public void noticeGET(Model model) throws Exception{
+	}
 	
 	@RequestMapping("/community/Community_Owner")
 	public void communityGET() throws Exception{

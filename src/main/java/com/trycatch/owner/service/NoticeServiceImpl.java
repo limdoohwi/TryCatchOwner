@@ -30,8 +30,8 @@ public class NoticeServiceImpl implements NoticeService {
 	 * 공지사항 글 삭제 및 공지글 삭제시 해당되는 댓글 까지 삭제하는 함수
 	 */
 	@Override
-	public void deleteNotice(Integer notice_num) throws Exception {
-		dao.deleteNotice(notice_num);
+	public void deleteNotice(Integer notice_no) throws Exception {
+		dao.deleteNotice(notice_no);
 	}
 	
 	/**
@@ -39,10 +39,13 @@ public class NoticeServiceImpl implements NoticeService {
 	 * 공지사항에 쓴 글을 줄 바꿈을 jsp의 줄바꿈으로 바꿔 저장하는 함수
 	 */
 	@Override
-	public void insertNotice(NoticeDTO notice, String notice_content) throws Exception {
+	public void insertNotice(int member_no, String notice_content) throws Exception {
+		NoticeDTO noticeDto = new NoticeDTO();
+		System.out.println(member_no + " : " +notice_content);
 		String replace_notice_content = notice_content.replace("\n", "<br>");
-		notice.setNotice_content(replace_notice_content);
-		dao.insertNotice(notice);
+		noticeDto.setNotice_content(replace_notice_content);
+		noticeDto.setMember_no(member_no);
+		dao.insertNotice(noticeDto);
 	}
 
 	/**
@@ -59,12 +62,13 @@ public class NoticeServiceImpl implements NoticeService {
 	 * 해당하는 공지사항에 단 댓글을 저장하는 함수
 	 */
 	@Override
-	public void insertNoticeReply(NoticeDTO notice, String notice_content,int notice_pos, int notice_group) throws Exception {
+	public void insertNoticeReply(int notice_parent_no, int member_no, String notice_content) throws Exception {
+		NoticeDTO noticeDto = new NoticeDTO();
 		String replace_notice_content = notice_content.replace("\n", "<br>");
-		notice.setNotice_content(replace_notice_content);
-		notice.setNotice_pos(notice_pos);
-		notice.setNotice_group(notice_group);
-		dao.insertNoticeReply(notice);
+		noticeDto.setNotice_content(replace_notice_content);
+		noticeDto.setMember_no(member_no);
+		noticeDto.setNotice_parent_no(notice_parent_no);
+		dao.insertNoticeReply(noticeDto);
 	}
 
 	/**
@@ -72,8 +76,13 @@ public class NoticeServiceImpl implements NoticeService {
 	 * 해당하는 공지사항에 단 해당하는 댓글 을 삭제하는 함수
 	 */
 	@Override
-	public void deleteReply(Integer notice_num) throws Exception {
-		dao.deleteReply(notice_num);
+	public void deleteReply(Integer notice_no) throws Exception {
+		dao.deleteReply(notice_no);
+	}
+
+	@Override
+	public int getReplyCount(int notice_parent_no) throws Exception {
+		return dao.getReplyCount(notice_parent_no);
 	}
 
 }

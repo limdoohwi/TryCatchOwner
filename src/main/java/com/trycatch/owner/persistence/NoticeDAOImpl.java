@@ -1,7 +1,6 @@
 package com.trycatch.owner.persistence;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -34,7 +33,6 @@ public class NoticeDAOImpl implements NoticeDAO {
 	@Override
 	public void deleteNotice(Integer notice_num) throws Exception {
 		sqlSession.delete(NAMESPACE + ".notice_delete", notice_num);
-		sqlSession.delete(NAMESPACE +".notice_delete_reply", notice_num);
 	}
 
 	/**
@@ -43,7 +41,6 @@ public class NoticeDAOImpl implements NoticeDAO {
 	 */
 	@Override
 	public void insertNotice(NoticeDTO notice) throws Exception {
-		sqlSession.update(NAMESPACE + ".notice_pos_up");
 		sqlSession.insert(NAMESPACE + ".notice_insert", notice);
 	}
 
@@ -53,7 +50,6 @@ public class NoticeDAOImpl implements NoticeDAO {
 	 */
 	@Override
 	public List<NoticeDTO> getNoticeReplyList() {
-		
 		return sqlSession.selectList(NAMESPACE + ".notice_reply_list");
 	}
 
@@ -63,7 +59,6 @@ public class NoticeDAOImpl implements NoticeDAO {
 	 */
 	@Override
 	public void insertNoticeReply(NoticeDTO notice) throws Exception {
-		sqlSession.update(NAMESPACE + ".notice_reply_pos_up", notice);
 		sqlSession.insert(NAMESPACE + ".notice_reply_insert", notice);
 	}
 
@@ -72,7 +67,12 @@ public class NoticeDAOImpl implements NoticeDAO {
 	 * 해당하는 공지사항에 단 해당하는 댓글 을 삭제하는 함수
 	 */
 	@Override
-	public void deleteReply(Integer notice_num) throws Exception {
-		sqlSession.delete(NAMESPACE + ".myreply_delete", notice_num);
+	public void deleteReply(Integer notice_no) throws Exception {
+		sqlSession.delete(NAMESPACE + ".reply_delete", notice_no);
+	}
+
+	@Override
+	public int getReplyCount(int notice_parent_no) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+".get_reply_count", notice_parent_no);
 	}
 }

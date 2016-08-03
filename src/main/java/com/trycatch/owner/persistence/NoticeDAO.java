@@ -13,4 +13,5 @@ public interface NoticeDAO {
 	public void insertNotice(NoticeDTO notice) throws Exception;
 	public void insertNoticeReply(NoticeDTO notice ) throws Exception;
 	public void deleteReply(Integer notice_num) throws Exception;
+	public int getReplyCount(int notice_parent_no) throws Exception;
 }

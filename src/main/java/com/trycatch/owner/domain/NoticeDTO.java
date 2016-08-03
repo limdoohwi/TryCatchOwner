@@ -1,20 +1,24 @@
 package com.trycatch.owner.domain;
 
 public class NoticeDTO {
-	private int notice_num;
+	private int notice_no;
 	private String notice_content;
-	private int notice_pos;
-	private int notice_depth;
-	private String notice_date;
-	private int notice_group;
+	private int notice_parent_no;
+	private String notice_regdate;
+	private int member_no;
 	private String member_name;
-	private int notice_hits;
-	
-	public int getNotice_num() {
-		return notice_num;
+	private int reply_count;
+	public int getReply_count() {
+		return reply_count;
 	}
-	public void setNotice_num(int notice_num) {
-		this.notice_num = notice_num;
+	public void setReply_count(int reply_count) {
+		this.reply_count = reply_count;
+	}
+	public int getNotice_no() {
+		return notice_no;
+	}
+	public void setNotice_no(int notice_no) {
+		this.notice_no = notice_no;
 	}
 	public String getNotice_content() {
 		return notice_content;
@@ -22,29 +26,23 @@ public class NoticeDTO {
 	public void setNotice_content(String notice_content) {
 		this.notice_content = notice_content;
 	}
-	public int getNotice_pos() {
-		return notice_pos;
+	public int getNotice_parent_no() {
+		return notice_parent_no;
 	}
-	public void setNotice_pos(int notice_pos) {
-		this.notice_pos = notice_pos;
+	public void setNotice_parent_no(int notice_parent_no) {
+		this.notice_parent_no = notice_parent_no;
 	}
-	public int getNotice_depth() {
-		return notice_depth;
+	public String getNotice_regdate() {
+		return notice_regdate;
 	}
-	public void setNotice_depth(int notice_depth) {
-		this.notice_depth = notice_depth;
+	public void setNotice_regdate(String notice_regdate) {
+		this.notice_regdate = notice_regdate;
 	}
-	public String getNotice_date() {
-		return notice_date;
+	public int getMember_no() {
+		return member_no;
 	}
-	public void setNotice_date(String notice_date) {
-		this.notice_date = notice_date;
-	}
-	public int getNotice_group() {
-		return notice_group;
-	}
-	public void setNotice_group(int notice_group) {
-		this.notice_group = notice_group;
+	public void setMember_no(int member_no) {
+		this.member_no = member_no;
 	}
 	public String getMember_name() {
 		return member_name;
@@ -52,10 +50,5 @@ public class NoticeDTO {
 	public void setMember_name(String member_name) {
 		this.member_name = member_name;
 	}
-	public int getNotice_hits() {
-		return notice_hits;
-	}
-	public void setNotice_hits(int notice_hits) {
-		this.notice_hits = notice_hits;
-	}
+	
 }
