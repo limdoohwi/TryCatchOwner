@@ -15,7 +15,7 @@ public interface ProfitService {
 	public JSONObject getYearReservationDrink(int store_no, int year);
 	public JSONObject getMonthReservationDrink(int store_no, int year);
 	public JSONObject getDayAverageReservationDrink(int store_no, int year);
-	public JSONObject getYearMenuPercentager(int store_no, int year);
+	public JSONObject getYearMenuPercentager(int store_no, int year, int month);
 	public JSONObject getMonthMenuPercentager(int store_no, int month);
 	public JSONObject isExist(int store_no, int year);
 	public JSONObject getMenuCountAndPrice(int store_no, int year, int month);

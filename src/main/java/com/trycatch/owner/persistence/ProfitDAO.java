@@ -16,7 +16,7 @@ public interface ProfitDAO {
 	public int getMonthReservationDrink(int store_no, int month, int year);
 	public int getDayAverageReservationDrink(int store_no, int hour, int year);
 	public int getDayto_Curdate_withThisYear(String thisYear);
-	public int getYearMenuPercentager(int store_no, String category_name, int year);
+	public int getYearMenuPercentager(int store_no, String category_name, int year, int month);
 	public int getMonthMenuPercentager(int store_no, String category_name, int month);
 	public boolean isExistProfit(int store_no, int year);
 	public MenuProfitDTO getMenuCountAndPrice(int store_no, int year, String menu_name, int month);

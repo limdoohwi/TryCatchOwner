@@ -64,7 +64,14 @@
 	
 	<select id="getYearMenuPercentager" parameterType="hashMap" resultType="int">
 		select sum(m.menu_price * o.menu_count) from menu_payment p, menu m, menu_order o, menu_category c where p.menu_payment_no = o.menu_payment_no and
-		 m.menu_num = o.menu_no and m.menu_category_num = c.menu_category_num and year(p.menu_payment_date) = #{year} and p.store_no = #{store_no} and c.menu_category_name = #{category_name}
+		 m.menu_num = o.menu_no and m.menu_category_num = c.menu_category_num and
+		<if test="month == 0">
+		    year(p.menu_payment_date) = #{year}
+		</if>
+		<if test="month != 0">
+		    year(p.menu_payment_date) = #{year} and month(p.menu_payment_date) = #{month}
+		</if>
+		and p.store_no = #{store_no} and c.menu_category_name = #{category_name}
 	</select>
 	
 	<select id="getMonthMenuPercentager" parameterType="hashMap" resultType="int">

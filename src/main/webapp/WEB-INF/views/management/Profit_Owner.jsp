@@ -188,7 +188,7 @@
 				//월일 때
 				else if(date.length <4){
 					select_year = {year : selectYear, month : date};
-					month = date + "월";
+					month = date;
 					for(var i=0; i<monthReservationCount.length; i++){
 						if(i==date-1){
 							reservationCount = monthReservationCount[i];
@@ -200,7 +200,7 @@
 				$("#More-Detail-Profit-First-Head").hide();
 				$("#More-Detail-Profit-Table-Div").slideDown(400);
 				$(".Select-Year").eq(0).text(select_year.year +"년 ");
-				$(".Select-Year-Search").text(select_year.year +"년 " + month);
+				$(".Select-Year-Search").text(select_year.year +"년 " + month +"월");
 				$(".Select-Year-Online-Reservation-Count").text(reservationCount + "건");
 				$(".Select-Year-Online-Day-Average-Reservation-Count").text(detailDayReservationDrinkCount + "건");
 				//해당 연도 혹은 월별 예약 건수
@@ -208,12 +208,15 @@
 				//카테고리별 판매액
 				callList_Ajax("/owner/year_menu_percentage/profit_owner", successYearMenuPrice, errorYearProfitOwner, select_year);
 				function successYearMenuPrice(data){
+					var Total_Profit = 0;
 					//초기화
 					$(".Category-Menu-Price-tr").remove();
 					$.each(data.yearMenuPercentage, function(index, data){
+						Total_Profit += Number(data.percentage);
 						var html = "<tr class='Category-Menu-Price-tr'><td>"+data.category_name+"</td><td><a href='#'>"+data.percentage+"원</a></td></tr>";
 						$(".Day-Average-Tr").after(html);
 					});
+					$(".Select-Year-Total-Profit").text(Total_Profit + "원`");
 				}
 				//메뉴별 판매액				
 				callList_Ajax("/owner/menu_countAndPrice/profit_owner", successMenucountAndPrice, errorYearProfitOwner, select_year);
@@ -234,8 +237,6 @@
 					});
 					$("#Wait-Modal").hide();
 				}
-					
-				$(".Select-Year-Total-Profit").text(yearTotalPrice + "원`");
 			}
 			
 			//연도 입력 후 확인 버튼 클릭

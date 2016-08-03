@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.trycatch.owner.domain.Menu_OrderDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
 
 
@@ -24,20 +25,16 @@ public class OrderDAOImpl implements OrderDAO {
 	private static final Logger logger = LoggerFactory.getLogger(OrderDAOImpl.class);
 	
 	@Override
-	public List<Order_InformationDTO> getOrder_Information(int menu_payment_no, int member_no, int store_no, int start_Page, boolean asce, String search_order_info) {
-		logger.info("OrderDaoImpl 회원 번호 : " + member_no);
+	public List<Order_InformationDTO> getOrder_Information(int store_no, int start_Page, boolean asce, String search_order_info) {
 		logger.info("OrderDaoImpl 매장 번호 : " + store_no);
 		logger.info("OrderDaoImpl 써치 : " + search_order_info);
 		try {
-			int end_Order = start_Page + 5;
-			RowBounds rowB = new RowBounds(start_Page, end_Order);
+			RowBounds rowB = new RowBounds(start_Page, 5);
 			String isAsc = String.valueOf(asce);
 			Map map = new HashMap<>();
-			map.put("member_no", member_no);
 			map.put("store_no", store_no);
 			map.put("isAsc", isAsc);
 			map.put("search_order_info", search_order_info);
-			map.put("menu_payment_no", menu_payment_no);
 			return sqlSession.selectList(NAMESPACE + ".getOrder_Information", map, rowB);
 		} catch (Exception err) {
 			return null;
@@ -48,6 +45,15 @@ public class OrderDAOImpl implements OrderDAO {
 	public List<Integer> getMenu_Payment_noList(int store_no) {
 		try {
 			return sqlSession.selectList(NAMESPACE + ".getMenu_Payment_noList", store_no);
+		} catch (Exception err) {
+			return null;
+		}
+	}
+	
+	@Override
+	public List<Menu_OrderDTO> getMenuOrder_withMenu_Payment_no(int menu_payment_no) {
+		try {
+			return sqlSession.selectList(NAMESPACE + ".getMenuOrder_withMenu_Payment_no", menu_payment_no);
 		} catch (Exception err) {
 			return null;
 		}

@@ -28,14 +28,13 @@ public class OrderController {
 	 */
 	@RequestMapping("/client_order_list/order")
 	public @ResponseBody Object setStorePOST(HttpServletRequest req, int start_Page, String search_order_info) throws Exception{
-		MemberDTO memberDto = (MemberDTO)req.getSession().getAttribute("member_dto");
 		StoreDTO storeDto = (StoreDTO)req.getSession().getAttribute("store_dto");
 		JSONObject jsonRoot = new JSONObject();
 		boolean asce = false;
 		if(req.getParameter("asce") != null){
 			asce = true;
 		}
-		jsonRoot.put("orderList", orderService.getOrder_Information(memberDto.getMember_no(), storeDto.getStore_no(), start_Page, asce, search_order_info));
+		jsonRoot.put("orderList", orderService.getOrder_Information(storeDto.getStore_no(), start_Page, asce, search_order_info));
 		return jsonRoot;
 	}
 }

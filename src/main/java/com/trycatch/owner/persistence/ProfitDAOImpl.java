@@ -135,12 +135,13 @@ public class ProfitDAOImpl implements ProfitDAO {
 	}
 	
 	@Override
-	public int getYearMenuPercentager(int store_no, String category_name, int year) {
+	public int getYearMenuPercentager(int store_no, String category_name, int year, int month) {
 		logger.info(category_name);
 		Map map = new HashMap<>();
 		map.put("store_no", store_no);
 		map.put("category_name", category_name);
 		map.put("year", year);
+		map.put("month", month);
 		try {
 			return sqlSession.selectOne(NAMESPACE + ".getYearMenuPercentager", map);
 		} catch (Exception err) {
