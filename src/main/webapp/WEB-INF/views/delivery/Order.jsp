@@ -46,7 +46,7 @@
 			type:"POST",
 			data:{member_no:"${member_dto.member_no}"},
 			success:function(data){
-				alert(data.storelist.length);
+				//alert(data.storelist.length);
 				$.each(data.storelist, function(index, store){
 					$("#selectstore").append("<option value='"+store.store_no+"'>"+store.store_name+"</option>");
 				})
@@ -60,6 +60,7 @@
 			}
 			$("#select_store_hidden").val(store_no);
 			$("#payment_form").submit();
+			alert("물품이 신청 되었습니다.")
 		});
 	});
 </script>
@@ -101,7 +102,7 @@
 				<h2 style="font-size:15px;font-weight:bold;margin-top:-2px">최종 주문 내역</h2>
 				<table id="selected_option" class="table">
 					<tr>
-						<th>메뉴 이름</th>
+						<th>재료 이름</th>
 						<th>주문 수량</th>
 						<th>해당 가격</th>
 					</tr>

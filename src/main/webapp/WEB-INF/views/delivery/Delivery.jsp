@@ -150,14 +150,13 @@
 				return false;
 			}
 			if(confirm("이대로 주문하시겠습니까?")){
-				alert("주문해 이 시뷜레몬아")
 				 location.href = "/owner/delivery/Order";
 			}
 		});
 		//Cake-Product-Order-Btn Click Show Confrim Order
 		$("#Cake-Product-Order-Btn").click(function(){
 			if(confirm("이대로 주문하시겠습니까?")){
-				alert("낢 ㅗㅅ믿어?")
+				//alert("낢 ㅗㅅ믿어?")
 				$(this).attr("href", "front?cmd=material_order_confirm")
 			}
 		});
@@ -301,6 +300,7 @@
 			<li><a href="#services">서비스 시작</a></li>
 			<li><a href="#contact">Contact</a></li>
 			<li><a href="#top">맨 위로</a></li>
+			<li><a href="/owner">메인으로</a></li>
 		</ul>
 	</nav>
 
