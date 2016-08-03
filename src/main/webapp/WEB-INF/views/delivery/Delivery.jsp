@@ -300,6 +300,7 @@
 			<li><a href="#services">서비스 시작</a></li>
 			<li><a href="#contact">Contact</a></li>
 			<li><a href="#top">맨 위로</a></li>
+			<li><a href="/owner">메인으로</a></li>
 		</ul>
 	</nav>
 
