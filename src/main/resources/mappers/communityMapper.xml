@@ -15,16 +15,18 @@
 		community_writer like concat("%",#{community_search},"%")
 		order by community_no desc limit 0,10
 	</select>
+	
 	<select id="communitylistAll" resultType="CommunityDTO">
 		select * from community
 	</select>
+	
 	<select id="communityNext" resultType="int">
 		select community_no from community where community_no=(select min(community_no) from community where community_no>#{community_no})
 	</select>
+	
 	<select id="communityPrev" resultType="int">
 		select community_no from community where community_no=(select min(community_no) from community where community_no <![CDATA[<]]> #{community_no})
-	</select>
-	
+	</select>	
 	
 	<select id="mycommunityList" resultType="CommunityDTO">
 		select * from community where community_writer = #{writer}
@@ -93,7 +95,7 @@
 	
 	<select id = "communitylikeList" resultType="CommunityLikeDTO">
 		select * from 
-		communitylike l,member m,community c where m.member_no = #{member_no} and l.community_no = c.community_no; 
+		communitylike l,community c where l.member_no = #{member_no} and l.community_no = c.community_no; 
 	</select>
 
 	

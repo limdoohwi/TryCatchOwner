@@ -66,7 +66,7 @@
 									<button type="button" class="btn btn-default btn-sm"
 										data-toggle="tooltip" id="community_del" data-container="body"
 										title="삭제">
-										<i class="fa fa-trash-o"></i>
+										<i class="fa fa-trash-o"></i>										
 									</button>
 									<!-- 즐겨찾기 -->
 									<button type="button" class="btn btn-default btn-sm"
@@ -78,6 +78,7 @@
 											<i class="fa fa-star text-yellow"></i>
 										</div>
 									</button>
+									<button type="button" class="btn btn-default btn-sm" id="refresh"><i class="fa fa-refresh"></i></button>
 								</div>
 							</div>
 						</div>
@@ -92,6 +93,7 @@
 							</div>
 						</div>
 					</div>
+	
 					<!-- Reply 작성하는 곳 -->
 					<div class="box-footer">
 							<div class="img-push">
@@ -110,6 +112,7 @@
 		  	bookmarkList();
 		  	community_reply_list();
 		  	replyList();
+		  	
 			//즐겨찾기 추가
 			 $(".Book-Mark-Before").click(function(){	
 				 var divB = $(".Book-Mark-Before").eq(0);
@@ -171,6 +174,9 @@
 				 
 			  }
 		  })
+		  $("#refresh").click(function(){
+			  location.href="/owner/community_list?limit=0";
+		  });
 	  })
 	  	
 	  
@@ -212,7 +218,6 @@
 					  datatype: "json",
 					  success: function(data){
 						  $.each(data.communityreplylist, function(index , replelist){
-							  alert("날짜" + replelist.community_reply_date);
 							  var replyhtml = 	'<span class="username">'+ replelist.community_reply_writer +'<br/>'+replelist.community_reply_comment +
 													'<span class="text-muted pull-right">'+ replelist.community_reply_date +'</span>'
 												'</span>';
