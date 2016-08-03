@@ -16,6 +16,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.trycatch.owner.domain.MaterialCartDTO;
 import com.trycatch.owner.domain.MaterialOrderDTO;
 import com.trycatch.owner.domain.MaterialPaymentDTO;
+import com.trycatch.owner.domain.Menu_OrderDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
 import com.trycatch.owner.persistence.MaterialCartDAO;
 import com.trycatch.owner.persistence.MaterialDAO;
@@ -38,33 +39,26 @@ public class OrderServiceImpl implements OrderService {
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 		
 	@Override
-	public List<Order_InformationDTO> getOrder_Information(int member_no, int store_no, int start_Page, boolean asce, String search_order_info) {
+	public List<Order_InformationDTO> getOrder_Information(int store_no, int start_Page, boolean asce, String search_order_info) {
 		transaction.setName("owner_order_transaction");
 		transaction.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		status = transactionManager.getTransaction(transaction);
 		try {
-			List<Integer> numberList = dao.getMenu_Payment_noList(store_no);
-			List<Order_InformationDTO> list = null;
-			List<Order_InformationDTO> resultList = new ArrayList<>();
-			
-			int menu_payment_no = 0;
-			for(int i=0; i<numberList.size(); i++){
-				menu_payment_no = numberList.get(i);
-				list = dao.getOrder_Information(menu_payment_no, member_no, store_no, start_Page, asce, search_order_info);
-				for(int j=0; ; j++){
+			List<Order_InformationDTO> orderInfoList = dao.getOrder_Information(store_no, start_Page, asce, search_order_info);
+			for(int i=0; i<orderInfoList.size(); i++){
+				List<Menu_OrderDTO> orderList = dao.getMenuOrder_withMenu_Payment_no(orderInfoList.get(i).getMenu_payment_no());
+				String menu_total_list = "";
+				for(int j=0; j<orderList.size(); j++){
 					if(j==0){
-						list.get(j).setMenu_total_list(list.get(j).getMenu_name() + "/" + list.get(j).getMenu_count() +"잔/" + list.get(j).getMenu_option() +",");
+						String menu_simple_list = orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "��/" + orderList.get(j).getMenu_option() + ".....";
+						orderInfoList.get(i).setMenu_simple_list(menu_simple_list);
 					}
-					if(j+1 >= list.size()){
-						j = 0;
-						resultList.add(list.get(j));
-						break;
-					}
-					list.get(0).setMenu_total_list(list.get(0).getMenu_total_list() + list.get(j+1).getMenu_name() + "/" + list.get(j+1).getMenu_count() +"잔/" + list.get(j+1).getMenu_option() +",");
+					menu_total_list +=  orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "��/" + orderList.get(j).getMenu_option() + ", ";
 				}
+				orderInfoList.get(i).setMenu_total_list(menu_total_list);
 			}
 			transactionManager.commit(status);
-			return resultList;
+			return orderInfoList;
 		} catch (Exception err) {
 			err.printStackTrace();
 			transactionManager.rollback(status);

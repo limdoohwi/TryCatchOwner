@@ -85,9 +85,9 @@ public class ProfitController {
 	}
 	
 	@RequestMapping("/year_menu_percentage/profit_owner")
-	public @ResponseBody Object yearMenuPercentageOwnerPOST(HttpServletRequest req, int year) throws Exception{
+	public @ResponseBody Object yearMenuPercentageOwnerPOST(HttpServletRequest req, int year, int month) throws Exception{
 		StoreDTO storeDto= (StoreDTO)req.getSession().getAttribute("store_dto");
-		JSONObject jsonRoot = service.getYearMenuPercentager(storeDto.getStore_no(), year);
+		JSONObject jsonRoot = service.getYearMenuPercentager(storeDto.getStore_no(), year, month);
 		return jsonRoot;
 	}
 	

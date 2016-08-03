@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.trycatch.owner.domain.MaterialOrderDTO;
 import com.trycatch.owner.domain.MaterialPaymentDTO;
 import com.trycatch.owner.domain.MaterialPaymentDetailDTO;
+import com.trycatch.owner.domain.Menu_OrderDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
 
 
@@ -27,20 +28,16 @@ public class OrderDAOImpl implements OrderDAO {
 	private static final Logger logger = LoggerFactory.getLogger(OrderDAOImpl.class);
 	
 	@Override
-	public List<Order_InformationDTO> getOrder_Information(int menu_payment_no, int member_no, int store_no, int start_Page, boolean asce, String search_order_info) {
-		logger.info("OrderDaoImpl È¸¿ø ¹øÈ£ : " + member_no);
-		logger.info("OrderDaoImpl ¸ÅÀå ¹øÈ£ : " + store_no);
-		logger.info("OrderDaoImpl ½áÄ¡ : " + search_order_info);
+	public List<Order_InformationDTO> getOrder_Information(int store_no, int start_Page, boolean asce, String search_order_info) {
+		logger.info("OrderDaoImpl ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ : " + store_no);
+		logger.info("OrderDaoImpl ï¿½ï¿½Ä¡ : " + search_order_info);
 		try {
-			int end_Order = start_Page + 5;
-			RowBounds rowB = new RowBounds(start_Page, end_Order);
+			RowBounds rowB = new RowBounds(start_Page, 5);
 			String isAsc = String.valueOf(asce);
 			Map map = new HashMap<>();
-			map.put("member_no", member_no);
 			map.put("store_no", store_no);
 			map.put("isAsc", isAsc);
 			map.put("search_order_info", search_order_info);
-			map.put("menu_payment_no", menu_payment_no);
 			return sqlSession.selectList(NAMESPACE + ".getOrder_Information", map, rowB);
 		} catch (Exception err) {
 			return null;
@@ -74,7 +71,7 @@ public class OrderDAOImpl implements OrderDAO {
 			for(int i=0; i<dto.getMaterial_nos().length; i++){
 				int[] num = dto.getMaterial_nos();
 				int[] count = dto.getMaterial_counts();
-				System.out.println("¸ÞÅÍ¸®¾ó³Ñ¹ö¶û Ä«¿îÆ® : " + num[i] + ": " + count[i]);
+				System.out.println("ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½Æ® : " + num[i] + ": " + count[i]);
 				map.put("material_no", num[i]);
 				map.put("material_count", count[i]);
 				sqlSession.insert(NAMESPACE + ".insertMaterial_Order", map);
@@ -104,6 +101,15 @@ public class OrderDAOImpl implements OrderDAO {
 	public List<MaterialPaymentDetailDTO> getMaterialPaymentDetailList(int material_payment_no) {
 		try {
 			return sqlSession.selectList(NAMESPACE + ".getMaterialPaymentDetailList", material_payment_no);
+		} catch (Exception err) {
+			return null;
+		}
+	}
+	
+	@Override
+	public List<Menu_OrderDTO> getMenuOrder_withMenu_Payment_no(int menu_payment_no) {
+		try {
+			return sqlSession.selectList(NAMESPACE + ".getMenuOrder_withMenu_Payment_no", menu_payment_no);
 		} catch (Exception err) {
 			return null;
 		}

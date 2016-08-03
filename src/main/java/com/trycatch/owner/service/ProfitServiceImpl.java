@@ -191,13 +191,13 @@ public class ProfitServiceImpl implements ProfitService {
 	}
 	
 	@Override
-	public JSONObject getYearMenuPercentager(int store_no, int year) {
+	public JSONObject getYearMenuPercentager(int store_no, int year, int month) {
 		JSONObject jsonRoot = new JSONObject();
 		JSONObject jsonTemp = null;
 		JSONArray jsonArray = new JSONArray();
 		List<String> list = menuDao.getMenuCategoryList();
 		for(int i=0; i<list.size(); i++){
-			int menuProfit = dao.getYearMenuPercentager(store_no, list.get(i), year);
+			int menuProfit = dao.getYearMenuPercentager(store_no, list.get(i), year, month);
 			jsonTemp = new JSONObject();
 			jsonTemp.put("category_name", list.get(i));
 			logger.info("¸Þ´º ÃÑ¾× : " + menuProfit);

@@ -5,13 +5,11 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trycatch.owner.mappers.orderMapper">  
 	<select id="getOrder_Information" parameterType="hashMap" resultType="Order_InformationDTO">
-	    select menu_payment.menu_payment_no, order_name, order_tel, menu_reserve_time, menu_payment_date, menu_total_price, menu.menu_name, menu_count, menu_option, store_name from menu_payment
-	    inner join menu_order on menu_payment.menu_payment_no = menu_order.menu_payment_no inner join store on menu_payment.store_no = store.store_no
-	    inner join menu on menu_order.menu_no = menu.menu_num
-	    <where>
+	   select p.menu_payment_no, p.order_name, p.order_tel, p.menu_reserve_time, p.menu_payment_date, p.menu_total_price, s.store_name from 
+   		menu_payment p, store s where p.store_no = s.store_no
 	    <if test="search_order_info != null">
 	    	<if test="search_order_info != ''">
-		    	store.member_no = #{member_no} and menu_payment.store_no = #{store_no} and order_name = #{search_order_info} and menu_payment.menu_payment_no = #{menu_payment_no}
+		    	and p.store_no = #{store_no} and p.order_name = #{search_order_info}
 		    	<if test="isAsc != null">
 					<if test='isAsc == "false"'>
 						order by menu_reserve_time desc
@@ -22,7 +20,7 @@
 				</if>
 		    </if>
 		     <if test="search_order_info == ''">
-		    	store.member_no = #{member_no} and menu_payment.store_no = #{store_no} and menu_payment.menu_payment_no = #{menu_payment_no}
+		    	and p.store_no = #{store_no}
 		    	<if test="isAsc != null">
 					<if test='isAsc == "false"'>
 						order by menu_reserve_time desc
@@ -34,21 +32,25 @@
 		    </if>
 	    </if>
 	    <if test="search_order_info == null">
-	    	store.member_no = #{member_no} and menu_payment.store_no = #{store_no} and date(menu_reserve_time) = curdate() and menu_payment.menu_payment_no = #{menu_payment_no}
+	    	 and p.store_no = #{store_no} and date(p.menu_reserve_time) = curdate()
 		    	<if test="isAsc != null">
 					<if test='isAsc == "false"'>
 						order by menu_reserve_time desc
 					</if>
 					<if test='isAsc == "true"'>
-							order by menu_reserve_time asc
+						order by menu_reserve_time asc
 					</if>
 				</if>
 	    </if>
-	    </where>
 	</select>
 	
-	<select id="getMenu_Payment_noList" resultType="int">
-		select menu_payment_no from menu_payment where store_no = #{store_no} order by menu_payment_no desc
+	<select id="getMenuOrder_withMenu_Payment_no" parameterType="int" resultType="Menu_OrderDTO">
+	      select m.menu_name, o.menu_count, o.menu_option from menu_order o, menu m 
+   			where o.menu_no = m.menu_num and o.menu_payment_no = #{menu_payment_no}
+	</select>
+	
+	<select id="getMenu_Payment_noList" parameterType="hashMap" resultType="int">
+		select menu_payment_no from menu_payment where store_no = #{store_no} and date(menu_payment_date) = curdate() order by menu_payment_date desc
 	</select>
 	<insert id="insertMaterial_Payment" parameterType="MaterialPaymentDTO">
 		INSERT INTO material_payment(material_total_price, member_no, store_no) values (#{material_total_price}, #{member_no}, #{store_no});
