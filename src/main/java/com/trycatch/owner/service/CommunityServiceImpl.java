@@ -60,8 +60,8 @@ public class CommunityServiceImpl implements CommunityService {
 	} 
 
 	@Override
-	public void insertCommunityReply(Map map) {
-		dao.insertCommunityReply(map);
+	public boolean insertCommunityReply(Map map) {		
+		return dao.insertCommunityReply(map);
 	}
 
 	@Override

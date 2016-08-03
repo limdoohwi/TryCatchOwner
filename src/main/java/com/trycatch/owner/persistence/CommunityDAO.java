@@ -16,7 +16,7 @@ public interface CommunityDAO {
 	public CommunityDTO readCommunity(Integer community_no);
 	public List<CommunityDTO> myCommunityList(String community_name);
 	public List<CommunityReplyDTO> replyCommunityList(Integer community_no);
-	public void insertCommunityReply(Map map);
+	public boolean insertCommunityReply(Map map);
 	public Integer nextCommunity(Integer community_no);
 	public Integer prevCommunity(Integer community_no);
 	public List<CommunityReplyDTO> myreplyCommunityList(Integer member_no);

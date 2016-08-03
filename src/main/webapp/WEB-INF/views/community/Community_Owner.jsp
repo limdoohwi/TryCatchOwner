@@ -47,9 +47,11 @@
 <c:set var="community_list" value="${community_list}"/>
 <c:set var="community_size" value="${fn:length(community_list)}"/>
 <c:set var="community_all" value="${community_all}"/>
+<jsp:useBean id="toDay1" class="java.util.Date" />
+<fmt:formatDate value="${toDay1}" pattern="yyyy-MM-dd" var = "toDay"/>
 					<c:choose>
 						<c:when test="${community_size!=0}">
-							<c:forEach var = "community_list" items="${community_list}"> 
+							<c:forEach var = "community_list" items="${community_list}">
 								<tr class="community_list_tr">
 				                    <td class="mailbox-star">
 					                    <div class="Book-Mark-Before" style="cursor:pointer;"><i class="fa fa-star-o text-yellow"></i></div>
@@ -57,8 +59,16 @@
 				                    	<div style="display: none"><input type="text" class="community_no" value="${community_list.community_no}" /></div>
 				                    </td>
 										<td class="mailbox-name">작성자 - ${community_list.community_writer}</td>
-					                    <td class="mailbox-subject"><b>제목 - </b><a style="text-decoration: none" href="/owner/community_read?community_no=${community_list.community_no}">${community_list.community_title}</a>
-					                    <div style="display: none"><input type="text" class="community_title" value="${community_list.community_title}"/></div>
+					                    <td class="mailbox-subject"><b>제목 - </b><a style="text-decoration: none" href="/owner/community_read?community_no=${community_list.community_no}">${community_list.community_title}
+					                        <fmt:formatDate  value="${community_list.community_regdate}" pattern="yyyy-MM-dd" var="regDate"/> 
+						                   		<c:if test="${toDay == regDate}">
+						                    		<span class="form-group has-warning">
+														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="control-label" for="inputWarning1">NEW</label>
+													</span>
+						                    	</c:if>
+					                    </a>
+
+					                    <div style="display: none"><input type="text" class="community_title" value="${community_list.community_title}"></div>
 				                    </td>
 				                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
 				                    <td class="mailbox-date">${community_list.community_regdate}</td>
@@ -97,6 +107,8 @@
 	  
 	  $(function(){
 		  bookmarkList();
+		  replyList();
+		  
 		  // 페이징 상태
 		  var limit = "${limit}";
 		  var community_size = "${community_size}";
@@ -129,8 +141,7 @@
 							alert("즐겨찾기가 추가되었습니다.");
 							$("#Book-Mark-List-Div").html("");
 							bookmarkList();
-						 }
-						 
+						 }						 
 					 },
 					 error:function(){
 						 alert("ajax실패");
