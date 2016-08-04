@@ -1,4 +1,12 @@
-
+<!-- 
+/*
+ * 	JSP: Order.jsp
+ *  Description: 자세한 재료 주문내역을 볼 수 있게 진행해주는 JSP 페이지(모달) 
+ *  Created: 2016­08­04
+ *	Author: 손현민
+ * 
+ */
+ -->
 <%@ page contentType="text/html; charset=UTF-8"%>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script>

@@ -1,4 +1,12 @@
-
+<!-- 
+/*
+ * 	JSP: Order.jsp
+ *  Description: 주문내역을 볼 수 있게 진행해주는 JSP 페이지 
+ *  Created: 2016­08­04
+ *	Author: 손현민
+ * 
+ */
+ -->
 
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -110,6 +118,12 @@ $(function(){
 			var day = $("#Select-Material-Order-Day option:selected").text();
 			date = year + "-" + month + "-" + day;
 		});
+		$(".material_list_tr").remove();
+		$(".material_detail_list_tr").remove();
+		$(".material_page_btn").trigger("click");
+		orderList_page = 0;
+		callMaterialOrderList();
+		
 	});
 	
 	//상세보기 클릭
@@ -123,7 +137,7 @@ $(function(){
 			data:{material_payment_no:material_payment_no},
 			success:function(data){
 				//alert(data);
-				//alert(data.materialPaymentDetailList.length)
+			//	alert(data.materialPaymentDetailList.length)
 				var materialPaymentlength = data.materialPaymentDetailList.length;
 				$("#material_detail_table tbody").html("");
 				$.each(data.materialPaymentDetailList, function(index, list){
@@ -142,6 +156,7 @@ function callMaterialOrderList(){
 		type:"post",
 		data:{store_no : store_no, date:date, start_page : orderList_page},
 		success:function(data){
+			//alert(data.materialPaymentList.length);
 			$.each(data.materialPaymentList, function(index, list){
 				var html = '<tr class="material_list_tr"><td>'+list.member_name+'</td><td>'+list.material_payment_date+'</td><td>'+list.store_name+'</td><td><a id="'+list.material_payment_no+'" class="Show-Order-List-Btn" href="#" style="cursor:pointer;">목록 보기</a></td><td>'+list.material_total_price+'원</td></tr>';
 				$("#Material-Order-Table tbody").append(html);
@@ -262,7 +277,7 @@ a {
 				class="table table-bordered table-striped" style="clear: both;">
 				<tbody>
 					<tr id="material_order_header_tr">
-						<td width="10%">주문자</td>
+						<td class="material_page_btn" width="10%">주문자</td>
 						<td width="10%">주문날짜</td>
 						<td width="10%">매장명</td>
 						<td width="10%">상품목록</td>

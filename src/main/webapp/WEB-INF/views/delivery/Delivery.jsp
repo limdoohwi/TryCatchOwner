@@ -1,3 +1,12 @@
+<!-- 
+/*
+ * 	JSP: Order.jsp
+ *  Description: DB¿¡ ÀúÀåµÇ¾î ÀÖ´Â Ä¿ÇÇ,ÄÉÀÌÅ© Àç·á ¸®½ºÆ®¸¦ È®ÀÎÇÏ°í Ä«Æ®¿¡ Ãß°¡,º¯°æ,»èÁ¦ÇÏ°í ÁÖ¹®³»¿ªÆäÀÌÁö·Î ÀÌµ¿ÇÒ ¼ö ÀÖ°Ô  ÁøÇàÇØÁÖ´Â JSP ÆäÀÌÁö 
+ *  Created: 2016¡©08¡©04
+ *	Author: ¼ÕÇö¹Î
+ * 
+ */
+ -->
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -43,7 +52,7 @@
 				cart_list(data);
 			},
 			error : function() {
-				alert("ë¦¬ìŠ¤íŠ¸  ì‹¤íŒ¨")
+				alert("ë¦¬ì?¤í??  ?¤í??")
 			}
 		});
 
@@ -51,7 +60,7 @@
 			var index = $(".btn-cart-material").index(this);
 			var material_no = $(".btn-cart-material").eq(index).val();
 			if ($(".form-count").eq(index).val() == '') {
-				alert("ìˆ˜ëŸ‰ì„ ì…ë ¥í•˜ì„¸ìš”.");
+				alert("?????? ???¥í???¸ì??.");
 			} else {
 				var material_cnt = $(".material_cnt").eq(index).val();
 				$.ajax({
@@ -65,7 +74,7 @@
 						cart_list(data);
 					},
 					error : function() {
-						alert("ì¸ì„œíŠ¸ ì‹¤íŒ¨")
+						alert("?¸ì???? ?¤í??")
 						return false;
 					}
 				});
@@ -74,7 +83,7 @@
 		//
 		function cart_list(data) {
 
-			var html = "<h4>ì¥ë°”êµ¬ë‹ˆ</h4>";
+			var html = "<h4>?¥ë?êµ¬ë??</h4>";
 			$
 					.each(
 							data.cartlist,
@@ -87,9 +96,9 @@
 										+ jsonData.material_count + '</span>'
 								html += jsonData.material_name
 								html += '</li>'
-								html += '<a data-toggle="tooltip" data-placement="top" title="ìˆ˜ëŸ‰ +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>'
-								html += '<a data-toggle="tooltip" data-placement="top" title="ìˆ˜ëŸ‰ -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>'
-								html += '<a data-toggle="tooltip" data-placement="top" title="ìƒí’ˆ ì·¨ì†Œ" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>'
+								html += '<a data-toggle="tooltip" data-placement="top" title="???? +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>'
+								html += '<a data-toggle="tooltip" data-placement="top" title="???? -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>'
+								html += '<a data-toggle="tooltip" data-placement="top" title="???? ì·¨ì??" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>'
 								html += '</div>'
 								html += '</ul>'
 							});
@@ -149,17 +158,17 @@
 		$("#Coffee-Product-Order-Btn").click(function() {
 			var size = $(".list-group").length;
 			if (size == 0) {
-				alert("ì¥ë°”êµ¬ë‹ˆ ìƒí’ˆì´ ì—†ìŠµë‹ˆë‹¤.");
+				alert("?¥ë?êµ¬ë?? ?????? ???µë????.");
 				return false;
 			}
-			if (confirm("ì´ëŒ€ë¡œ ì£¼ë¬¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")) {
+			if (confirm("?´ë??ë¡? ì£¼ë¬¸????ê²??µë??ê¹??")) {
 				location.href = "/owner/delivery/Order";
 			}
 		});
 		//Cake-Product-Order-Btn Click Show Confrim Order
 		$("#Cake-Product-Order-Btn").click(function() {
-			if (confirm("ì´ëŒ€ë¡œ ì£¼ë¬¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")) {
-				//alert("ë‚¢ ã…—ã……ë¯¿ì–´?")
+			if (confirm("?´ë??ë¡? ì£¼ë¬¸????ê²??µë??ê¹??")) {
+				//alert("?? ????ë¯¿ì???")
 				$(this).attr("href", "front?cmd=material_order_confirm")
 			}
 		});
@@ -177,7 +186,7 @@
 					cart_list(data);
 				},
 				error : function() {
-					alert("plus update ì‹¤íŒ¨");
+					alert("plus update ?¤í??");
 					return false;
 				}
 			});
@@ -197,7 +206,7 @@
 					cart_list(data);
 				},
 				error : function() {
-					alert("update ì˜¤ë¥˜");
+					alert("update ?¤ë?");
 					return false;
 				}
 			});
@@ -208,7 +217,7 @@
 		$(document).on('click', ".Material-Quantity-Minus-Btn", function() {
 			var eq = $(".Material-Quantity-Minus-Btn").index(this);
 			if ($(".Material-Quantity").eq(eq).text() == '1') {
-				alert("ë” ì´ìƒ ì¤„ì¼ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+				alert("?? ?´ì?? ì¤??? ?? ???µë????.");
 				return false;
 			} else {
 				$.ajax({
@@ -222,7 +231,7 @@
 						cart_list(data);
 					},
 					error : function() {
-						alert("minus update ì˜¤ë¥˜");
+						alert("minus update ?¤ë?");
 						return false;
 					}
 				});
@@ -241,10 +250,10 @@
 				},
 				success : function(data) {
 					cart_list(data);
-					alert("ë¬¼í’ˆì´ ì‚­ì œ ë˜ì—ˆìŠµë‹ˆë‹¤.")
+					alert("ë¬¼í???? ???? ?????µë????.")
 				},
 				error : function() {
-					alert("delet ì˜¤ë¥˜");
+					alert("delet ?¤ë?");
 					return false;
 				}
 			});
@@ -284,25 +293,25 @@
 					class="fa fa-times"></i>
 			</a>
 			<li class="sidebar-brand"><a href="#top">TryCatch Delivery</a></li>
-			<li><a href="/owner/delivery/Order_list">ì£¼ë¬¸ ë‚´ì—­ ë³´ê¸°</a></li>
+			<li><a href="/owner/delivery/Order_list">ì£¼ë¬¸ ?´ì?? ë³´ê¸°</a></li>
 			<li>
 				<div class="dropdown">
 					<a id="Select-Store-Btn" href="#" data-toggle="dropdown"
-						aria-haspopup="ture" aria-expanded="true">ë§¤ì¥ ì„ íƒ<span
+						aria-haspopup="ture" aria-expanded="true">ë§¤ì?? ????<span
 						class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu"
 						aria-labelledby="Select-Store-Btn"
 						style="color: white; background-color: black;">
-						<li><a href="#">ì¸ì²œì </a></li>
-						<li><a href="#">ì‹œì²­ì </a></li>
-						<li><a href="#">ì—°ìˆ˜ì </a></li>
+						<li><a href="#">?¸ì???</a></li>
+						<li><a href="#">??ì²???</a></li>
+						<li><a href="#">?°ì????</a></li>
 					</ul>
 				</div>
 			</li>
-			<li><a href="#services">ì„œë¹„ìŠ¤ ì‹œì‘</a></li>
+			<li><a href="#services">??ë¹??? ????</a></li>
 			<li><a href="#contact">Contact</a></li>
-			<li><a href="#top">ë§¨ ìœ„ë¡œ</a></li>
-			<li><a href="/owner">ë©”ì¸ìœ¼ë¡œ</a></li>
+			<li><a href="#top">ë§? ??ë¡?</a></li>
+			<li><a href="/owner">ë©??¸ì?¼ë?</a></li>
 		</ul>
 	</nav>
 
@@ -310,23 +319,23 @@
 	<header id="top" class="header">
 		<div class="text-vertical-center">
 			<h1>TryCatch Delivery</h1>
-			<h3>ê³ ê°ì—ê²Œ ìµœê³ ì˜ ì»¤í”¼ ì¬ë£Œë¥¼ ì œê³µí•©ë‹ˆë‹¤</h3>
+			<h3>ê³?ê°???ê²? ìµ?ê³??? ì»¤í?? ?¬ë?ë¥? ??ê³µí?©ë????</h3>
 			<h4>
 				<em class="fa fa-male fa-lg" aria-hidden="true"></em>
 			</h4>
 			<h4 style="font-weight: bold;">
-				<span>ì ì¥1</span>ë‹˜
+				<span>????1</span>??
 			</h4>
 			<h4>
 				<a id="Change-Store-Btn" class="btn btn-success"
 					style="margin-left: 12px" data-toggle="tooltip"
-					data-placement="right" title="ë§¤ì¥ì„ ë°”ê¿€ ìˆ˜ ìˆìŠµë‹ˆë‹¤."><em
+					data-placement="right" title="ë§¤ì?¥ì?? ë°?ê¿? ?? ???µë????."><em
 					class="fa fa-bank" aria-hidden="true"></em></a>&nbsp;&nbsp;&nbsp;&nbsp;
 			</h4>
 			<h4>
-				<span style="font-size: 13pt; font-weight: bold;">ì¢…ê°ì </span>
+				<span style="font-size: 13pt; font-weight: bold;">ì¢?ê°???</span>
 			</h4>
-			<br> <a href="#services" class="btn btn-dark btn-lg">ì£¼ë¬¸ ì‹œì‘í•˜ê¸°</a>
+			<br> <a href="#services" class="btn btn-dark btn-lg">ì£¼ë¬¸ ??????ê¸?</a>
 		</div>
 	</header>
 	<!-- Services -->
@@ -345,10 +354,10 @@
 									class="fa fa-coffee fa-stack-1x text-primary"></i>
 								</span>
 								<h4>
-									<strong>ì»¤í”¼ ì¬ë£Œ</strong>
+									<strong>ì»¤í?? ?¬ë?</strong>
 								</h4>
-								<p>ê³„í”¼ê°€ë£¨, ì›ë‘ ë“± ì—¬ëŸ¬ê°€ì§€ ì¬ë£Œë¥¼ ì£¼ë¬¸ í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.</p>
-								<button id="Coffee-Material-Btn" class="btn btn-light">ì‹œì‘</button>
+								<p>ê³??¼ê?ë£?, ???? ?? ?¬ë?¬ê?ì§? ?¬ë?ë¥? ì£¼ë¬¸ ?? ?? ???µë????.</p>
+								<button id="Coffee-Material-Btn" class="btn btn-light">????</button>
 							</div>
 						</div>
 						<div class="col-md-3 col-sm-6">
@@ -358,10 +367,10 @@
 									class="fa fa-birthday-cake fa-stack-1x text-primary"></i>
 								</span>
 								<h4>
-									<strong>ì¼€ì´í¬ ì¬ë£Œ</strong>
+									<strong>ì¼??´í?? ?¬ë?</strong>
 								</h4>
-								<p>ìƒí¬ë¦¼, ë°€ê°€ë£¨ ë“± ì—¬ëŸ¬ê°€ì§€ ì¬ë£Œë¥¼ ì£¼ë¬¸ í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.</p>
-								<button id="Cake-Material-Btn" class="btn btn-light">ì‹œì‘</button>
+								<p>???¬ë¦¼, ë°?ê°?ë£? ?? ?¬ë?¬ê?ì§? ?¬ë?ë¥? ì£¼ë¬¸ ?? ?? ???µë????.</p>
+								<button id="Cake-Material-Btn" class="btn btn-light">????</button>
 							</div>
 						</div>
 					</div>
@@ -385,7 +394,7 @@
 						<!-- Material -->
 						<div class="col-md-4">
 							<div class="portfolio-item">
-								<!-- ë‹´ê¸° -->
+								<!-- ?´ê¸° -->
 								<div class="row" style="margin-top: 5px">
 									<c:set var="material_coffee" value="${materialcoffee}" />
 									<c:forEach items="${material_coffee}" var="coffeelist"
@@ -398,22 +407,22 @@
 												</div>
 												<!-- Material Price -->
 												<div class="form-group">
-													<h4>${coffeelist.material_price}ì›</h4>
+													<h4>${coffeelist.material_price}??</h4>
 												</div>
 												<!-- Material Quantity -->
 												<div class="form-group">
 													<label class="col-sm-2 control-label"></label>
 													<div class="col-sm-8">
-														<input class="form-count material_cnt" placeholder="ìƒí’ˆ ìˆ˜ëŸ‰">
+														<input class="form-count material_cnt" placeholder="???? ????">
 													</div>
 												</div>
 
-												<!-- ë‹´ê¸° button -->
+												<!-- ?´ê¸° button -->
 												<div class="form-group">
 													<div class="col-sm-2 col-sm-offset-2">
 														<button id="Cart-add-btn" type="button"
 															class="btn btn-danger btn-cart-material"
-															value="${coffeelist.material_no}">ë‹´ê¸°</button>
+															value="${coffeelist.material_no}">?´ê¸°</button>
 														&nbsp;&nbsp;
 													</div>
 												</div>
@@ -428,7 +437,7 @@
 						</div>
 					</div>
 					<a id="Coffee-Product-Order-Btn" class="btn btn-success btn-lg">ì£¼ë¬¸</a>
-					<button id="Coffee-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ì†Œ</button>
+					<button id="Coffee-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ì??</button>
 				</div>
 				<!-- /.col-lg-10 -->
 			</div>
@@ -447,7 +456,7 @@
 						<!-- Material -->
 						<div class="col-md-4">
 							<div class="portfolio-item">
-								<!-- ë‹´ê¸° -->
+								<!-- ?´ê¸° -->
 								<div class="row" style="margin-top: 5px">
 									<c:set var="material_cake" value="${materialcake}" />
 									<c:forEach items="${material_cake}" var="cakelist"
@@ -459,23 +468,23 @@
 											</div>
 											<!-- Material Price -->
 											<div class="form-group">
-												<h4>${cakelist.material_price}ì›</h4>
+												<h4>${cakelist.material_price}??</h4>
 											</div>
 											<!-- Material Quantity -->
 											<div class="form-group">
 												<label for="inputEmail3" class="col-sm-2 control-label"></label>
 												<div class="col-sm-8">
 													<input type="email" class="form-count material_cnt"
-														id="inputEmail3" placeholder="ìƒí’ˆ ìˆ˜ëŸ‰">
+														id="inputEmail3" placeholder="???? ????">
 												</div>
 											</div>
-											<!-- ë‹´ê¸° button -->
+											<!-- ?´ê¸° button -->
 											<div class="form-group">
 												<div style="margin-left: 95px"
 													class="col-sm-2 col-sm-offset-2">
 													<button id="Cart-add-btn" type="button"
 														class="btn btn-danger btn-cart-material"
-														value="${cakelist.material_no}">ë‹´ê¸°</button>
+														value="${cakelist.material_no}">?´ê¸°</button>
 													&nbsp;&nbsp;
 												</div>
 											</div>
@@ -486,7 +495,7 @@
 						</div>
 					</div>
 					<a id="Cake-Product-Order-Btn" class="btn btn-success btn-lg">ì£¼ë¬¸</a>
-					<button id="Cake-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ì†Œ</button>
+					<button id="Cake-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ì??</button>
 				</div>
 				<!-- /.col-lg-10 -->
 			</div>

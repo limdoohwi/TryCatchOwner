@@ -66,7 +66,10 @@ public class OrderServiceImpl implements OrderService {
 			return null;
 		}
 	}
-	
+	/**
+	 * @author 손현민
+	 * 재료주문내역을 저장하는 함수
+	 */
 	@Override
 	public boolean insertMaterial_Payment(MaterialPaymentDTO dto, MaterialOrderDTO orderDto) {
 		try{
@@ -76,6 +79,7 @@ public class OrderServiceImpl implements OrderService {
 			cart.setMember_no(dto.getMember_no());
 			cartDao.deleteCart(cart);
 			orderDto.setMaterial_payment_no(materialDto.getMaterial_payment_no());
+			dao.insertMaterial_Order(orderDto);
 			return true;
 		}catch(Exception err){
 			return false;
