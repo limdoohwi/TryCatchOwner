@@ -8,7 +8,7 @@
  *
  * 	Revisions:
  * 		1. When & Who : 2016-07-31 by 박완석
- * 		2. What		  : 커뮤니티 DB처리 DAO 
+ * 		2. What		  : 커뮤니티 DB처리를 도와주는 DAO 
  */
 package com.trycatch.owner.persistence;
 
