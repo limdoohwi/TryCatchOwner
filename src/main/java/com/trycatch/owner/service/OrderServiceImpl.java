@@ -1,6 +1,5 @@
 package com.trycatch.owner.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,10 +43,10 @@ public class OrderServiceImpl implements OrderService {
 				String menu_total_list = "";
 				for(int j=0; j<orderList.size(); j++){
 					if(j==0){
-						String menu_simple_list = orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "ÀÜ/" + orderList.get(j).getMenu_option() + ".....";
+						String menu_simple_list = orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "ï¿½ï¿½/" + orderList.get(j).getMenu_option() + ".....";
 						orderInfoList.get(i).setMenu_simple_list(menu_simple_list);
 					}
-					menu_total_list +=  orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "ÀÜ/" + orderList.get(j).getMenu_option() + ", ";
+					menu_total_list +=  orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "ï¿½ï¿½/" + orderList.get(j).getMenu_option() + ", ";
 				}
 				orderInfoList.get(i).setMenu_total_list(menu_total_list);
 			}

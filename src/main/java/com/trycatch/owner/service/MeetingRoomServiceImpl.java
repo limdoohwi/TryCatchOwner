@@ -43,7 +43,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService{
 			MeetingRoomDTO dto = dao.getMeetingResrevationLIstToday_withStore_no(store_no, time);
 			if(dto == null){
 				dto = new MeetingRoomDTO();
-				dto.setMember_name("¾øÀ½");
+				dto.setMember_name("ì—†ìŒ");
 				dto.setMeeting_reservation_time(String.valueOf(time));
 			}
 			if(dto.getMeeting_reservation_time().equals("1"))

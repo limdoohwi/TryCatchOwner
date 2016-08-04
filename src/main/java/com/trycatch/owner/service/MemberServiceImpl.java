@@ -34,7 +34,10 @@ public class MemberServiceImpl implements MemberService {
 		MemberDTO dto =dao.getMember_WithPW(member_email, member_pw);
 		dto.toString();
 		return dto;
-		
-
+	}
+	
+	@Override
+	public MemberDTO getMember_Member_no(int member_no) throws Exception {
+		return dao.getMember_no(member_no);
 	}
 }

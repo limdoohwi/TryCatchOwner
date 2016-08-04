@@ -35,36 +35,17 @@ public class HomeController {
 	private MeetingRoomService meetingRoomService;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	
-	@RequestMapping(value = "/log_in", method = RequestMethod.POST)
-	public String login(Model model, HttpServletRequest req, RedirectAttributes rttr) throws Exception {
-			String member_email = req.getParameter("member_email");
-			String member_pw = req.getParameter("member_pw");
-			MemberDTO member_dto =service.login(member_email, member_pw);
-			
-			if(member_dto==null){
-				rttr.addFlashAttribute("login_success", false);
-				return "redirect:/";
-			}
-			else{
-				rttr.addFlashAttribute("login_success", true);
-				req.getSession().setAttribute("member_dto", member_dto);
-				//처음 로그인 후 접속할 때 설정된 매장은 보유 매장중 첫번째 매장
-				List<StoreDTO> storeList =  storeService.getStoreList_member_no(member_dto.getMember_no());
-				req.getSession().setAttribute("store_dto", storeList.get(0));
-				req.getSession().setAttribute("storeList", storeService.getStoreList_member_no(member_dto.getMember_no()));							
-				return "redirect:/log_in";
-			}
-		}
-	
-	@RequestMapping(value = "/log_in", method = RequestMethod.GET)
-	public String log_in(HttpServletRequest req, Model model) throws Exception {
-		MemberDTO dto = (MemberDTO)req.getSession().getAttribute("member_dto");
-		return "Main";
-	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home() throws Exception {
-		return "log_in";
+	public String home(HttpServletRequest req, int member_no) throws Exception {
+		MemberDTO member_dto = service.getMember_Member_no(member_no);
+		req.getSession().setAttribute("member_dto", member_dto);
+		//처음 로그인 후 접속할 때 설정된 매장은 보유 매장중 첫번째 매장
+		if(req.getSession().getAttribute("store_dto") == null){
+			List<StoreDTO> storeList =  storeService.getStoreList_member_no(member_dto.getMember_no());
+			req.getSession().setAttribute("store_dto", storeList.get(0));
+			req.getSession().setAttribute("storeList", storeService.getStoreList_member_no(member_dto.getMember_no()));							
+		}
+		return "Main";
 	}
 	
 	@RequestMapping("/messenger/TryCoffee_Owner")
