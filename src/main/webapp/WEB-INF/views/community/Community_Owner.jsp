@@ -174,14 +174,16 @@
 		  })
 
 		  	
-		  
+		  //게시글 업로드페이지 이동 함수
 		  $(".goinsert").click(function(){
 			  location.href="/owner/community_insert";
 		  });	  
+		  //새로고침 함수
 		  $("#refresh").click(function(){
 			  location.href="/owner/community_list?limit=0";
 		  });
 		  
+		  //페이징 함수
 		  $("#next5").click(function(){
 			  location.href="/owner/community_list?limit=${limit + 10}";
 		  });

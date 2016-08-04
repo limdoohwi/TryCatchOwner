@@ -26,6 +26,8 @@
 <script src="/owner/resources/smarteditor/js/HuskyEZCreator.js"></script>
 </head> 
 <script>
+
+//네이버 스마트에디터 적용 및 submit 함수
 $(function(){
     var editor_object = [];
     nhn.husky.EZCreator.createInIFrame({
