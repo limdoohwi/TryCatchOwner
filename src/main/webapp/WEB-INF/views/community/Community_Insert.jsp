@@ -1,3 +1,15 @@
+<!-- *
+ * 	JSP: Community_Insert
+ *  Description: 커뮤니티 업로드 하는 JSP
+ *  Created: 2016­07­31
+ *	Author: 박완석
+ *  Mail: kknd9009@naver.com
+ * 	Copyrights 2016-07-31 by Try{}CatchOwner
+ *
+ * 	Revisions:
+ * 		1. When & Who : 2016-07-31 by 박완석
+ * 		2. What		  : Naver스마트에디터를 사용하여 사진 업로드 기능 구현
+ *-->
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>

@@ -1,3 +1,18 @@
+<!-- *
+ * 	JSP: Community_Owner
+ *  Description: 커뮤니티 메인  JSP
+ *  Created: 2016­07­22
+ *	Author: 박완석
+ *  Mail: kknd9009@naver.com
+ * 	Copyrights 2016-07-31 by Try{}CatchOwner
+ *
+ * 	Revisions:
+ * 		1. When & Who : 2016-07-22 by 박완석
+ * 		2. What		  : Community 메인 화면 구현
+ *
+ * 		1. When & Who : 2016-07-30 by 박완석
+ * 		2. What		  : ajax를 이용한 리스트 불러오기
+ *-->
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -207,14 +222,16 @@
 		  })
 
 		  	
-		  
+		  //게시글 업로드페이지 이동 함수
 		  $(".goinsert").click(function(){
 			  location.href="/owner/community_insert";
 		  });	  
+		  //새로고침 함수
 		  $("#refresh").click(function(){
 			  location.href="/owner/community_list?limit=0";
 		  });
 		  
+		  //페이징 함수
 		  $("#next5").click(function(){
 			  location.href="/owner/community_list?limit=${limit + 10}";
 		  });

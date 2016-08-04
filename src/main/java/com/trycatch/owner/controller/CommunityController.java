@@ -1,3 +1,15 @@
+/*
+ * 	Class: CommunityController
+ *  Description: 커뮤니티 관리하는 컨트롤러
+ *  Created: 2016­07­31
+ *	Author: 박완석
+ *  Mail: kknd9009@naver.com
+ * 	Copyrights 2016-07-20 by Try{}Catch
+ *
+ * 	Revisions:
+ * 		1. When & Who : 2016-07-31 by 박완석
+ * 		2. What		  : 커뮤니티 컨트롤러 기능 
+ */
 package com.trycatch.owner.controller;
 
 import java.io.File;
@@ -35,16 +47,13 @@ public class CommunityController {
 
 	@Inject
 	private CommunityService service;
+
 	/**
-	 * @author �ڿϼ�
 	 * 
-	 * @category 
-	 * @param 
-	 * @param req ,ajax
-	 * @return
-	 * @throws Exception
+	 * @author 박완석
+	 * 커뮤니티 리스트 불러오는 함수
+	 * 
 	 */
-	
 	@RequestMapping(value="/community_list",method=RequestMethod.GET)
 	public String CommunityList(Model model,HttpServletRequest req,int limit){
 		System.out.println("GET COMMUNITY");
@@ -64,7 +73,12 @@ public class CommunityController {
 		return "/community/Community_Owner";
 	}
 	
-	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 리스트 불러오는 함수
+	 * ajax
+	 */
 	@RequestMapping("/community_like_list")
 	public @ResponseBody Object CommunityLikeList(HttpServletRequest req){
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");		
@@ -73,13 +87,24 @@ public class CommunityController {
 		return like_list;
 	}
 	
-	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 즐겨찾기 저장하는 함수
+	 * ajax
+	 */
 	@RequestMapping("/community_like")
 	public @ResponseBody boolean CommunityLike(CommunityLikeDTO dto){	
 		System.out.println(dto.toString());
 		return service.insertLikeCommunity(dto);	
 	}
 	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 리스트 불러오는 함수
+	 * 
+	 */
 	@RequestMapping(value="/community_list",method=RequestMethod.POST)
 	public String CommunityListPOST(Model model,HttpServletRequest req,int limit){
 		System.out.println("POST COMMUNITY");
@@ -100,6 +125,13 @@ public class CommunityController {
 		return "/community/Community_Owner";
 	}
 	
+	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 검색하는 함수
+	 * 
+	 */
 	@RequestMapping("/community_search")
 	public String CommunitySearch(Model model,HttpServletRequest req){
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
@@ -114,12 +146,23 @@ public class CommunityController {
 		return "/community/Community_Owner";
 	}
 
-	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 업로드 페이지로 이동하는 함수
+	 * 
+	 */
 	@RequestMapping(value="/community_insert",method=RequestMethod.GET)
 	public String CommunityInsert(){
 		return "/community/Community_Insert";
 	}
 	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 업로드 하는 함수
+	 * 
+	 */
 	@RequestMapping(value="/community_insert",method=RequestMethod.POST)
 	public String CommunityInsertPOST(HttpServletRequest req) throws UnsupportedEncodingException{
 
@@ -133,6 +176,13 @@ public class CommunityController {
 		return "redirect:/community_list?limit=0";
 	}
 	
+	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 해당 게시글 보기 함수
+	 * 
+	 */
 	@RequestMapping(value="/community_read",method=RequestMethod.GET)
 	public String CommunityRead(int community_no,Model model,HttpServletRequest req){
 		model.addAttribute("community_list",service.getCommunityList(0));
@@ -145,13 +195,27 @@ public class CommunityController {
 		return "/community/Community_Read";
 	}
 	
+	
+	/**
+	 * 
+	 * @author 박완석
+	 * 해당 커뮤니티 삭제 함수
+	 * 
+	 */
 	@RequestMapping("/community_del")
 	public String CommunityDel(int community_no){
 		System.out.println(community_no);
 		service.deleteCommunity(community_no);
 		return "redirect:/community_list?limit=0";
 	}
-			
+	
+	
+	/**
+	 * 
+	 * @author 박완석
+	 * 해당 커뮤니티가 가지고있는 댓글 불러오는 함수
+	 * ajax
+	 */
 	@RequestMapping("/community/replylist")
 	public @ResponseBody Object CommunityReplyList(int community_no,HttpServletRequest req){
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
@@ -160,7 +224,12 @@ public class CommunityController {
 		return replyList;
 	}
 	
-	
+	/**
+	 * 
+	 * @author 박완석
+	 * 사용자가 쓴 댓글 리스트 불러오는 함수
+	 * ajax
+	 */
 	@RequestMapping("/community/myreplylist")
 	public @ResponseBody Object MyCommunityReplyList(HttpServletRequest req){
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
@@ -169,6 +238,13 @@ public class CommunityController {
 		return myreplyList;
 	}
 	
+	
+	/**
+	 * 
+	 * @author 박완석
+	 * 댓글 등록 함수
+	 * ajax
+	 */
 	@RequestMapping("/community_reply")
 	public @ResponseBody Object CommunityReply(int community_no,String community_reply_comment,HttpServletRequest req){
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
@@ -180,17 +256,36 @@ public class CommunityController {
 		return service.insertCommunityReply(map);
 	}
 	
+	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 페이징 함수
+	 * 
+	 */
 	@RequestMapping("/community_prev")
 	public String CommunityPrev(int community_no){
 		return "redirect:/community_read?community_no="+service.prevCommunity(community_no);
 	}
 	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 페이징 함수
+	 * 
+	 */
 	@RequestMapping("/community_next")
 	public String CommunityNext(int community_no){
 		return "redirect:/community_read?community_no="+service.nextCommunity(community_no);
 	}
 	
 	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 사진 업로드 함수
+	 * 
+	 */
 	@RequestMapping("/multiplePhotoUpload")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response){
 	    try {

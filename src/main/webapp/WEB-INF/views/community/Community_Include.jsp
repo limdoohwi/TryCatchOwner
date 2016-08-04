@@ -1,4 +1,15 @@
-
+<!-- *
+ * 	JSP: Community_Include
+ *  Description: 커뮤니티 내가 쓴글,즐겨찾기항목 리스트 불러오는 JSP
+ *  Created: 2016­07­31
+ *	Author: 박완석
+ *  Mail: kknd9009@naver.com
+ * 	Copyrights 2016-07-31 by Try{}CatchOwner
+ *
+ * 	Revisions:
+ * 		1. When & Who : 2016-07-31 by 박완석
+ * 		2. What		  : 내가쓴 게시글, 내가쓴 댓글 , 즐겨찾기 항목 리스트 
+ *-->
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
