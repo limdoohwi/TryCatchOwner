@@ -225,29 +225,6 @@ function orderListSuccess(data){
 		  var modal = $(".New-Order-List-Modal").eq(index);
 		  $(modal).slideUp(400);
 	  });
-	  //My Store 메뉴에서 선택된 매장은 red표시, red표시인 매장명을 메인 상단에 띄움
-	  $(".Select-Store-Btn").click(function(){
-		 var index = $(".Select-Store-Btn").index(this);
-		 var store_no = $(".My-Store-No-List").eq(index).val();
-		 $.ajax({
-			 url:"/owner/set.owner_store",
-			 type:"post",
-			 data:{store_no:store_no},
-			 success:function(data){
-				 alert(data);
-				 if(data == true){
-					 alert("매장 설정이 완료되었습니다.");
-					 location.href="/owner/log_in";
-				 }
-				 else{
-					 alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
-				 }
-			 },
-			 error:function(){
-				 alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
-			 }
-		 });
-	  });
 	  
 	  
 	  //내역보기 클릭

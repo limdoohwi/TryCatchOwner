@@ -150,7 +150,7 @@
 			if(data==true){
 				location.reload();
 			}
-			else if(data==false){
+			else{
 				alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
 			}
 		}
