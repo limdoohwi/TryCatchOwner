@@ -22,7 +22,7 @@
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 	<jsp:include page="../layout/Header.jsp" />
-		<form method="post" action="/owner/community_insert" id="frm">
+		<form method="post" action="/owner/community_post" id="frm">
 			<div class="row col-md-offset-2" style="margin-right:100px; width:1000px">
 				<div class="panel panel-info">
 					<div class="panel-heading">	</div>

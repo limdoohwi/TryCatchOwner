@@ -187,7 +187,6 @@ public class CommunityController {
 	public String CommunityRead(int community_no,Model model,HttpServletRequest req){
 		model.addAttribute("community_list",service.getCommunityList(0));
 		MemberDTO mdto = (MemberDTO) req.getSession().getAttribute("member_dto");
-		//model.addAttribute("community_reply_list",service.replyCommunityList(community_no));
 		model.addAttribute("mycommunity_list",service.myCommunityList(mdto.getMember_name()));
 		model.addAttribute("myreplycommunity_list",service.myreplyCommunityList(mdto.getMember_no()));
 		model.addAttribute(service.readCommunity(community_no));
@@ -279,6 +278,36 @@ public class CommunityController {
 		return "redirect:/community_read?community_no="+service.nextCommunity(community_no);
 	}
 	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 수정하는페이지로 이동하는 함수
+	 * 
+	 */
+	@RequestMapping(value="/community_update",method=RequestMethod.GET)
+	public String CommunityUpdateGet(int community_no,Model model){		
+		model.addAttribute(service.readCommunity(community_no));	
+		return "/community/Community_Post";
+	}
+	
+	/**
+	 * 
+	 * @author 박완석
+	 * 커뮤니티 수정하는 함수
+	 * 
+	 */
+	@RequestMapping(value="/community_post",method=RequestMethod.POST)
+	public String CommunityUpdatePost(Model model,HttpServletRequest req){
+		int community_no = Integer.parseInt(req.getParameter("community_no"));
+		Map<String, Object> map = new HashMap<>();
+		String community_title = req.getParameter("community_title");
+		String community_content = req.getParameter("community_content");
+		map.put("community_title", community_title);
+		map.put("community_content", community_content);
+		map.put("community_no",community_no);
+		service.updateCommunity(map);	
+		return "redirect:/community_read?community_no="+community_no;
+	}
 	
 	/**
 	 * 

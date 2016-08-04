@@ -50,8 +50,8 @@ public class CommunityServiceImpl implements CommunityService {
 	 * 
 	 */
 	@Override
-	public void updateCommunity(Integer community_no) {
-		dao.updateCommunity(community_no);
+	public void updateCommunity(Map map) {
+		dao.updateCommunity(map);
 	}
 
 	
