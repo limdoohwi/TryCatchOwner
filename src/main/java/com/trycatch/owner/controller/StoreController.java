@@ -1,3 +1,14 @@
+/*
+ * 	Class: StoreController
+ *  Description: tryowner ì›¹ì„œë¹„ìŠ¤ì— ì ‘ì†í•  ì‹œ í•´ë‹¹ ì ì¥ì˜ ë³´ìœ  ë§¤ì¥ ë¦¬ìŠ¤íŠ¸ í˜¸ì¶œ ë° ë§¤ì¥ ë³€ê²½ì„ ë‹´ë‹¹í•˜ëŠ” Controller
+ *  Created: 2016Â­07Â­27
+ *	Author: ê¹€ì¤€í˜
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-27 by Try{}Catch
+ *
+ *	Revisions:
+ */
+
 package com.trycatch.owner.controller;
 
 import javax.inject.Inject;
@@ -5,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,24 +24,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.trycatch.owner.domain.StoreDTO;
 import com.trycatch.owner.service.StoreService;
 
+
 @Controller
 public class StoreController {
 	@Inject
 	private StoreService service;
 	
 	private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
+	
 	/**
-	 * @author ±èÁØÇõ
-	 * ¸ŞÀÎ ¸Ş´º My Store¿¡¼­ ¸ÅÀå ¸®½ºÆ®Áß ÇÏ³ª¸¦ ¼±ÅÃÇßÀ» ¶§ ¼±ÅÃµÈ ¸ÅÀåÀ» Session¿¡ ÀúÀå
-	 * @category Ajax
-	 * @param store_no
-	 * @param req
-	 * @return
-	 * @throws Exception
+	 * @author ê¹€ì¤€í˜
+	 * í˜„ì¬ ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸ê°€ íƒ€ ë§¤ì¥ìœ¼ë¡œ ë³€ê²½í•  ì‹œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
 	 */
 	@RequestMapping("/set/owner_store")
 	public @ResponseBody boolean setStorePOST(int store_no, HttpServletRequest req) throws Exception{
-		logger.info("¼±ÅÃµÈ ¸ÅÀå ¹øÈ£(setStorePost) : " + store_no);
 		StoreDTO dto = service.getStore_store_no(store_no);
 		logger.info("setOwnerStor : " + dto.equals(null));
 		if(dto == null){
@@ -39,7 +47,17 @@ public class StoreController {
 			req.getSession().removeAttribute("store_dto");
 		}
 		req.getSession().setAttribute("store_dto", dto);
-		logger.info("¸ÅÀå ¼¼¼Ç¿¡ ÀúÀå..");
 		return true;
+	}
+	
+	/**
+	 * @author ê¹€ì¤€í˜
+	 * í˜„ì¬ ì›¹ì„œë¹„ìŠ¤ì— ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸ì˜ ë³´ìœ  ë§¤ì¥ ë¦¬ìŠ¤íŠ¸ë¥¼ í˜¸ì¶œ
+	 */
+	@RequestMapping("/findownerstore")
+	public @ResponseBody Object findownerstorelist(int member_no) throws Exception{
+		JSONObject json = new JSONObject();
+		json.put("storelist", service.getStoreList_member_no(member_no));
+		return json;
 	}
 }

@@ -1,3 +1,14 @@
+/*
+ * 	Class: MeetingRoomService
+ *  Description: MeetingRoomDAOImpl에서 받아온 Data를 가공하기 위한 Service
+ *  Created: 2016­07­29
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-29 by Try{}Catch
+ *
+ *	Revisions:
+ */
+
 package com.trycatch.owner.service;
 
 import java.util.ArrayList;
@@ -14,6 +25,15 @@ public class MeetingRoomServiceImpl implements MeetingRoomService{
 	@Inject
 	private MeetingRoomDAO dao;
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 설정된 매장의 미팅룸 예약 리스트를 호출
+	 * meeting_reserve_time은 코드로 되어있기 때문에 시간으로 변경 후 DTO에 저장
+	 * 1 == 오전 10~12시
+	 * 2 == 오후 12시~2시
+	 * ....
+	 * 6 == 오후 8시~10시
+	 */
 	@Override
 	public List<MeetingRoomDTO> getMeetingResrevationLIst_withStore_no(int store_no) throws Exception {
 		List<MeetingRoomDTO> list = dao.getMeetingResrevationLIst_withStore_no(store_no);
@@ -36,6 +56,16 @@ public class MeetingRoomServiceImpl implements MeetingRoomService{
 		return list;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 설정된 매장의 오늘자 미팅룸 예약 리스트를 호출
+	 * 해당 Time에 예약이 없다면 예약자명을 '없음'으로 설정 
+	 * meeting_reserve_time은 코드로 되어있기 때문에 시간으로 변경 후 DTO에 저장
+	 * 1 == 오전 10~12시
+	 * 2 == 오후 12시~2시
+	 * ....
+	 * 6 == 오후 8시~10시
+	 */
 	@Override
 	public List<MeetingRoomDTO> getMeetingResrevationLIstToday_withStore_no(int store_no) throws Exception {
 		List<MeetingRoomDTO> list = new ArrayList<>();

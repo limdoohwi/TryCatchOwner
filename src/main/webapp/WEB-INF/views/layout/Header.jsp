@@ -1,7 +1,33 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" isELIgnored="false"%>
+<!-- 
+/*
+ * 	JSP: Header.jsp
+ *  Description: Header JSP 페이지 
+ *  Created: 2016­07­18
+ *	Author: 김준혁
+ *  Mail: heyKJ@gmail.com
+ * 	Copyrights 2016-07-18 by Try{}Catch
+ *
+ *	Revisions:
+ * 	1. When & Who : 2016-07-22 by 임두휘
+ * 	2. What		  : Websocket을 연결에 관련된 JavaScript 추가
+ *  
+ * 	1. When & Who : 2016-07-23 by 임두휘
+ * 	2. What		  : 1대1 채팅시 메시지를 뿌려주는 JavaScript함수 구현 
+ *  
+ * 	1. When & Who : 2016-07-27 by 임두휘
+ * 	2. What		  : 메신져 알람 기능 구현 읽지 않은 알람을 Header의 messageAlarm에 띄워는 함수 구현 
+ *
+ * 	1. When & Who : 2016-07-28 by 임두휘
+ * 	2. What		  : Ajax를 활용해 매번 화면이 바뀔때마다 messageAlarm을 가져오는 함수 구현 
+ *
+ * 	1. When & Who : 2016-07-29 by 임두휘
+ * 	2. What		  : messageAlarm의 message내용을 클릭시 해당 Message-Div를 자동으로 실행 되게 해주는 기능 구현 
+ */
+ -->
+<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
- <meta charset="utf-8">
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+ 
  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <!-- Tell the browser to be responsive to screen width -->
@@ -34,29 +60,121 @@
   <script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
   <!-- jQuery UI 1.11.4 -->
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-  <script src="/owner/resources/Owner_js/ListAjax.js"></script>
-  <script>
-	$(function(){
-		$(".Select-Store-Btn").click(function(){
-			var index = $(".Select-Store-Btn").index(this);
-			var store_no = $(".My-Store-No-List").eq(index).val();
-			var jsonData = {store_no : store_no};
-			callList_Ajax("/owner/set/owner_store", successSetStore, null, jsonData);
+	<script>
+		var count = 0;
+		$(function() {
+			connect();
+			//newNoticeAlarm();
+			//읽지않은 음료주문 알람을 띄움
+			noReadMsgList();
+			$(".Select-Store-Btn").click(function(){
+				var index = $(".Select-Store-Btn").index(this);
+				var store_no = $(".My-Store-No-List").eq(index).val();
+				var jsonData = {store_no : store_no};
+				callList_Ajax("/owner/set/owner_store", successSetStore, null, jsonData);
+			});
 		});
-	})
-	function successSetStore(data){
-		if(data==true){
-			location.reload();
+		// 읽지 않은 메시지 리스트를 서버에서 가져와 출력해주는 함수 
+		function noReadMsgList() {
+			$.ajax({
+				url : "/owner/messenger/noreadmsglist",
+				type : "post",
+				data : {
+					member_no : '${member_dto.member_no}'
+				},
+				success : function(data) {
+					$("#messageAlarm").html("");
+					count = 0;
+					$.each(data.noReadMsgList, function(index, jsonData) {
+						count = index + 1;
+						msgshowAlarm(jsonData.messenger_content,
+								jsonData.member_no, jsonData.member_name,
+								jsonData.content_regdate);
+					});
+					$("#messageAlarmCount").text(count + "개의 알람이 있습니다.");
+					$("#messageAlarmCount2").text(count);
+				}
+			});
 		}
-		else{
-			alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
+		
+		/*
+			WebSocket 연결을 진행해주는 함수
+		 */
+		 
+		function connect() {
+			if ('WebSocket' in window) {
+				console.log('Websocket supported');
+				socket = new WebSocket('ws://' + document.location.hostname
+						+ ':8080/owner//websocket');
+				console.log('Connection attempted');
+				socket.onopen = function() {
+					console.log('Connection open!');
+				}
+				socket.onclose = function() {
+					console.log('Disconnecting connection');
+				}
+				//데이터 받음
+				socket.onmessage = function(evt) {
+					var received_msg = evt.data;
+					console.log(received_msg);
+					console.log('message received!');
+					var msg = JSON.parse(received_msg);
+					if (msg.connect == "true") {
+						msgshowMessage(msg.message, msg.member_no, msg.member_name,
+								msg.content_regdate);
+					} else {
+						count = count + 1;
+						msgshowAlarm(msg.message, msg.member_no, msg.member_name,
+								msg.content_regdate);
+					}
+				}
+			} else {
+				console.log('Websocket not supported');
+			}
 		}
-	}
+		function successSetStore(data){
+			if(data==true){
+				location.reload();
+			}
+			else{
+				alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
+			}
+		}
+		/*
+			message를 받았을 때 messenger에 접속해 있지 않다면 실행 되는 함수로 알람을 띄워주는 역할을 한다. 
+		*/
+		function msgshowAlarm(message, member_no, member_name, content_regdate) {
+			var html = "";
+			html += '<li><a class="alarm_class">';
+			html += '<div class="pull-left"><img src="/owner/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">';
+			html += '</div><h4>';
+			html += member_name;
+			html += '<small><i class="fa fa-clock-o"></i>' + content_regdate
+					+ '</small></h4>';
+			html += '<p>' + message + '</p>';
+			html += '</a></li>';
+			html += '<input type="hidden" class="alarm_member_no" value="'+member_no+'"/>';
+			html += '<input type="hidden" class="alarm_member_name" value="'+member_name+'"/>';
+	
+			$("#messageAlarm").append(html);
+			$("#messageAlarmCount").text(count + "개의 알람이 있습니다.");
+			$("#messageAlarmCount2").text(count);
+		}
+		/*
+			alarm_class를 클릭시 해당 하는 member_name과 member_no을 가지고 messenger페이지로 넘어가 띄어준다.
+		*/
+		$(document).on('click',".alarm_class",function(){
+			var eq = $(".alarm_class").index(this);
+			$("#messenger_member_name").val($(".alarm_member_name").eq(eq).val());
+			$("#messenger_member_no").val($(".alarm_member_no").eq(eq).val());
+			$("#messenger_confirm").submit();
+		});
   </script>
   
 <header class="main-header">
+	
     <!-- Logo -->
-    <a href="index2.html" class="logo" style="background-color: black">
+    <a href="/owner/	" class="logo" style="background-color: black">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>TRY</b>Community</span>
       <!-- logo for regular state and mobile devices -->
@@ -78,31 +196,22 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
               <!-- Receive Message count Number -->
-              <span class="label label-success">4</span>
+              <span id="messageAlarmCount2" class="label label-success">0</span>
             </a>
             <ul class="dropdown-menu">
-             <!-- Message Click Show Div -->
-              <li class="header">4개의 메세지가 있습니다.</li>
+             <!-- Message 알람 부분 -->
+              <li id="messageAlarmCount" class="header">0개의 메세지가 있습니다.</li>
               <li>
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="/owner/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <!-- 발신자 -->
-                      <h4>
-                                                         점장2
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <!-- Content -->
-                      <p>돈좀있어?</p>
-                    </a>
-                  </li>
+                <ul id="messageAlarm" class="menu">
+                  <!-- Message 알람 받는곳 -->
                 </ul>
               </li>
               <li class="footer"><a href="#">모두 보기</a></li>
             </ul>
+            <form id="messenger_confirm" action="/owner/messenger/TryCoffee_Owner" method="post">
+            	<input type="hidden" id="messenger_member_name" name="member_name" value=""/>
+            	<input type="hidden" id="messenger_member_no" name="member_no" value=""/>
+            </form>
           </li>
           
           <!-- Notifications: style can be found in dropdown.less -->
@@ -180,7 +289,7 @@
         </li>
         <!-- Community Menu -->
         <li>
-          <a href="/owner/community/Community_Owner">
+          <a href="/owner/community_list?limit=0">
             <i class="fa fa-commenting"></i> <span>Community</span>
             <small class="label pull-right bg-green">new</small>
           </a>
@@ -209,7 +318,7 @@
         </li>
         <li>
         <!-- 재료 주문 -->
-          <a href="#">
+          <a href="/owner/delivery/Delivery">
             <i class="fa fa-cart-plus"></i> <span>재료 주문</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>

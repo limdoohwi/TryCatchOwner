@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.trycatch.owner.mappers.materialMapper"> 
+ 
+	<select id="getmaterial_coffee" resultType="MaterialDTO">
+		select * from material join MATERIAL_CATEGORY on material_category.material_category_no=material.MATERIAL_CATEGORY_NO where material_category.MATERIAL_CATEGORY_NO=1;
+	</select>
+	
+	<select id="getmaterial_cake" resultType="MaterialDTO">
+		select * from material join MATERIAL_CATEGORY on material_category.material_category_no=material.MATERIAL_CATEGORY_NO where material_category.MATERIAL_CATEGORY_NO=2;
+	</select>
+	
+	<select id="getNowMaterialPayment" resultType="MaterialPaymentDTO">
+		select * from material_payment order by material_payment_no desc
+	</select>
+</mapper>

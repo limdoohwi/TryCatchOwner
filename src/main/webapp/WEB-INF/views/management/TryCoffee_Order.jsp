@@ -1,3 +1,20 @@
+<!-- 
+/*
+ * 	JSP: TryCoffee_Order
+ *  Description: 현재 설정된 매장의 총 음료 예약 주문 리스트를 보여주는 JSP
+ *  Created: 2016­07­26
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-26 by Try{}Catch
+ *
+ *	Revisions:
+ *  1. When & Who : 2016-07-29 by 김준혁
+ *  2. What		  : 설정된 매장의 총 음료 주문 예약 리스트 호출 기능 추가
+ */
+ -->
+
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>

@@ -1,3 +1,15 @@
+/*
+ * 	Class: StoreDTO
+ *  Description: Store, Member Table을 join한 레코드를 저장하기 위한 DTO
+ *  Created: 2016­07­26
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-26 by Try{}Catch
+ *
+ *	Revisions:
+ */
+
+
 package com.trycatch.owner.domain;
 
 public class StoreDTO {
@@ -8,7 +20,6 @@ public class StoreDTO {
 	private String member_name;
 	private int meeting_room;
 	private String store_ip;
-	private int profit;
 	private String search_store_value;
 
 	public String getSearch_store_value() {
@@ -17,14 +28,6 @@ public class StoreDTO {
 
 	public void setSearch_store_value(String search_store_value) {
 		this.search_store_value = search_store_value;
-	}
-
-	public int getProfit() {
-		return profit;
-	}
-
-	public void setProfit(int profit) {
-		this.profit = profit;
 	}
 
 	public int getMember_no() {

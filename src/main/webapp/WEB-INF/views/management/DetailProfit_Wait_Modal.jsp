@@ -1,10 +1,13 @@
 <!-- 
 /*
- *  Description :  회원 구매 내역 상품 리스트 모달
- *  Created : 2016-07-08
- *  Author : 김준혁
- *  
- *  Revisions :
+ * 	JSP: DetailProfit_Wait_Modal
+ *  Description: 매출액 페이지에서 입력된 연도의 매출액 상세 정보 클릭시 loading Icon을 보여주는 제이쿼리 레이어팝업
+ *  Created: 2016­07­27
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-27 by Try{}Catch
+ *
+ *	Revisions:
  */
  -->
 

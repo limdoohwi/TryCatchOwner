@@ -1,3 +1,17 @@
+/*
+ * 	Class: OrderService
+ *  Description: OrderDAOImpl에서 받아온 Data를 가공하기 위한 Service
+ *  Created: 2016­07­29
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-29 by Try{}Catch
+ *
+ *	Revisions:
+ *  1. When & Who : 2016-07-31 by 손현민
+ *  2. What		  : insertMaterial_Payment() 추가
+ */
+
+
 package com.trycatch.owner.service;
 
 import java.util.List;
@@ -12,9 +26,13 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.trycatch.owner.domain.MaterialCartDTO;
+import com.trycatch.owner.domain.MaterialOrderDTO;
+import com.trycatch.owner.domain.MaterialPaymentDTO;
 import com.trycatch.owner.domain.Menu_OrderDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
-import com.trycatch.owner.persistence.MenuDAO;
+import com.trycatch.owner.persistence.MaterialCartDAO;
+import com.trycatch.owner.persistence.MaterialDAO;
 import com.trycatch.owner.persistence.OrderDAO;
 
 @Service
@@ -22,7 +40,9 @@ public class OrderServiceImpl implements OrderService {
 	@Inject
 	private OrderDAO dao;
 	@Inject
-	private MenuDAO menuDao;
+	private MaterialCartDAO cartDao;
+	@Inject
+	private MaterialDAO materialDao;
 	
 	@Inject
 	private DataSourceTransactionManager transactionManager;
@@ -30,7 +50,11 @@ public class OrderServiceImpl implements OrderService {
 	private TransactionStatus status;
 	
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
-		
+	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 설정된 매장의 음료 주문 예약 리스트를 호출
+	 */
 	@Override
 	public List<Order_InformationDTO> getOrder_Information(int store_no, int start_Page, boolean asce, String search_order_info) {
 		transaction.setName("owner_order_transaction");
@@ -56,6 +80,21 @@ public class OrderServiceImpl implements OrderService {
 			err.printStackTrace();
 			transactionManager.rollback(status);
 			return null;
+		}
+	}
+	
+	@Override
+	public boolean insertMaterial_Payment(MaterialPaymentDTO dto, MaterialOrderDTO orderDto) {
+		try{
+			//System.out.println(dao.insertMaterial_Payment(dto) + "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+			MaterialPaymentDTO materialDto = materialDao.getNowMaterialPayment();
+			MaterialCartDTO cart = new MaterialCartDTO();
+			cart.setMember_no(dto.getMember_no());
+			cartDao.deleteCart(cart);
+			orderDto.setMaterial_payment_no(materialDto.getMaterial_payment_no());
+			return true;
+		}catch(Exception err){
+			return false;
 		}
 	}
 }

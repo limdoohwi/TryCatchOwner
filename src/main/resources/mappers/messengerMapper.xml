@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.trycatch.owner.mappers.messengerMapper">  
+    <select id="isNew" resultType="int">
+        select count(*) from messenger where member_no=#{member_no} and send_member_no=#{send_member_no}
+    </select> 
+    <insert id="insertMessenger">
+        insert into messenger(member_no,send_member_no) values(#{member_no},#{send_member_no})
+    </insert>
+    <select id="isConnect" resultType="int">
+        select connect from messenger where messenger_no = #{messenger_no}
+    </select>
+    <update id="connect">
+        update messenger set connect = 1 where messenger_no=#{messenger_no}
+    </update>
+    <update id="disconnect">
+        update messenger set connect = 0 where messenger_no=#{messenger_no}
+    </update>
+    <select id="getMessengerNo" resultType="int">
+        select messenger_no from messenger where member_no=#{member_no} and send_member_no=#{send_member_no}
+    </select>
+    <select id="getMessengerNoList" resultType="int">
+        select messenger_no from messenger where member_no=#{member_no}
+    </select>
+    <insert id="insertMessege">
+        insert into messenger_content(messenger_no,messenger_content) values(#{messenger_no},#{messenger_content})
+    </insert>
+    <select id="getContentList" resultType="MessengerContentDTO">	
+        select msg.messenger_no, mem.member_no, mem.member_name, con.messenger_content, con.content_regdate, con.content_read_ck from member mem, messenger msg, messenger_content con where mem.member_no = msg.member_no and msg.messenger_no = con.messenger_no and (con.messenger_no = #{messenger_no} or con.messenger_no= #{send_messenger_no}) order by con.content_regdate
+    </select>
+	<update id="updateReadCk">
+	    update messenger_content set content_read_ck=1 where messenger_no = (select messenger_no from messenger where member_no= #{send_member_no} and send_member_no = #{member_no})
+	</update>
+	<select id="getNotReadContentList" resultType="MessengerContentDTO">
+	    select msg.messenger_no, mem.member_no, mem.member_name, con.messenger_content, con.content_regdate, con.content_read_ck from member mem, messenger msg, messenger_content con where mem.member_no = msg.member_no and msg.messenger_no = con.messenger_no and msg.send_member_no=#{member_no} and con.content_read_ck = 0
+	</select>
+	<select id="getRecentContent" resultType="MessengerContentDTO">
+	    select msg.messenger_no, mem.member_no, mem.member_name, con.messenger_content, con.content_regdate, con.content_read_ck from member mem, messenger msg, messenger_content con where  mem.member_no = msg.member_no and msg.messenger_no = con.messenger_no and content_regdate = (select max(content_regdate) from messenger_content)
+	</select>
+</mapper>

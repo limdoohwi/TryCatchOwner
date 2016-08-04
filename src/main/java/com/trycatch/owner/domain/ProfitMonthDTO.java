@@ -1,6 +1,15 @@
-package com.trycatch.owner.domain;
+/*
+ * 	Class: ProfitMonthDTO
+ *  Description: 월별 매출액 Data를 저장하기 위한 DTO
+ *  Created: 2016­07­30
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-30 by Try{}Catch
+ *
+ *	Revisions:
+ */
 
-import java.util.Map;
+package com.trycatch.owner.domain;
 
 public class ProfitMonthDTO {
 	private int month;

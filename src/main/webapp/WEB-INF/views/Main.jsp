@@ -1,3 +1,20 @@
+<!-- 
+/*
+ * 	JSP: Main
+ *  Description: TryCatchOwner 메인 화면
+ *  Created: 2016­07­23
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-23 by Try{}Catch
+ *
+ *	Revisions:
+ *  1. When & Who : 2016-07-29 by 김준혁
+ *  2. What		  : 오늘자 음료 주문 예약 리스트를 볼 수 있는 now order list 추가
+ *  1. When & Who : 2016-07-31 by 김준혁
+ *  2. What		  : 이번 연도 매출액, 월별 매출액 그래프 추가
+ */
+ -->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -225,30 +242,6 @@ function orderListSuccess(data){
 		  var modal = $(".New-Order-List-Modal").eq(index);
 		  $(modal).slideUp(400);
 	  });
-	  //My Store 메뉴에서 선택된 매장은 red표시, red표시인 매장명을 메인 상단에 띄움
-	  $(".Select-Store-Btn").click(function(){
-		 var index = $(".Select-Store-Btn").index(this);
-		 var store_no = $(".My-Store-No-List").eq(index).val();
-		 $.ajax({
-			 url:"/owner/set.owner_store",
-			 type:"post",
-			 data:{store_no:store_no},
-			 success:function(data){
-				 alert(data);
-				 if(data == true){
-					 alert("매장 설정이 완료되었습니다.");
-					 location.href="/owner/log_in";
-				 }
-				 else{
-					 alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
-				 }
-			 },
-			 error:function(){
-				 alert("매장 설정중 오류가 발생하였습니다. 다시 시도해주세요.");
-			 }
-		 });
-	  });
-	  
 	  
 	  //내역보기 클릭
 	  $(document).on("click", '.New-Order-List-Show-Btn', function(){

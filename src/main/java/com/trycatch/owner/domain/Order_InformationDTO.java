@@ -1,3 +1,14 @@
+/*
+ * 	Class: Order_InformationDTO
+ *  Description: Menu_Payment, Menu_Order Table의 join된 레코드를 저장하기 위한 DTO
+ *  Created: 2016­07­30
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-30 by Try{}Catch
+ *
+ *	Revisions:
+ */
+
 package com.trycatch.owner.domain;
 
 public class Order_InformationDTO {

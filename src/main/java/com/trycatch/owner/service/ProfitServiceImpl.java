@@ -1,14 +1,25 @@
+/*
+ * 	Class: ProfitServiceImpl
+ *  Description: ProfitDAOImpl에서 받아온 Data를 가공하기 위한 Service
+ *  Created: 2016­07­30
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-30 by Try{}Catch
+ *
+ *	Revisions:
+ *  1. When & Who : 2016-07-31 by 김준혁
+ *  2. What		  : getDayAverageReservationDrink(), getYearMenuPercentager(),
+ *  				getMonthMenuPercentager(),	isExist(),
+ *  				getMenuCountAndPrice() 추가
+ */
+
+
 package com.trycatch.owner.service;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -16,13 +27,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.trycatch.owner.domain.MenuDTO;
 import com.trycatch.owner.domain.MenuProfitDTO;
 import com.trycatch.owner.domain.ProfitMonthDTO;
 import com.trycatch.owner.domain.ProfitYearDTO;
@@ -42,7 +51,11 @@ public class ProfitServiceImpl implements ProfitService {
 	private TransactionStatus status;
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProfitServiceImpl.class);
-		
+	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 월별 매출액 호출(Main.jsp)
+	 */
 	@Override
 	public JSONObject getMonthProfit(int store_no, int member_no) {
 		JSONObject jsonRoot = new JSONObject();
@@ -78,6 +91,10 @@ public class ProfitServiceImpl implements ProfitService {
 		return jsonRoot;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 이번 연도 매출액 호출(Main.jsp)
+	 */
 	@Override
 	public JSONObject getYearProfit(int store_no, int member_no) {
 		JSONObject jsonRoot = new JSONObject();
@@ -115,6 +132,10 @@ public class ProfitServiceImpl implements ProfitService {
 		return jsonRoot;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도 총 매출액 호출
+	 */
 	@Override
 	public JSONObject getYearTotalPrice(int store_no, int year) {
 		JSONObject jsonRoot = new JSONObject();
@@ -122,7 +143,11 @@ public class ProfitServiceImpl implements ProfitService {
 		jsonRoot.put("year_total_price", total_price);
 		return jsonRoot;
 	}
-	
+
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도를 기준으로 2년전 연도별 매출과 입력된 연도 매출액 호출
+	 */
 	@Override
 	public JSONObject getYearsTotalPrice(int store_no, int year) {
 		JSONObject jsonRoot = new JSONObject();
@@ -134,6 +159,10 @@ public class ProfitServiceImpl implements ProfitService {
 		return jsonRoot;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도의 월별 총 매출액 호출
+	 */
 	@Override
 	public JSONObject getMonthTotalPrice(int store_no, int year) {
 		JSONObject jsonRoot = new JSONObject();
@@ -151,13 +180,21 @@ public class ProfitServiceImpl implements ProfitService {
 		return jsonRoot;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도의 음료 주문 건수 호출
+	 */
 	@Override
 	public JSONObject getYearReservationDrink(int store_no, int year) {
 		JSONObject jsonRoot = new JSONObject();
 		jsonRoot.put("yearReservationDrinkCount", dao.getYearReservationDrink(store_no, year));
 		return jsonRoot;
 	}
-	
+
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도의 월별 음료 주문 건수 호출
+	 */
 	@Override
 	public JSONObject getMonthReservationDrink(int store_no, int year) {
 		JSONObject jsonRoot = new JSONObject();
@@ -170,6 +207,10 @@ public class ProfitServiceImpl implements ProfitService {
 		return jsonRoot;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도의 일일 평균 음료 주문 건수 호출
+	 */
 	@Override
 	public JSONObject getDayAverageReservationDrink(int store_no, int year) {
 		JSONObject jsonRoot = new JSONObject();
@@ -190,6 +231,10 @@ public class ProfitServiceImpl implements ProfitService {
 		return jsonRoot;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도의 카테고리 별 판매율 호출
+	 */
 	@Override
 	public JSONObject getYearMenuPercentager(int store_no, int year, int month) {
 		JSONObject jsonRoot = new JSONObject();
@@ -200,7 +245,6 @@ public class ProfitServiceImpl implements ProfitService {
 			int menuProfit = dao.getYearMenuPercentager(store_no, list.get(i), year, month);
 			jsonTemp = new JSONObject();
 			jsonTemp.put("category_name", list.get(i));
-			logger.info("�޴� �Ѿ� : " + menuProfit);
 			jsonTemp.put("percentage", menuProfit);
 			jsonArray.add(jsonTemp);
 		}
@@ -208,6 +252,10 @@ public class ProfitServiceImpl implements ProfitService {
 		return jsonRoot;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도의 월별 카테고리 별 판매율 호출
+	 */
 	@Override
 	public JSONObject getMonthMenuPercentager(int store_no, int month) {
 		JSONObject jsonRoot = new JSONObject();
@@ -225,6 +273,10 @@ public class ProfitServiceImpl implements ProfitService {
 		return jsonRoot;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도의 매출액이 있는지 검사
+	 */
 	@Override
 	public JSONObject isExist(int store_no, int year) {
 		JSONObject jsonRoot = new JSONObject();
@@ -232,10 +284,13 @@ public class ProfitServiceImpl implements ProfitService {
 		return jsonRoot;
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 등록된 매장의 입력된 연도의 메뉴별 판매 개수와 판매액 호출
+	 */
 	@Override
 	public JSONObject getMenuCountAndPrice(int store_no, int year, int month) {
 		JSONObject jsonRoot = new JSONObject();
-		JSONObject jsonFirstRoot = new JSONObject();
 		JSONObject jsonTemp = null;
 		JSONObject jsonFirstTemp = null;
 		JSONArray jsonArray = new JSONArray();
@@ -247,13 +302,6 @@ public class ProfitServiceImpl implements ProfitService {
 			jsonArray = new JSONArray();
 			for(int j=0; j<menuList.size(); j++){
 				jsonTemp = new JSONObject();
-				System.out.println("**************************************************");
-				System.out.println("**************************************************");
-				System.out.println("**************************************************");
-				System.out.println("**************************************************");
-				System.out.println("**************************************************");
-				System.out.println(list.get(i));
-				System.out.println(menuList.get(j));
 				jsonTemp.put("menu_name", menuList.get(j));
 				MenuProfitDTO menuProfitDto = dao.getMenuCountAndPrice(store_no, year, menuList.get(j), month);
 				jsonTemp.put("menu_count", menuProfitDto.getMenu_count());
@@ -265,7 +313,6 @@ public class ProfitServiceImpl implements ProfitService {
 			jsonFirstArray.add(jsonFirstTemp);
 		}
 		jsonRoot.put("menuCountAndPrice", jsonFirstArray);
-		System.out.println(jsonRoot.toJSONString());
 		return jsonRoot;
 	}
 }

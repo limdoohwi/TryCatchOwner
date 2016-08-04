@@ -1,3 +1,14 @@
+/*
+ * 	Class: MenuDTO
+ *  Description: Menu Table의 레코드를 저장하기 위한 DTO
+ *  Created: 2016­07­29
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-29 by Try{}Catch
+ *
+ *	Revisions:
+ */
+
 package com.trycatch.owner.domain;
 
 public class MenuDTO {
