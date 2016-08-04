@@ -1,8 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 
@@ -13,15 +12,20 @@
 <meta name="author" content="">
 
 <!-- Bootstrap Core CSS -->
-<link href="/owner/resources/bootstrap_delivery/css/bootstrap.min.css" rel="stylesheet">
+<link href="/owner/resources/bootstrap_delivery/css/bootstrap.min.css"
+	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="/owner/resources/bootstrap_delivery/css/stylish-portfolio.css" rel="stylesheet">
+<link
+	href="/owner/resources/bootstrap_delivery/css/stylish-portfolio.css"
+	rel="stylesheet">
 
 <!-- Custom Fonts -->
-<link href="/owner/resources/bootstrap_delivery/font-awesome/css/font-awesome.min.css"
+<link
+	href="/owner/resources/bootstrap_delivery/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
+<link
+	href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
 	rel="stylesheet" type="text/css">
 
 <!-- jQuery -->
@@ -31,68 +35,67 @@
 <script src="/owner/resources/bootstrap_delivery/js/bootstrap.min.js"></script>
 <!-- Custom Theme JavaScript -->
 <script>
-	$(
-		function(){
-			$.ajax({
-				url:"/owner/list.cart",
-				type:"post",
-				success:function(data){
-					cart_list(data);
-				},
-			error:function(){
-				alert("¸®½ºÆ®  ½ÇÆĞ")
-				}
-			}); 
-			
-			$(".btn-cart-material").click(
-				function(){
-					var index = $(".btn-cart-material").index(this);
-					var material_no = $(".btn-cart-material").eq(index).val();
-					if($(".form-count").eq(index).val()==''){
-						alert("¼ö·®À» ÀÔ·ÂÇÏ¼¼¿ä.");
-					}else{
-						var material_cnt = $(".material_cnt").eq(index).val();						
-					$.ajax({
-						url:"/owner/insert.cart",
-						type:"post",	
-						data:{
-							material_no:material_no,
-							material_cnt:material_cnt,
-						},
-						success:function(data){
-							cart_list(data);
-						},
-						error:function(){
-							alert("ÀÎ¼­Æ® ½ÇÆĞ")
-							return false;
-						}
-					});
-				  }
-				}	
-			);
-			//
-			function cart_list(data){	
-				
-				var html = "<h4>Àå¹Ù±¸´Ï</h4>";
-				$.each(data.cartlist, function(index,jsonData){
-					html +='<ul class="list-group" style="color:black">'
-					html += '<div>';
-					html += '<li class="list-group-item">'
-					html += '<input class="material_no_hidden" type="hidden" name="material_name" value='+jsonData.material_no + ' />'
-					html += '<span class="Material-Quantity badge">'+jsonData.material_count+'</span>'
-					html += jsonData.material_name
-					html += '</li>'
-					html += '<a data-toggle="tooltip" data-placement="top" title="¼ö·® +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>'
-					html += '<a data-toggle="tooltip" data-placement="top" title="¼ö·® -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>'
-					html += '<a data-toggle="tooltip" data-placement="top" title="»óÇ° Ãë¼Ò" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>'
-					html += '</div>'
-					html += '</ul>'	
-				});
-				$("#cart_list").html(html);
+	$(function() {
+		$.ajax({
+			url : "/owner/list.cart",
+			type : "post",
+			success : function(data) {
+				cart_list(data);
+			},
+			error : function() {
+				alert("ë¦¬ìŠ¤íŠ¸  ì‹¤íŒ¨")
 			}
-			
-			
-					
+		});
+
+		$(".btn-cart-material").click(function() {
+			var index = $(".btn-cart-material").index(this);
+			var material_no = $(".btn-cart-material").eq(index).val();
+			if ($(".form-count").eq(index).val() == '') {
+				alert("ìˆ˜ëŸ‰ì„ ì…ë ¥í•˜ì„¸ìš”.");
+			} else {
+				var material_cnt = $(".material_cnt").eq(index).val();
+				$.ajax({
+					url : "/owner/insert.cart",
+					type : "post",
+					data : {
+						material_no : material_no,
+						material_cnt : material_cnt,
+					},
+					success : function(data) {
+						cart_list(data);
+					},
+					error : function() {
+						alert("ì¸ì„œíŠ¸ ì‹¤íŒ¨")
+						return false;
+					}
+				});
+			}
+		});
+		//
+		function cart_list(data) {
+
+			var html = "<h4>ì¥ë°”êµ¬ë‹ˆ</h4>";
+			$
+					.each(
+							data.cartlist,
+							function(index, jsonData) {
+								html += '<ul class="list-group" style="color:black">'
+								html += '<div>';
+								html += '<li class="list-group-item">'
+								html += '<input class="material_no_hidden" type="hidden" name="material_name" value='+jsonData.material_no + ' />'
+								html += '<span class="Material-Quantity badge">'
+										+ jsonData.material_count + '</span>'
+								html += jsonData.material_name
+								html += '</li>'
+								html += '<a data-toggle="tooltip" data-placement="top" title="ìˆ˜ëŸ‰ +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>'
+								html += '<a data-toggle="tooltip" data-placement="top" title="ìˆ˜ëŸ‰ -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>'
+								html += '<a data-toggle="tooltip" data-placement="top" title="ìƒí’ˆ ì·¨ì†Œ" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>'
+								html += '</div>'
+								html += '</ul>'
+							});
+			$("#cart_list").html(html);
+		}
+
 		//ToolTip
 		$('[data-toggle="tooltip"]').tooltip();
 
@@ -143,128 +146,121 @@
 			$("#Select-Store-Btn").trigger('click');
 		});
 		//Coffee-Product-Order-Btn Click Show Confrim Order
-		$("#Coffee-Product-Order-Btn").click(function(){
+		$("#Coffee-Product-Order-Btn").click(function() {
 			var size = $(".list-group").length;
-			if(size==0){
-				alert("Àå¹Ù±¸´Ï »óÇ°ÀÌ ¾ø½À´Ï´Ù.");
+			if (size == 0) {
+				alert("ì¥ë°”êµ¬ë‹ˆ ìƒí’ˆì´ ì—†ìŠµë‹ˆë‹¤.");
 				return false;
 			}
-			if(confirm("ÀÌ´ë·Î ÁÖ¹®ÇÏ½Ã°Ú½À´Ï±î?")){
-				 location.href = "/owner/delivery/Order";
+			if (confirm("ì´ëŒ€ë¡œ ì£¼ë¬¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")) {
+				location.href = "/owner/delivery/Order";
 			}
 		});
 		//Cake-Product-Order-Btn Click Show Confrim Order
-		$("#Cake-Product-Order-Btn").click(function(){
-			if(confirm("ÀÌ´ë·Î ÁÖ¹®ÇÏ½Ã°Ú½À´Ï±î?")){
-				//alert("³± ¤Ç¤µ¹Ï¾î?")
+		$("#Cake-Product-Order-Btn").click(function() {
+			if (confirm("ì´ëŒ€ë¡œ ì£¼ë¬¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")) {
+				//alert("ë‚¢ ã…—ã……ë¯¿ì–´?")
 				$(this).attr("href", "front?cmd=material_order_confirm")
 			}
 		});
 		//Material-Quantity-Plus-Btn Click Quantity +1
-		$(document).on('click',".Material-Quantity-Plus-Btn", function(){
+		$(document).on('click', ".Material-Quantity-Plus-Btn", function() {
 			var eq = $(".Material-Quantity-Plus-Btn").index(this);
 			$.ajax({
-				url:"/owner/update.cart",
-				type:"post",
-				data:{
-					param: "plus",
-					material_no:$(".material_no_hidden").eq(eq).val(),	
+				url : "/owner/update.cart",
+				type : "post",
+				data : {
+					param : "plus",
+					material_no : $(".material_no_hidden").eq(eq).val(),
 				},
-				success:function(data){
+				success : function(data) {
 					cart_list(data);
 				},
-				error:function(){
-					alert("plus update ½ÇÆĞ");
+				error : function() {
+					alert("plus update ì‹¤íŒ¨");
 					return false;
 				}
 			});
 		});
-		
-		$(document).on('blur',".Material-Quantity badge", function(){	
+
+		$(document).on('blur', ".Material-Quantity badge", function() {
 			var eq = $(".Material-Quantity badge").index(this);
 			$.ajax({
-				url:"/owner/update.cart",
-				type:"post",
-				data: {
-					param: "count",
-					material_no:$(".material_no_hidden").eq(eq).val(),
-					material_count:$(".Material-Quantity badge").eq(eq).val()
+				url : "/owner/update.cart",
+				type : "post",
+				data : {
+					param : "count",
+					material_no : $(".material_no_hidden").eq(eq).val(),
+					material_count : $(".Material-Quantity badge").eq(eq).val()
 				},
-				success:function(data){
+				success : function(data) {
 					cart_list(data);
 				},
-				error:function(){
-					alert("update ¿À·ù");
+				error : function() {
+					alert("update ì˜¤ë¥˜");
 					return false;
-				}
-			});	
-		});
-		
-		
-		//Material-Quantity-Minus-Btn Click Quantity -1
-		//$(".Material-Quantity-Minus-Btn").click(function(){
-			$(document).on('click',".Material-Quantity-Minus-Btn", function(){
-				var eq = $(".Material-Quantity-Minus-Btn").index(this);
-				if($(".Material-Quantity").eq(eq).text()=='1'){
-					alert("´õ ÀÌ»ó ÁÙÀÏ ¼ö ¾ø½À´Ï´Ù.");
-					return false;
-				}
-				else{
-				$.ajax({
-						url:"/owner/update.cart",
-						type:"post",
-						data: {
-							param: "minus",
-							material_no:$(".material_no_hidden").eq(eq).val(),	
-						},
-						success:function(data){
-							cart_list(data);
-						},
-						error:function(){
-							alert("minus update ¿À·ù");
-							return false;
-						}
-				});	
 				}
 			});
+		});
 
-		
+		//Material-Quantity-Minus-Btn Click Quantity -1
+		//$(".Material-Quantity-Minus-Btn").click(function(){
+		$(document).on('click', ".Material-Quantity-Minus-Btn", function() {
+			var eq = $(".Material-Quantity-Minus-Btn").index(this);
+			if ($(".Material-Quantity").eq(eq).text() == '1') {
+				alert("ë” ì´ìƒ ì¤„ì¼ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+				return false;
+			} else {
+				$.ajax({
+					url : "/owner/update.cart",
+					type : "post",
+					data : {
+						param : "minus",
+						material_no : $(".material_no_hidden").eq(eq).val(),
+					},
+					success : function(data) {
+						cart_list(data);
+					},
+					error : function() {
+						alert("minus update ì˜¤ë¥˜");
+						return false;
+					}
+				});
+			}
+		});
+
 		//Material-Cart-List-Remove-Btn Click List Remove
-		$(document).on('click',".Material-Cart-List-Remove-Btn",function(){
+		$(document).on('click', ".Material-Cart-List-Remove-Btn", function() {
 			var eq = $(".Material-Cart-List-Remove-Btn").index(this);
 			alert($(".material_no_hidden").eq(eq).val());
 			$.ajax({
-					url:"/owner/delete.cart",
-					type:"post",
-					data:{
-						material_no:$(".material_no_hidden").eq(eq).val(),
-					},
-					success:function(data){
-						cart_list(data);
-						alert("¹°Ç°ÀÌ »èÁ¦ µÇ¾ú½À´Ï´Ù.")
-					},
-					error:function(){
-						alert("delet ¿À·ù");
-						return false;
-					}
+				url : "/owner/delete.cart",
+				type : "post",
+				data : {
+					material_no : $(".material_no_hidden").eq(eq).val(),
+				},
+				success : function(data) {
+					cart_list(data);
+					alert("ë¬¼í’ˆì´ ì‚­ì œ ë˜ì—ˆìŠµë‹ˆë‹¤.")
+				},
+				error : function() {
+					alert("delet ì˜¤ë¥˜");
+					return false;
+				}
 			});
 		});
-		
-		$(window).scroll(function () {
+
+		$(window).scroll(function() {
 			var scroll = $(document).scrollTop();
 			//Scroll In Services Area Show Cart Div 
-			if(scroll > 825 && scroll < 1800){
+			if (scroll > 825 && scroll < 1800) {
 				$("#cart_list").show();
-			}
-			else{
+			} else {
 				$("#cart_list").hide();
 			}
-		}); 
-		
-		
+		});
+
 	});
-	
-	
 </script>
 <style>
 .btn-success {
@@ -275,32 +271,38 @@
 
 <body>
 	<!-- Cart -->
-	<div id="cart_list" class="col-sm-2" style="color:white; background-color:black; opacity: 0.5; margin-right: 0px !important; position: fixed;">
+	<div id="cart_list" class="col-sm-2"
+		style="color: white; background-color: black; opacity: 0.5; margin-right: 0px !important; position: fixed;">
 	</div>
 	<!-- Navigation -->
 	<a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i
 		class="fa fa-bars"></i></a>
 	<nav id="sidebar-wrapper">
 		<ul class="sidebar-nav">
-			<a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle">
-				<i class="fa fa-times"></i>
+			<a id="menu-close" href="#"
+				class="btn btn-light btn_link btn-lg pull-right toggle"> <i
+					class="fa fa-times"></i>
 			</a>
 			<li class="sidebar-brand"><a href="#top">TryCatch Delivery</a></li>
-			<li><a href="/owner/delivery/Order_list">ÁÖ¹® ³»¿ª º¸±â</a></li>
+			<li><a href="/owner/delivery/Order_list">ì£¼ë¬¸ ë‚´ì—­ ë³´ê¸°</a></li>
 			<li>
-			<div class="dropdown">
-				<a id="Select-Store-Btn" href="#" data-toggle="dropdown" aria-haspopup="ture" aria-expanded="true">¸ÅÀå ¼±ÅÃ<span class="caret"></span></a>
-				 <ul class="dropdown-menu" role="menu" aria-labelledby="Select-Store-Btn" style="color:white; background-color:black;">
-				    <li><a href="#">ÀÎÃµÁ¡</a></li>
-				    <li><a href="#">½ÃÃ»Á¡</a></li>
-				    <li><a href="#">¿¬¼öÁ¡</a></li>
-				 </ul>
-			</div>
+				<div class="dropdown">
+					<a id="Select-Store-Btn" href="#" data-toggle="dropdown"
+						aria-haspopup="ture" aria-expanded="true">ë§¤ì¥ ì„ íƒ<span
+						class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu"
+						aria-labelledby="Select-Store-Btn"
+						style="color: white; background-color: black;">
+						<li><a href="#">ì¸ì²œì </a></li>
+						<li><a href="#">ì‹œì²­ì </a></li>
+						<li><a href="#">ì—°ìˆ˜ì </a></li>
+					</ul>
+				</div>
 			</li>
-			<li><a href="#services">¼­ºñ½º ½ÃÀÛ</a></li>
+			<li><a href="#services">ì„œë¹„ìŠ¤ ì‹œì‘</a></li>
 			<li><a href="#contact">Contact</a></li>
-			<li><a href="#top">¸Ç À§·Î</a></li>
-			<li><a href="/owner">¸ŞÀÎÀ¸·Î</a></li>
+			<li><a href="#top">ë§¨ ìœ„ë¡œ</a></li>
+			<li><a href="/owner">ë©”ì¸ìœ¼ë¡œ</a></li>
 		</ul>
 	</nav>
 
@@ -308,34 +310,34 @@
 	<header id="top" class="header">
 		<div class="text-vertical-center">
 			<h1>TryCatch Delivery</h1>
-			<h3>°í°´¿¡°Ô ÃÖ°íÀÇ Ä¿ÇÇ Àç·á¸¦ Á¦°øÇÕ´Ï´Ù</h3>
+			<h3>ê³ ê°ì—ê²Œ ìµœê³ ì˜ ì»¤í”¼ ì¬ë£Œë¥¼ ì œê³µí•©ë‹ˆë‹¤</h3>
 			<h4>
 				<em class="fa fa-male fa-lg" aria-hidden="true"></em>
 			</h4>
-			<h4 style="font-weight:bold;">
-				<span>Á¡Àå1</span>´Ô
+			<h4 style="font-weight: bold;">
+				<span>ì ì¥1</span>ë‹˜
 			</h4>
 			<h4>
 				<a id="Change-Store-Btn" class="btn btn-success"
 					style="margin-left: 12px" data-toggle="tooltip"
-					data-placement="right" title="¸ÅÀåÀ» ¹Ù²Ü ¼ö ÀÖ½À´Ï´Ù."><em
+					data-placement="right" title="ë§¤ì¥ì„ ë°”ê¿€ ìˆ˜ ìˆìŠµë‹ˆë‹¤."><em
 					class="fa fa-bank" aria-hidden="true"></em></a>&nbsp;&nbsp;&nbsp;&nbsp;
 			</h4>
 			<h4>
-				<span style="font-size: 13pt; font-weight:bold;">Á¾°¢Á¡</span>
+				<span style="font-size: 13pt; font-weight: bold;">ì¢…ê°ì </span>
 			</h4>
-			<br> <a href="#services" class="btn btn-dark btn-lg">ÁÖ¹® ½ÃÀÛÇÏ±â</a>
+			<br> <a href="#services" class="btn btn-dark btn-lg">ì£¼ë¬¸ ì‹œì‘í•˜ê¸°</a>
 		</div>
 	</header>
 	<!-- Services -->
 	<!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
 	<section id="services" class="services bg-primary">
 		<div class="container">
-			<div class="col-lg-12 text-center" >
-				<div class="col-lg-12" >
+			<div class="col-lg-12 text-center">
+				<div class="col-lg-12">
 					<h2>Our Services</h2>
 					<hr class="small">
-					<div class="row col-md-offset-4" >
+					<div class="row col-md-offset-4">
 						<div class="col-md-3 col-sm-6">
 							<div class="service-item">
 								<span class="fa-stack fa-4x"> <i
@@ -343,10 +345,10 @@
 									class="fa fa-coffee fa-stack-1x text-primary"></i>
 								</span>
 								<h4>
-									<strong>Ä¿ÇÇ Àç·á</strong>
+									<strong>ì»¤í”¼ ì¬ë£Œ</strong>
 								</h4>
-								<p>°èÇÇ°¡·ç, ¿øµÎ µî ¿©·¯°¡Áö Àç·á¸¦ ÁÖ¹® ÇÒ ¼ö ÀÖ½À´Ï´Ù.</p>
-								<button id="Coffee-Material-Btn" class="btn btn-light">½ÃÀÛ</button>
+								<p>ê³„í”¼ê°€ë£¨, ì›ë‘ ë“± ì—¬ëŸ¬ê°€ì§€ ì¬ë£Œë¥¼ ì£¼ë¬¸ í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.</p>
+								<button id="Coffee-Material-Btn" class="btn btn-light">ì‹œì‘</button>
 							</div>
 						</div>
 						<div class="col-md-3 col-sm-6">
@@ -356,10 +358,10 @@
 									class="fa fa-birthday-cake fa-stack-1x text-primary"></i>
 								</span>
 								<h4>
-									<strong>ÄÉÀÌÅ© Àç·á</strong>
+									<strong>ì¼€ì´í¬ ì¬ë£Œ</strong>
 								</h4>
-								<p>»ıÅ©¸², ¹Ğ°¡·ç µî ¿©·¯°¡Áö Àç·á¸¦ ÁÖ¹® ÇÒ ¼ö ÀÖ½À´Ï´Ù.</p>
-								<button id="Cake-Material-Btn" class="btn btn-light">½ÃÀÛ</button>
+								<p>ìƒí¬ë¦¼, ë°€ê°€ë£¨ ë“± ì—¬ëŸ¬ê°€ì§€ ì¬ë£Œë¥¼ ì£¼ë¬¸ í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.</p>
+								<button id="Cake-Material-Btn" class="btn btn-light">ì‹œì‘</button>
 							</div>
 						</div>
 					</div>
@@ -383,49 +385,50 @@
 						<!-- Material -->
 						<div class="col-md-4">
 							<div class="portfolio-item">
-								<!-- ´ã±â -->
+								<!-- ë‹´ê¸° -->
 								<div class="row" style="margin-top: 5px">
-									<c:set var="material_coffee" value="${materialcoffee}"/>
-									<c:forEach items="${material_coffee}" var="coffeelist" varStatus="material_status">							
+									<c:set var="material_coffee" value="${materialcoffee}" />
+									<c:forEach items="${material_coffee}" var="coffeelist"
+										varStatus="material_status">
 										<form class="form-horizontal" method="post" action="add">
-											<div style="display:inline-block;">
+											<div style="display: inline-block;">
 												<!-- Material Name -->
 												<div class="form-group">
 													<h3>${coffeelist.material_name}</h3>
 												</div>
 												<!-- Material Price -->
 												<div class="form-group">
-													<h4>${coffeelist.material_price}¿ø</h4>
+													<h4>${coffeelist.material_price}ì›</h4>
 												</div>
 												<!-- Material Quantity -->
 												<div class="form-group">
-													<label  class="col-sm-2 control-label"></label>
-													<div class="col-sm-8">														
-														<input class="form-count material_cnt" 
-															placeholder="»óÇ° ¼ö·®" >
+													<label class="col-sm-2 control-label"></label>
+													<div class="col-sm-8">
+														<input class="form-count material_cnt" placeholder="ìƒí’ˆ ìˆ˜ëŸ‰">
 													</div>
 												</div>
-						
-												<!-- ´ã±â button -->
+
+												<!-- ë‹´ê¸° button -->
 												<div class="form-group">
 													<div class="col-sm-2 col-sm-offset-2">
 														<button id="Cart-add-btn" type="button"
-															class="btn btn-danger btn-cart-material" value="${coffeelist.material_no}">´ã±â</button>
+															class="btn btn-danger btn-cart-material"
+															value="${coffeelist.material_no}">ë‹´ê¸°</button>
 														&nbsp;&nbsp;
 													</div>
 												</div>
 											</div>
 											<c:if test="${material_status.count == 3}">
-												<br/>
+												<br />
 											</c:if>
 										</form>
 									</c:forEach>
 								</div>
-							</div> 
+							</div>
 						</div>
 					</div>
-					<a id="Coffee-Product-Order-Btn" class="btn btn-success btn-lg">ÁÖ¹®</a>
-					<button id="Coffee-Order-Cancel-Btn" class="btn btn-dark btn-lg">Ãë¼Ò</button>
+					<a id="Coffee-Product-Order-Btn" class="btn btn-success btn-lg">ì£¼ë¬¸</a>
+					<button id="Coffee-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ì†Œ</button>
 				</div>
 				<!-- /.col-lg-10 -->
 			</div>
@@ -444,50 +447,54 @@
 						<!-- Material -->
 						<div class="col-md-4">
 							<div class="portfolio-item">
-								<!-- ´ã±â -->
+								<!-- ë‹´ê¸° -->
 								<div class="row" style="margin-top: 5px">
-								<c:set var="material_cake" value="${materialcake}"/>
-									<c:forEach items="${material_cake}" var="cakelist" varStatus="material_status">
-									<form class="form-horizontal">
-										<!-- Material Name -->
-										<div class="form-group">
-											<h3>${cakelist.material_name}</h3>
-										</div>
-										<!-- Material Price -->
-										<div class="form-group">
-											<h4>${cakelist.material_price}¿ø</h4>
-										</div>
-										<!-- Material Quantity -->
-										<div class="form-group">
-											<label for="inputEmail3" class="col-sm-2 control-label"></label>
-											<div class="col-sm-8">
-												<input type="email" class="form-count material_cnt" id="inputEmail3"
-													placeholder="»óÇ° ¼ö·®">
+									<c:set var="material_cake" value="${materialcake}" />
+									<c:forEach items="${material_cake}" var="cakelist"
+										varStatus="material_status">
+										<form class="form-horizontal">
+											<!-- Material Name -->
+											<div class="form-group">
+												<h3>${cakelist.material_name}</h3>
 											</div>
-										</div>
-										<!-- ´ã±â button -->
-										<div class="form-group">
-											<div style="margin-left:95px"class="col-sm-2 col-sm-offset-2">
-												<button id="Cart-add-btn" type="button"
-													class="btn btn-danger btn-cart-material" value="${cakelist.material_no}">´ã±â</button>
-												&nbsp;&nbsp;
+											<!-- Material Price -->
+											<div class="form-group">
+												<h4>${cakelist.material_price}ì›</h4>
 											</div>
-										</div>
-									</form>
+											<!-- Material Quantity -->
+											<div class="form-group">
+												<label for="inputEmail3" class="col-sm-2 control-label"></label>
+												<div class="col-sm-8">
+													<input type="email" class="form-count material_cnt"
+														id="inputEmail3" placeholder="ìƒí’ˆ ìˆ˜ëŸ‰">
+												</div>
+											</div>
+											<!-- ë‹´ê¸° button -->
+											<div class="form-group">
+												<div style="margin-left: 95px"
+													class="col-sm-2 col-sm-offset-2">
+													<button id="Cart-add-btn" type="button"
+														class="btn btn-danger btn-cart-material"
+														value="${cakelist.material_no}">ë‹´ê¸°</button>
+													&nbsp;&nbsp;
+												</div>
+											</div>
+										</form>
 									</c:forEach>
 								</div>
 							</div>
 						</div>
 					</div>
-					<a id="Cake-Product-Order-Btn" class="btn btn-success btn-lg">ÁÖ¹®</a>
-					<button id="Cake-Order-Cancel-Btn" class="btn btn-dark btn-lg">Ãë¼Ò</button>
+					<a id="Cake-Product-Order-Btn" class="btn btn-success btn-lg">ì£¼ë¬¸</a>
+					<button id="Cake-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ì†Œ</button>
 				</div>
 				<!-- /.col-lg-10 -->
 			</div>
 			<!-- /.row -->
 		</div>
 	</div>
-	<br/><br/>
+	<br />
+	<br />
 	<!-- Map -->
 	<section id="contact" class="map">
 		<iframe width="100%" height="100%" frameborder="0" scrolling="no"
@@ -496,7 +503,6 @@
 		<br /> <small> <a
 			href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a>
 		</small>
-		</iframe>
 	</section>
 
 	<!-- Footer -->

@@ -1,58 +1,61 @@
- <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
- 
-       <div class="col-md-3">
-          <div class="box box-solid">
-            <div class="box-header with-border">
-              <h3 class="box-title">정보</h3>
 
-              <div class="box-tools">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body no-padding">
-              <ul class="nav nav-pills nav-stacked">
-                <li id="My-Write" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 쓴 글
-                  <span class="label label-primary pull-right">${fn:length(mycommunity_list)}</span></a>
-                  <div id="My-Write-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">
-<c:set var="mycommunity_list" value="${mycommunity_list}"/>
-<c:set var="mycommunity_size" value="${fn:length(mycommunity_list)}"/>
-					<c:choose>
-						<c:when test="${mycommunity_size!=0}">
-							<c:forEach var = "mycommunity_list" items="${mycommunity_list}">
-			                    <div style="display: block">
-			                    	<a href="/owner/community_read?community_no=${mycommunity_list.community_no}">내용 - ${mycommunity_list.community_title}</a>
-			                    </div>
-			                </c:forEach>
-			            </c:when>
-			            <c:when test="${mycommunity_size==0}">
-			            	<div style="display:block">
-			            		글을 쓰세요<button type="button" class="goinsert btn btn-default btn-sm"><i class="glyphicon glyphicon-pencil"></i></button>
-			            	</div>
-			            </c:when>
-			        </c:choose>            
-                   </div> 
-                 </li>            
-                <li id="My-Reply" class="active"><a href="#"><i class="fa fa-pencil"></i> 내가 단 댓글
-                  <span id = "My-Reply-Size" class="label label-primary pull-right"></span></a>
-                   <div id="My-Reply-List" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none">                                   		
-                   </div>   
-                </li>            
-                <li id="Book-Mark" class="active"><a href="#"><i class="fa fa-star text-yellow"></i> 즐겨찾기
-                  <span id="communitylike_span" class="label label-primary pull-right"></span></a>
-                    <div id="Book-Mark-List-Div" class="box-body no-padding col-sm-offset-1" style="font-size:13pt; display: none;">
-                    </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <script>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<div class="col-md-3">
+	<div class="box box-solid">
+		<div class="box-header with-border">
+			<h3 class="box-title">정보</h3>
+
+			<div class="box-tools">
+				<button type="button" class="btn btn-box-tool"
+					data-widget="collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		<div class="box-body no-padding">
+			<ul class="nav nav-pills nav-stacked">
+				<li id="My-Write" class="active">
+					<a href="#"><i	class="fa fa-pencil"></i> 내가 쓴 글 <span class="label label-primary pull-right">${fn:length(mycommunity_list)}</span></a>
+					<div id="My-Write-List" class="box-body no-padding col-sm-offset-1" style="font-size: 13pt; display: none">
+						<c:set var="mycommunity_list" value="${mycommunity_list}" />
+						<c:set var="mycommunity_size" value="${fn:length(mycommunity_list)}" />
+						<c:choose>
+							<c:when test="${mycommunity_size!=0}">
+								<c:forEach var="mycommunity_list" items="${mycommunity_list}">
+									<div style="display: block">
+										<a href="/owner/community_read?community_no=${mycommunity_list.community_no}">내용- ${mycommunity_list.community_title}</a>
+									</div>
+								</c:forEach>
+							</c:when>
+							<c:when test="${mycommunity_size==0}">
+								<div style="display: block">
+									글을 쓰세요
+									<button type="button" class="goinsert btn btn-default btn-sm">
+										<i class="glyphicon glyphicon-pencil"></i>
+									</button>
+								</div>
+							</c:when>
+						</c:choose>
+					</div>
+				</li>
+				<li id="My-Reply" class="active">
+					<a href="#"><i class="fa fa-pencil"></i> 내가 단 댓글 <span id="My-Reply-Size" class="label label-primary pull-right"></span></a>
+					<div id="My-Reply-List" class="box-body no-padding col-sm-offset-1"	style="font-size: 13pt; display: none"></div>
+				</li>
+				<li id="Book-Mark" class="active">
+					<a href="#"><i class="fa fa-star text-yellow"></i> 즐겨찾기 <span id="communitylike_span" class="label label-primary pull-right"></span></a>
+					<div id="Book-Mark-List-Div" class="box-body no-padding col-sm-offset-1" style="font-size: 13pt; display: none;"></div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script>
         
         
         // 내가 단 댓글 상태업데이트

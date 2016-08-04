@@ -35,8 +35,8 @@
 	color: white;
 }
 
-.Owner-Result-Div:hover{
-	cursor : pointer;
+.Owner-Result-Div:hover {
+	cursor: pointer;
 	background-color: #CCE5FF;
 }
 </style>
@@ -48,7 +48,8 @@
 
 		<!-- Search Owner -->
 		<div class="row">
-			<div class="input-group col-md-4" style="margin-top: 5px; margin-left: 30px">
+			<div class="input-group col-md-4"
+				style="margin-top: 5px; margin-left: 30px">
 				<input type="text" name="q" id="Owner-Search-Text"
 					class="form-control" placeholder="Search..."> <span
 					class="input-group-btn">
@@ -60,14 +61,13 @@
 			</div>
 		</div>
 		<!-- First Div -->
-		<div id="First-Guide-Div" class="row col-md-10" style="margin-top: 20px">
+		<div id="First-Guide-Div" class="row col-md-10"
+			style="margin-top: 20px">
 			<div class="box box-widget widget-user-2">
 				<div class="widget-user-header bg-light-blue">
 					<div class="widget-user-image">
 						<i class="fa fa fa-exclamation-circle fa-5x"></i>
-						<h3 class="widget-user-username">
-							지점을 검색하여 원하시는 점장을 찾아보세요!
-						</h3>
+						<h3 class="widget-user-username">지점을 검색하여 원하시는 점장을 찾아보세요!</h3>
 						<h5 class="widget-user-desc">TryCatchCommunity</h5>
 					</div>
 				</div>
@@ -76,10 +76,9 @@
 		<!-- TryCoffee Owner List -->
 		<div class="row">
 			<div class="Owner-List-Div col-md-4" style="margin-top: 10px">
-				<div id="owner_list_div">
-				</div>
+				<div id="owner_list_div"></div>
 			</div>
-			
+
 			<div id="Message-List-Div" class="col-md-5 col-md-offset-2"></div>
 		</div>
 	</div>
@@ -243,7 +242,7 @@
 
 	}
 	</script>
-		<!-- Footer -->
-	<%@ include file="../layout/Footer.jsp" %>
+	<!-- Footer -->
+	<%@ include file="../layout/Footer.jsp"%>
 </body>
 </html>

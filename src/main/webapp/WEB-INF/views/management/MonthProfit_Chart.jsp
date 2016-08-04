@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="/owner/resources/Owner_js/ListAjax.js"></script>
@@ -8,28 +7,32 @@
 	var today = new Date();
 	var year = String(today.getFullYear());
 	$(function() {
-		callList_Ajax("/owner/month_profit/main/chart", successCallProfitMonth,null, null);
+		callList_Ajax("/owner/month_profit/main/chart", successCallProfitMonth,
+				null, null);
 	})
 	function successCallProfitMonth(data) {
 		var header = new Array();
 		header.push("Month");
-		$.each(data.categoryList, function(index, category){
+		$.each(data.categoryList, function(index, category) {
 			header.push(category);
 		})
 		finalRow.push(header);
 		for (var i = 0; i < data.profitMonthList.length; i++) {
-			var categoryNameAndPrice = data.profitMonthList[i].profitMenu.split("/");
+			var categoryNameAndPrice = data.profitMonthList[i].profitMenu
+					.split("/");
 			var categoryPrice;
 			var finalResult = new Array();
 			finalResult.push(data.profitMonthList[i].month + "월");
-			for(var j=0; j<categoryNameAndPrice.length-1; j++){
+			for (var j = 0; j < categoryNameAndPrice.length - 1; j++) {
 				categoryPrice = categoryNameAndPrice[j].split(",");
 				finalResult.push(Number(categoryPrice[1]));
 			}
 			finalRow.push(finalResult);
 		}
 	}
-	google.charts.load('current', {'packages' : [ 'corechart', 'bar' ]});
+	google.charts.load('current', {
+		'packages' : [ 'corechart', 'bar' ]
+	});
 	google.charts.setOnLoadCallback(drawChart);
 	function drawChart() {
 		var data = google.visualization.arrayToDataTable(finalRow);

@@ -1,7 +1,6 @@
 
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +11,8 @@
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <meta http-equiv="pragma" content="no-cache" />
-<link href="/owner/resources/bootstrap_delivery/css/bootstrap.min.css" rel="stylesheet">
+<link href="/owner/resources/bootstrap_delivery/css/bootstrap.min.css"
+	rel="stylesheet">
 
 <!-- jQuery -->
 <script src="/owner/resources/bootstrap_delivery/js/jquery.js"></script>
@@ -125,7 +125,7 @@ $(function(){
 				//alert(data);
 				//alert(data.materialPaymentDetailList.length)
 				var materialPaymentlength = data.materialPaymentDetailList.length;
-				
+				$("#material_detail_table tbody").html("");
 				$.each(data.materialPaymentDetailList, function(index, list){
 					var html = '<tr class="material_detail_list_tr"><td>'+list.material_name+'</td><td>'+list.material_price+'</td><td>'+list.material_count+'</td><td>'+list.material_total_price+'</td></tr>';
 					$("#material_detail_table tbody").append(html);
@@ -162,10 +162,9 @@ table.table>tbody>tr>td {
 	vertical-align: middle;
 }
 
-a{
+a {
 	text-decoration: none !important;
 }
-
 </style>
 
 </head>
@@ -174,97 +173,93 @@ a{
 
 	<div style="width: 80%; margin: auto;">
 		<h1>주문 내역보기</h1>
-		<a href="/owner/delivery/Delivery" type="button" class="btn btn-success" style="margin-left: 1400px">홈으로 가기</a>
+		<a href="/owner/delivery/Delivery" type="button"
+			class="btn btn-success" style="margin-left: 1400px">홈으로 가기</a>
 		<hr>
 		<div class="dropdown">
-				<a  href="#" data-toggle="dropdown" aria-haspopup="ture" aria-expanded="true">매장을 선택하세요.<span class="caret"></span></a>
-				 <ul id="orderlist-Store-Btn" class="dropdown-menu" role="menu" aria-labelledby="Select-Store-Btn" >
-				    <c:forEach var="storeDto" items="${storeList}">
-				    	 <li>
-				    	 	<a class="select_store_btn" href="#">${storeDto.store_name}</a>
-				    	 	<input class="select_store_no" type="hidden" value="${storeDto.store_no}"/>
-				    	 </li>
-				    </c:forEach>
-				 </ul>
+			<a href="#" data-toggle="dropdown" aria-haspopup="ture"
+				aria-expanded="true">매장을 선택하세요.<span class="caret"></span></a>
+			<ul id="orderlist-Store-Btn" class="dropdown-menu" role="menu"
+				aria-labelledby="Select-Store-Btn">
+				<c:forEach var="storeDto" items="${storeList}">
+					<li><a class="select_store_btn" href="#">${storeDto.store_name}</a>
+						<input class="select_store_no" type="hidden"
+						value="${storeDto.store_no}" /></li>
+				</c:forEach>
+			</ul>
 		</div>
-		<div id="order-list" style="display:none;">
+		<div id="order-list" style="display: none;">
 			<h2>날짜를 선택하세요.</h2>
 			<form method="get" id="frm" class="form-inline" action="demo.html">
-	
-				<label> <span>연도 </span> 
-					<select id="Select-Material-Order-Year" class="form-control">
-							<option>선택</option>
-							<option>2016</option>
-							<option>2017</option>
-							<option>2018</option>
-							<option>2019</option>
-							<option>2020</option>
-					</select>
-				</label> 
-				<label style="margin-left: 30px">월 
-					<select name="c"
-						id="Select-Material-Order-Month" class="form-control">
-							<option>선택</option>
-							<option value="1">1월</option>
-							<option value="2">2월</option>
-							<option value="3">3월</option>
-							<option value="4">4월</option>
-							<option value="5">5월</option>
-							<option value="6">6월</option>
-							<option value="7">7월</option>
-							<option value="8">8월</option>
-							<option value="9">9월</option>
-							<option value="10">10월</option>
-							<option value="11">11월</option>
-							<option value="12">12월</option>
-					</select>
+				<label> <span>연도 </span> <select
+					id="Select-Material-Order-Year" class="form-control">
+						<option>선택</option>
+						<option>2016</option>
+						<option>2017</option>
+						<option>2018</option>
+						<option>2019</option>
+						<option>2020</option>
+				</select>
+				</label> <label style="margin-left: 30px">월 <select name="c"
+					id="Select-Material-Order-Month" class="form-control">
+						<option>선택</option>
+						<option value="1">1월</option>
+						<option value="2">2월</option>
+						<option value="3">3월</option>
+						<option value="4">4월</option>
+						<option value="5">5월</option>
+						<option value="6">6월</option>
+						<option value="7">7월</option>
+						<option value="8">8월</option>
+						<option value="9">9월</option>
+						<option value="10">10월</option>
+						<option value="11">11월</option>
+						<option value="12">12월</option>
+				</select>
+				</label> <label style="margin-left: 30px">일 <select
+					id="Select-Material-Order-Day" class="form-control">
+						<option>선택</option>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
+						<option>10</option>
+						<option>11</option>
+						<option>12</option>
+						<option>13</option>
+						<option>14</option>
+						<option>15</option>
+						<option>16</option>
+						<option>17</option>
+						<option>18</option>
+						<option>19</option>
+						<option>20</option>
+						<option>21</option>
+						<option>22</option>
+						<option>23</option>
+						<option>24</option>
+						<option>25</option>
+						<option>26</option>
+						<option>27</option>
+						<option>28</option>
+						<option>29</option>
+						<option>30</option>
+						<option>31</option>
+				</select>
 				</label>
-				<label style="margin-left: 30px">일 
-					<select id="Select-Material-Order-Day" class="form-control">
-							<option>선택</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
-							<option>9</option>
-							<option>10</option>
-							<option>11</option>
-							<option>12</option>
-							<option>13</option>
-							<option>14</option>
-							<option>15</option>
-							<option>16</option>
-							<option>17</option>
-							<option>18</option>
-							<option>19</option>
-							<option>20</option>
-							<option>21</option>
-							<option>22</option>
-							<option>23</option>
-							<option>24</option>
-							<option>25</option>
-							<option>26</option>
-							<option>27</option>
-							<option>28</option>
-							<option>29</option>
-							<option>30</option>
-							<option>31</option>
-					</select>
-				</label>
-	
-				<button id="show_material_list_btn" type="button" class="btn btn-success"
-					style="margin-left: 30px">확인</button>
+				<button id="show_material_list_btn" type="button"
+					class="btn btn-success" style="margin-left: 30px">확인</button>
 			</form>
-	
 			<hr>
-	
-			<h2>내역</h2><br/>
-			<table id="Material-Order-Table" class="table table-bordered table-striped"
-				style="clear: both;">
+			<h2>내역</h2>
+			<br />
+			<table id="Material-Order-Table"
+				class="table table-bordered table-striped" style="clear: both;">
 				<tbody>
 					<tr id="material_order_header_tr">
 						<td width="10%">주문자</td>
@@ -275,20 +270,13 @@ a{
 					</tr>
 				</tbody>
 			</table>
-			
 			<nav>
-				<ul class="pagination" style="margin-left:600px">
+				<ul class="pagination" style="margin-left: 600px">
 				</ul>
 			</nav>
-			
-			
 		</div>
-
-		
-
-			
 	</div>
-	
+
 	<jsp:include page="Order_List_Modal.jsp"></jsp:include>
 </body>
 </html>

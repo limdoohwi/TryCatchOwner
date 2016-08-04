@@ -1,3 +1,12 @@
+/*
+ * 	Class: Order_AlarmDTO
+ *  Description: Alarm에 관련된 정보를 저장하는 DTO
+ *  Created: 2016­08­03
+ *	Author: 임두휘
+ *  Mail: imdh8802@gmail.com
+ * 	Copyrights 2016-07-20 by Try{}Catch
+ *
+ */
 package com.trycatch.owner.domain;
 
 public class Order_AlarmDTO {

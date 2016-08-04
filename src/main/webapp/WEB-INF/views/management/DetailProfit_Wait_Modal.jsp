@@ -8,23 +8,22 @@
  */
  -->
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	
+<%@ page contentType="text/html; charset=UTF-8"%>
+
 <style>
-#Wait-Modal{
+#Wait-Modal {
 	padding: 20px;
 	border: none;
 	position: absolute;
-    left: 900px;
-    top: 1400px;
+	left: 900px;
+	top: 1400px;
 	background-color: #ffffff;
 	opacity: 0.5;
 }
 </style>
 
 <div id="Wait-Modal">
-	<i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color:red"></i>
-<span class="sr-only">Loading...</span>
+	<i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color: red"></i> <span
+		class="sr-only">Loading...</span>
 </div>
 
