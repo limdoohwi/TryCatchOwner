@@ -11,15 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.trycatch.owner.domain.MemberDTO;
-import com.trycatch.owner.domain.MessengerContentDTO;
 import com.trycatch.owner.domain.StoreDTO;
 import com.trycatch.owner.service.MeetingRoomService;
 import com.trycatch.owner.service.MemberService;
-import com.trycatch.owner.service.MessengerService;
-import com.trycatch.owner.service.NoticeService;
-import com.trycatch.owner.service.OrderService;
 import com.trycatch.owner.service.StoreService;
 
 /**
@@ -31,15 +26,17 @@ public class HomeController {
 	private MemberService service;
 	@Inject
 	private StoreService storeService;
-	@Inject
-	private MessengerService messengerService;
-	@Inject
-	private NoticeService noticeService;
+
 	
 	@Inject
 	private MeetingRoomService meetingRoomService;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
+	/**
+	 * @author 김준혁
+	 * 최초 프로젝트 실행시 세미 프로젝트에서 넘어온 회원 넘버를 받아와 session에 저장 후 
+	 * 해당 점장의 매장 리스트를 호출
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpServletRequest req, int member_no) throws Exception {
 		MemberDTO member_dto = service.getMember_Member_no(member_no);

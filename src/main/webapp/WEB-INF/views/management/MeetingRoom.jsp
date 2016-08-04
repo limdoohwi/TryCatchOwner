@@ -1,4 +1,22 @@
+<<<<<<< HEAD
 <%@ page contentType="text/html; charset=UTF-8"%>
+=======
+<!-- 
+/*
+ * 	JSP: MeetingRoom
+ *  Description: 설정된 매장의 오늘자 미팅룸 예약 현황과 총 미팅룸 예약 리스트를 보여주는 JSP
+ *  Created: 2016­07­24
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-24 by Try{}Catch
+ *
+ *	Revisions:
+ */
+ -->
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+>>>>>>> refs/remotes/origin/juns
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>

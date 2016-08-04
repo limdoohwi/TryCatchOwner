@@ -1,6 +1,27 @@
+<<<<<<< HEAD
 <%@ page contentType="text/html; charset=UTF-8"%>
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
+=======
+<!-- 
+/*
+ * 	JSP: YearProfit_Chart
+ *  Description: 메인 페이지에서 설정된 매장의 이번 연도 매출액을 보여주는 그래프 JSP
+ *  Created: 2016­07­24
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-24 by Try{}Catch
+ *
+ *	Revisions:
+ *  1. When & Who : 2016-07-31 by 김준혁
+ *  2. What		  : 설정된 매장의 이번 연도 매출액을 호출하는 ajax 생성
+ */
+ -->
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+>>>>>>> refs/remotes/origin/juns
 <script src="/owner/resources/Owner_js/ListAjax.js"></script>
 <script type="text/javascript">
 	var finalYearRow = new Array();

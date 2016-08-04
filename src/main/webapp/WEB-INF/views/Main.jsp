@@ -1,3 +1,20 @@
+<!-- 
+/*
+ * 	JSP: Main
+ *  Description: TryCatchOwner 메인 화면
+ *  Created: 2016­07­23
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-23 by Try{}Catch
+ *
+ *	Revisions:
+ *  1. When & Who : 2016-07-29 by 김준혁
+ *  2. What		  : 오늘자 음료 주문 예약 리스트를 볼 수 있는 now order list 추가
+ *  1. When & Who : 2016-07-31 by 김준혁
+ *  2. What		  : 이번 연도 매출액, 월별 매출액 그래프 추가
+ */
+ -->
+
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 

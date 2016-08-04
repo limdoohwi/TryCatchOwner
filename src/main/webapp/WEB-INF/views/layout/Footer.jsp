@@ -1,3 +1,16 @@
+<!-- 
+/*
+ * 	JSP: Footer
+ *  Description: TryCatchOwenr의 하단 영역을 담당하는 JSP
+ *  Created: 2016­07­23
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-23 by Try{}Catch
+ *
+ *	Revisions:
+ */
+ -->
+
 <%@ page contentType="text/html; charset=UTF-8"%>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>

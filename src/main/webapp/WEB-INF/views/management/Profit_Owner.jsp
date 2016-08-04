@@ -1,4 +1,24 @@
+<<<<<<< HEAD
 <%@ page contentType="text/html; charset=UTF-8"%>
+=======
+<!-- 
+/*
+ * 	JSP: Profit_Owner
+ *  Description: 현재 설정된 매장을 기준으로 연도를 입력하면 해당 연도 총 매출액, 해당 연도와 해당 연도으로부터 2년전 총 매출액, 해당연도 월별 총 매출액,
+ 				 해당 연도 음료 총 주문 건수, 해당 연도 월별 음료 총 주문 건수, 해당 연도 일일 시간별 평균 주문 건수 그래프 JSP
+ *  Created: 2016­07­31
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-31 by Try{}Catch
+ *
+ *	Revisions:
+ */
+ -->
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+>>>>>>> refs/remotes/origin/juns
 <!DOCTYPE html>
 <html>
 <head>

@@ -1,16 +1,20 @@
+/*
+ * 	Class: MemberService
+ *  Description: MemberDAOImpl에서 받아온 Data를 가공하기 위한 인터페이스
+ *  Created: 2016­07­26
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-26 by Try{}Catch
+ *
+ *	Revisions:
+ */
+
 package com.trycatch.owner.service;
 
-
-import java.util.List;
-
-import org.json.simple.JSONObject;
 
 import com.trycatch.owner.domain.MemberDTO;
 
 
 public interface MemberService {
-	public MemberDTO login(String member_email, String member_pw) throws Exception;
-	public List<MemberDTO> getMemberList() throws Exception;
-	public List<MemberDTO> getMember_email_like(String member_email) throws Exception;
 	public MemberDTO getMember_Member_no(int member_no) throws Exception;
 }

@@ -1,10 +1,13 @@
 <!-- 
 /*
- *  Description :  회원 구매 내역 상품 리스트 모달
- *  Created : 2016-07-08
- *  Author : 김준혁
- *  
- *  Revisions :
+ * 	JSP: MenuProfit_Modal
+ *  Description: 매출엑 페이지에서 입력 연도 연도별 매출액 혹은 월별 매출액의 그래프 클릭시 해당 연도 또는 해당 연도의 선택 월의 카테고리별 판매율을 보여주는 제이쿼리 레이어 팝업
+ *  Created: 2016­07­24
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-24 by Try{}Catch
+ *
+ *	Revisions:
  */
  -->
 

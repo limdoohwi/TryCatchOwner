@@ -1,7 +1,20 @@
+/*
+ * 	Class: ProfitService
+ *  Description: ProfitDAOImpl에서 받아온 Data를 가공하기 위한 인터페이스
+ *  Created: 2016­07­30
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-30 by Try{}Catch
+ *
+ *	Revisions:
+ *  1. When & Who : 2016-07-31 by 김준혁
+ *  2. What		  : getDayAverageReservationDrink(), getYearMenuPercentager(),
+ *  				getMonthMenuPercentager(),	isExist(),
+ *  				getMenuCountAndPrice() 추가
+ */
+
 package com.trycatch.owner.service;
 
-
-import java.util.List;
 
 import org.json.simple.JSONObject;
 

@@ -1,3 +1,17 @@
+/*
+ * 	Class: OrderDAO
+ *  Description: Menu_Payment(음료 예약 주문 결제 내역 테이블), Material_Payment(재료 주문 결제 내역 테이블)과의 DB작업을 하기 위한 Repository
+ *  Created: 2016­07­29
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-29 by Try{}Catch
+ *
+ *	Revisions:
+ *  1. When & Who : 2016-07-31 by 손현민
+ *  2. What		  : insertMaterial_Payment(), insertMaterial_Order(),
+ *  				getMaterialPaymentList(),	getMaterialPaymentDetailList() 추가
+ */
+
 package com.trycatch.owner.persistence;
 
 import java.util.HashMap;
@@ -28,12 +42,16 @@ public class OrderDAOImpl implements OrderDAO {
 	private static final String NAMESPACE = "com.trycatch.owner.mappers.orderMapper";
 	private static final Logger logger = LoggerFactory.getLogger(OrderDAOImpl.class);
 	
+	/**
+	 * @author 김준혁
+	 * 현재 웹서비스에 설정된 매장의 음료 주문 결제가 끝난 data 리스트를 호출
+	 */
 	@Override
 	public List<Order_InformationDTO> getOrder_Information(int store_no, int start_Page, boolean asce, String search_order_info) {
 		try {
 			RowBounds rowB = new RowBounds(start_Page, 5);
 			String isAsc = String.valueOf(asce);
-			Map map = new HashMap<>();
+			Map<String, Object> map = new HashMap<>();
 			map.put("store_no", store_no);
 			map.put("isAsc", isAsc);
 			map.put("search_order_info", search_order_info);
@@ -43,14 +61,6 @@ public class OrderDAOImpl implements OrderDAO {
 		}
 	}
 	
-	@Override
-	public List<Integer> getMenu_Payment_noList(int store_no) {
-		try {
-			return sqlSession.selectList(NAMESPACE + ".getMenu_Payment_noList", store_no);
-		} catch (Exception err) {
-			return null;
-		}
-	}
 	/**
 	 * @author 손현민
 	 * 재료주문내역를 저장하는 함수
@@ -117,6 +127,10 @@ public class OrderDAOImpl implements OrderDAO {
 		}
 	}
 	
+	/**
+	 * @author 김준혁
+	 * 음료 예약 주문 번호를 통해 주문한 음료 이름, 주문 개수, 옵션을  호출
+	 */
 	@Override
 	public List<Menu_OrderDTO> getMenuOrder_withMenu_Payment_no(int menu_payment_no) {
 		try {

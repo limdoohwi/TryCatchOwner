@@ -1,3 +1,14 @@
+/*
+ * 	Class: MenuProfitDTO
+ *  Description: 메뉴별 매출액 Data를 저장하기 위한 DTO
+ *  Created: 2016­07­30
+ *	Author: 김준혁
+ *  Mail: iamheykj@gmail.com
+ * 	Copyrights 2016-07-30 by Try{}Catch
+ *
+ *	Revisions:
+ */
+
 package com.trycatch.owner.domain;
 
 public class MenuProfitDTO {
