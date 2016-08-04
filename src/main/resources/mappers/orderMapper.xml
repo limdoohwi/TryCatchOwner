@@ -69,4 +69,8 @@
 		select m.material_name, m.material_price, o.material_count, m.material_price * o.material_count as material_total_price from material_payment p, material_order o, material m where 
 		p.material_payment_no = o.material_payment_no and o.material_no = m.material_no and p.material_payment_no = #{material_payment_no};
 	</select>
+	
+	<select id="getOrderAlarmList" resultType="Order_AlarmDTO">
+	    select o.order_alarm_no, o.order_category_no, o.order_content, o.order_regdate, o.store_no, s.store_name from order_alarm o, store s where o.store_no=s.store_no and o.store_no in(select store_no from store where member_no = #{member_no}) order by order_alarm_no desc
+	</select>
 </mapper>

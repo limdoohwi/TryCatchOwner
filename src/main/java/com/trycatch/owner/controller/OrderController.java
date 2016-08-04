@@ -37,4 +37,11 @@ public class OrderController {
 		jsonRoot.put("orderList", orderService.getOrder_Information(storeDto.getStore_no(), start_Page, asce, search_order_info));
 		return jsonRoot;
 	}
+	
+	@RequestMapping("/order/alarm")
+	public @ResponseBody Object getOrderAlarmList(int member_no){
+		JSONObject obj = new JSONObject();
+		obj.put("orderalarmList", orderService.getOrderAlarmList(member_no));
+		return obj;
+	}
 }

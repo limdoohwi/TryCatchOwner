@@ -41,7 +41,9 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{
   
         HttpServletRequest req =  ssreq.getServletRequest();
         MemberDTO member_dto = (MemberDTO)req.getSession().getAttribute("member_dto");
+        if(member_dto!=null){
         attributes.put("member_no", String.valueOf(member_dto.getMember_no()));
+        }
 		return super.beforeHandshake(request, response, wsHandler, attributes);
 	}
 	/**

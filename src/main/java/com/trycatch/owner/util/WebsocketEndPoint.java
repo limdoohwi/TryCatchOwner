@@ -53,34 +53,46 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		System.out.println(stringMessage);
 		JSONParser parser = new JSONParser();
 		JSONObject obj = (JSONObject)parser.parse(stringMessage);
-		
-		String member_no = String.valueOf(obj.get("send_member_no"));
-		Map<String, Object> mymap = session.getAttributes();
-		String my_member_no = (String)mymap.get("member_no");
-		//DB저장 함수
-		String messenger_content = String.valueOf(obj.get("message"));
-		int messenger_no =service.getMessengerNo(Integer.parseInt(my_member_no), Integer.parseInt(member_no));
-		service.insertMessege(messenger_no, messenger_content);
-		
-		System.out.println("세션 크기 : " + sessions.size());
-		for(int i=0; i<sessions.size();i++){
-			Map<String, Object> map = sessions.get(i).getAttributes();
-			String session_member_no = (String)map.get("member_no");
-			if(session_member_no.equals(member_no)){
-				if(service.isConnect(service.getMessengerNo(Integer.parseInt(member_no),Integer.parseInt(my_member_no)))){
-					obj.put("connect", "true");
+		if(obj.get("type").equals("orderalarm")){
+			// 알람 기능
+			for(int i=0; i<sessions.size();i++){
+				Map<String, Object> map = sessions.get(i).getAttributes();
+				String session_member_no = (String)map.get("member_no");
+				if(session_member_no.equals(obj.get("member_no"))){
+					sessions.get(i).sendMessage(returnMessage);
 				}
-				else{
-					obj.put("connect", "false");
+			}
+		}
+		else{
+			// 메신져 기능
+			String member_no = String.valueOf(obj.get("send_member_no"));
+			Map<String, Object> mymap = session.getAttributes();
+			String my_member_no = (String)mymap.get("member_no");
+			//DB저장 함수
+			String messenger_content = String.valueOf(obj.get("message"));
+			int messenger_no =service.getMessengerNo(Integer.parseInt(my_member_no), Integer.parseInt(member_no));
+			service.insertMessege(messenger_no, messenger_content);
+			
+			System.out.println("세션 크기 : " + sessions.size());
+			for(int i=0; i<sessions.size();i++){
+				Map<String, Object> map = sessions.get(i).getAttributes();
+				String session_member_no = (String)map.get("member_no");
+				if(session_member_no.equals(member_no)){
+					if(service.isConnect(service.getMessengerNo(Integer.parseInt(member_no),Integer.parseInt(my_member_no)))){
+						obj.put("connect", "true");
+					}
+					else{
+						obj.put("connect", "false");
+					}
+					MessengerContentDTO dto = service.getRecentContent();
+					obj.put("messenger_no", dto.getMessenger_no());
+					obj.put("member_name", dto.getMember_name());
+					obj.put("content_regdate", dto.getContent_regdate());
+					obj.put("content_read_ck", dto.getContent_read_ck());
+					System.out.println(obj.toJSONString());
+					returnMessage = new TextMessage(obj.toJSONString());
+					sessions.get(i).sendMessage(returnMessage);
 				}
-				MessengerContentDTO dto = service.getRecentContent();
-				obj.put("messenger_no", dto.getMessenger_no());
-				obj.put("member_name", dto.getMember_name());
-				obj.put("content_regdate", dto.getContent_regdate());
-				obj.put("content_read_ck", dto.getContent_read_ck());
-				System.out.println(obj.toJSONString());
-				returnMessage = new TextMessage(obj.toJSONString());
-				sessions.get(i).sendMessage(returnMessage);
 			}
 		}
 	}
@@ -103,9 +115,11 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		Map<String, Object> mymap = session.getAttributes();
 		String my_member_no = (String)mymap.get("member_no");
-		List<Integer> messengerList = service.getMessengerNoList(Integer.parseInt(my_member_no));
-		for(int i=0; i<messengerList.size(); i++){
-			service.disconnect(messengerList.get(i));
+		if(my_member_no != null){
+			List<Integer> messengerList = service.getMessengerNoList(Integer.parseInt(my_member_no));
+			for(int i=0; i<messengerList.size(); i++){
+				service.disconnect(messengerList.get(i));
+			}
 		}
 		System.out.println("세션 닫힘:");
 		System.out.println(status.getReason());

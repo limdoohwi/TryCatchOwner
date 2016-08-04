@@ -60,11 +60,12 @@
   <script src="/owner/resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
   <!-- jQuery UI 1.11.4 -->
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+  <script src="/owner/resources/Owner_js/ListAjax.js"></script>
 	<script>
 		var count = 0;
 		$(function() {
 			connect();
-			//newNoticeAlarm();
+			callList_Ajax("/owner/order/alarm", showOrderAlarmList, null, {member_no:'${member_dto.member_no}'});
 			//읽지않은 음료주문 알람을 띄움
 			noReadMsgList();
 			$(".Select-Store-Btn").click(function(){
@@ -72,6 +73,9 @@
 				var store_no = $(".My-Store-No-List").eq(index).val();
 				var jsonData = {store_no : store_no};
 				callList_Ajax("/owner/set/owner_store", successSetStore, null, jsonData);
+			});
+			$("#Notification_Menu").click(function(){
+				$("#Notification-Not-Read-Count-Span").html("");
 			});
 		});
 		// 읽지 않은 메시지 리스트를 서버에서 가져와 출력해주는 함수 
@@ -117,13 +121,25 @@
 					console.log(received_msg);
 					console.log('message received!');
 					var msg = JSON.parse(received_msg);
-					if (msg.connect == "true") {
-						msgshowMessage(msg.message, msg.member_no, msg.member_name,
-								msg.content_regdate);
-					} else {
-						count = count + 1;
-						msgshowAlarm(msg.message, msg.member_no, msg.member_name,
-								msg.content_regdate);
+					if(msg.type="orderalarm"){
+						alert("새로운 주문이 들어왔습니다 확인 하세요");
+						callList_Ajax("/owner/order/alarm", showOrderAlarmList, null, {member_no:'${member_dto.member_no}'});
+						var pageNumber = 1;
+						var jsonData = {
+							start_Page : (pageNumber-1) * 5
+						};
+						//주문 내역 불러옴
+						callList_Ajax("/owner/client_order_list/order", orderListSuccess, null, jsonData);
+					}
+					else{
+						if (msg.connect == "true") {
+							msgshowMessage(msg.message, msg.member_no, msg.member_name,
+									msg.content_regdate);
+						} else {
+							count = count + 1;
+							msgshowAlarm(msg.message, msg.member_no, msg.member_name,
+									msg.content_regdate);
+						}
 					}
 				}
 			} else {
@@ -167,6 +183,30 @@
 			$("#messenger_member_no").val($(".alarm_member_no").eq(eq).val());
 			$("#messenger_confirm").submit();
 		});
+		/*
+			order_alarm을 보여주는 함수
+		*/
+		function showOrderAlarmList(data){
+			var html = "";
+			var count = 0;
+			$.each(data.orderalarmList,function(index,jsonData){
+				html += '<li><a class="order_alarm_class">';
+				html += '<div class="pull-left">';
+				html += '</div><h4>';
+				html += jsonData.store_name;
+				html += '<small><i class="fa fa-clock-o"></i>' + jsonData.order_regdate
+						+ '</small></h4>';
+				html += '<p>' + jsonData.order_content + '</p>';
+				html += '</a></li>';
+				count = index+1;
+			});
+			$("#Notification-Detail-Ul").html(html);
+			if(count>0){
+				$("#Notification-Not-Read-Count-Span").html("New");
+			}
+			$("#Notification-Header-li").html(count+"개의 예약이 있습니다.");	
+		}
+		
   </script>
   
 <header class="main-header">
@@ -214,14 +254,14 @@
           
           <!-- Notifications: style can be found in dropdown.less -->
           <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
+            <a href="#"  class="dropdown-toggle" data-toggle="dropdown">
+              <i id="Notification_Menu" class="fa fa-bell-o"></i>
               <!-- Notifications Count Number -->
               <span id="Notification-Not-Read-Count-Span" class="label label-warning"></span>
             </a>
             <!-- Notifications Click Show Div -->
             <ul class="dropdown-menu">
-              <li id="Notification-Header-li" class="header"></li>
+              <li id="Notification-Header-li" class="header">0개의 예약이 있습니다.</li>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul id="Notification-Detail-Ul" class="menu"></ul>
@@ -344,10 +384,6 @@
       	</span>
         <small>반갑습니다.</small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-      </ol>
     </section>
 
     <!-- Main content -->
@@ -419,3 +455,4 @@
           </div>
         </div>
       </div>
+      </section>

@@ -196,7 +196,7 @@
 		    leadingZeros(d.getMinutes(), 2) + ':' +
 		    leadingZeros(d.getSeconds(), 2);
 		msgshowmyMessage(message, member_no,s);
-		socket.send(JSON.stringify({'message' : message,'member_no':'${member_dto.member_no}','send_member_no':member_no }));
+		socket.send(JSON.stringify({'message' : message,'member_no':'${member_dto.member_no}','send_member_no':member_no,'type':'messenger' }));
 		document.getElementById('message-'+member_no).value = "";
 	}
 	function leadingZeros(n, digits) {

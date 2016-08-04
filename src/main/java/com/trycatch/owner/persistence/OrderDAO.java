@@ -6,6 +6,7 @@ import com.trycatch.owner.domain.MaterialOrderDTO;
 import com.trycatch.owner.domain.MaterialPaymentDTO;
 import com.trycatch.owner.domain.MaterialPaymentDetailDTO;
 import com.trycatch.owner.domain.Menu_OrderDTO;
+import com.trycatch.owner.domain.Order_AlarmDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
 
 public interface OrderDAO {
@@ -16,4 +17,5 @@ public interface OrderDAO {
 	public List<MaterialPaymentDTO> getMaterialPaymentList(int store_no, String date, int start_page);
 	public List<MaterialPaymentDetailDTO> getMaterialPaymentDetailList(int material_payment_no);
 	public List<Menu_OrderDTO> getMenuOrder_withMenu_Payment_no(int menu_payment_no);
+	public List<Order_AlarmDTO> getOrderAlarmList(int member_no);
 }

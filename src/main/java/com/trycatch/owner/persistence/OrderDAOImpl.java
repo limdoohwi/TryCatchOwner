@@ -16,6 +16,7 @@ import com.trycatch.owner.domain.MaterialOrderDTO;
 import com.trycatch.owner.domain.MaterialPaymentDTO;
 import com.trycatch.owner.domain.MaterialPaymentDetailDTO;
 import com.trycatch.owner.domain.Menu_OrderDTO;
+import com.trycatch.owner.domain.Order_AlarmDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
 
 
@@ -71,7 +72,6 @@ public class OrderDAOImpl implements OrderDAO {
 			for(int i=0; i<dto.getMaterial_nos().length; i++){
 				int[] num = dto.getMaterial_nos();
 				int[] count = dto.getMaterial_counts();
-				System.out.println("���͸���ѹ��� ī��Ʈ : " + num[i] + ": " + count[i]);
 				map.put("material_no", num[i]);
 				map.put("material_count", count[i]);
 				sqlSession.insert(NAMESPACE + ".insertMaterial_Order", map);
@@ -113,5 +113,10 @@ public class OrderDAOImpl implements OrderDAO {
 		} catch (Exception err) {
 			return null;
 		}
+	}
+
+	@Override
+	public List<Order_AlarmDTO> getOrderAlarmList(int member_no) {
+		return sqlSession.selectList(NAMESPACE+".getOrderAlarmList", member_no);
 	}
 }

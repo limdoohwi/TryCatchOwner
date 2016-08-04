@@ -1,6 +1,5 @@
 package com.trycatch.owner.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,6 +16,7 @@ import com.trycatch.owner.domain.MaterialCartDTO;
 import com.trycatch.owner.domain.MaterialOrderDTO;
 import com.trycatch.owner.domain.MaterialPaymentDTO;
 import com.trycatch.owner.domain.Menu_OrderDTO;
+import com.trycatch.owner.domain.Order_AlarmDTO;
 import com.trycatch.owner.domain.Order_InformationDTO;
 import com.trycatch.owner.persistence.MaterialCartDAO;
 import com.trycatch.owner.persistence.MaterialDAO;
@@ -50,10 +50,10 @@ public class OrderServiceImpl implements OrderService {
 				String menu_total_list = "";
 				for(int j=0; j<orderList.size(); j++){
 					if(j==0){
-						String menu_simple_list = orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "��/" + orderList.get(j).getMenu_option() + ".....";
+						String menu_simple_list = orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "잔/" + orderList.get(j).getMenu_option() + ".....";
 						orderInfoList.get(i).setMenu_simple_list(menu_simple_list);
 					}
-					menu_total_list +=  orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "��/" + orderList.get(j).getMenu_option() + ", ";
+					menu_total_list +=  orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "잔/" + orderList.get(j).getMenu_option() + ", ";
 				}
 				orderInfoList.get(i).setMenu_total_list(menu_total_list);
 			}
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public boolean insertMaterial_Payment(MaterialPaymentDTO dto, MaterialOrderDTO orderDto) {
 		try{
-			//System.out.println(dao.insertMaterial_Payment(dto) + "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+			dao.insertMaterial_Payment(dto);
 			MaterialPaymentDTO materialDto = materialDao.getNowMaterialPayment();
 			MaterialCartDTO cart = new MaterialCartDTO();
 			cart.setMember_no(dto.getMember_no());
@@ -79,5 +79,10 @@ public class OrderServiceImpl implements OrderService {
 		}catch(Exception err){
 			return false;
 		}
+	}
+
+	@Override
+	public List<Order_AlarmDTO> getOrderAlarmList(int member_no) {
+		return dao.getOrderAlarmList(member_no);
 	}
 }
