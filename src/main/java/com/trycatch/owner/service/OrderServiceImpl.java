@@ -78,6 +78,7 @@ public class OrderServiceImpl implements OrderService {
 			cart.setMember_no(dto.getMember_no());
 			cartDao.deleteCart(cart);
 			orderDto.setMaterial_payment_no(materialDto.getMaterial_payment_no());
+			dao.insertMaterial_Order(orderDto);
 			return true;
 		}catch(Exception err){
 			return false;

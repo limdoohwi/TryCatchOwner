@@ -29,8 +29,6 @@ public class OrderDAOImpl implements OrderDAO {
 	
 	@Override
 	public List<Order_InformationDTO> getOrder_Information(int store_no, int start_Page, boolean asce, String search_order_info) {
-		logger.info("OrderDaoImpl ���� ��ȣ : " + store_no);
-		logger.info("OrderDaoImpl ��ġ : " + search_order_info);
 		try {
 			RowBounds rowB = new RowBounds(start_Page, 5);
 			String isAsc = String.valueOf(asce);
@@ -78,7 +76,6 @@ public class OrderDAOImpl implements OrderDAO {
 			for(int i=0; i<dto.getMaterial_nos().length; i++){
 				int[] num = dto.getMaterial_nos();
 				int[] count = dto.getMaterial_counts();
-				System.out.println("���͸���ѹ��� ī��Ʈ : " + num[i] + ": " + count[i]);
 				map.put("material_no", num[i]);
 				map.put("material_count", count[i]);
 				sqlSession.insert(NAMESPACE + ".insertMaterial_Order", map);
