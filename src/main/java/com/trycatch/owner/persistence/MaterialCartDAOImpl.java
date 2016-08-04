@@ -1,3 +1,8 @@
+/*
+ * 	Class: MaterialCartDAOImpl
+ *  Description: MaterialCartDAO 를 상속 받는 클래스로서 DB에 직접적인 연결을 담당하는 클래스
+ *  Created: 2016­08­04
+ */
 package com.trycatch.owner.persistence;
 
 import java.sql.SQLException;
@@ -22,6 +27,10 @@ public class MaterialCartDAOImpl implements MaterialCartDAO {
 	private SqlSession sqlSession;
 	
 	private static final String NAMESPACE = "com.trycatch.owner.mappers.materialcartMapper";
+	/**
+	 * @author 손현민
+	 * 카트에 저장되있는 리스트를 가져오는 함수
+	 */
 	@Override
 	public List<MaterialCartDTO> getCartList(MaterialCartDTO cartdto) {
 		try{
@@ -32,7 +41,10 @@ public class MaterialCartDAOImpl implements MaterialCartDAO {
 			return null;
 		}
 	}
-
+	/**
+	 * @author 손현민
+	 * 카트에 저장되어있는지를 확인하는 함수
+	 */
 	@Override
 	public boolean checkCart(MaterialCartDTO cartdto) {
 		try{
@@ -44,7 +56,10 @@ public class MaterialCartDAOImpl implements MaterialCartDAO {
 			return false;
 		}
 	}
-	
+	/**
+	 * @author 손현민
+	 * 카트에 저장하는 함수
+	 */
 	@Override
 	public boolean insertCart(MaterialCartDTO cartdto) {
 		try{
@@ -54,7 +69,10 @@ public class MaterialCartDAOImpl implements MaterialCartDAO {
 			return false;			
 		}
 	}
-
+	/**
+	 * @author 손현민
+	 * 카트를 변경하는 함수
+	 */
 	@Override
 	public boolean updateCart(MaterialCartDTO cartdto) {
 		try{
@@ -65,7 +83,10 @@ public class MaterialCartDAOImpl implements MaterialCartDAO {
 			return false;
 		}
 	}
-
+	/**
+	 * @author 손현민
+	 * 카트를 삭제하는 함수
+	 */
 	@Override
 	public boolean deleteCart(MaterialCartDTO cartdto) {
 		try{ 

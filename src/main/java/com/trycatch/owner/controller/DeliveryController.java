@@ -1,8 +1,8 @@
 /*
  *  Class: DeliveryController
- *  Description: Delivery, MaterialOrder¿¡ °ü·ÃµÈ ¸Ş¼­µå¸¦ °ü¸®ÇÏ´Â ÄÁÆ®·Ñ·¯
- *  Created: 2016¡©08¡©01
- * 	Author: ¼ÕÇö¹Î
+ *  Description: Delivery, MaterialOrderï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ ï¿½Ş¼ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½
+ *  Created: 2016ï¿½ï¿½08ï¿½ï¿½01
+ * 	Author: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  *  Mail: popozk22@nate.com
  *  Copyrights 2016-08-01 by Try{}Catch
  *
@@ -55,25 +55,40 @@ public class DeliveryController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DeliveryController.class);
 
-	 
+	/**
+	  * @author ì†í˜„ë¯¼
+	  *	í˜„ì¬ ì›¹ì„œë¹„ìŠ¤ì— ì ‘ì†í•œ ì ì¥ì´ ë³´ìœ í•˜ê³ ìˆëŠ” ë§¤ì¥ ë¦¬ìŠ¤íŠ¸ë¥¼ í˜¸ì¶œ
+	  */ 
 	@RequestMapping(value = "/delivery/Order_list", method = RequestMethod.GET)
 	public void orderlist(Model model, HttpServletRequest req) throws Exception {
 		MemberDTO member_dto = (MemberDTO)(req.getSession().getAttribute("member_dto"));
 		model.addAttribute("storeList", storeService.getStoreList_member_no(member_dto.getMember_no()));
 	}
 	
+	/**
+	  * @author ì†í˜„ë¯¼
+	  *	ì›¹ì„œë¹„ìŠ¤ì— ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸ê°€ ì„¤ì •í•œ ë§¤ì¥ë²ˆí˜¸, ì…ë ¥í•œ í˜„ì¬ë‚ ì§œì™€ ì¼ì¹˜í•˜ëŠ” ì¬ë£Œì£¼ë¬¸ë¦¬ìŠ¤íŠ¸ë¥¼ í˜¸ì¶œ
+	  */ 
 	@RequestMapping("/delivery/payment/list")
 	public @ResponseBody Object getMaterialPaymentList(int store_no, String date, int start_page) throws Exception{
 		org.json.simple.JSONObject json = service.getMaterialPaymentList(store_no, date, start_page);
 		return json;
 	}
 	
+	/**
+	  * @author ì†í˜„ë¯¼
+	  *	ì¬ë£Œì£¼ë¬¸ë¦¬ìŠ¤íŠ¸ ë²ˆí˜¸ë¥¼ ë°›ì•„ì™€ ìƒì„¸í•œ ì£¼ë¬¸ë‚´ìš©ì„ í˜¸ì¶œ
+	  */ 
 	@RequestMapping("/delivery/payment/detail/list")
 	public @ResponseBody Object getMaterialPaymentDetailList(int material_payment_no) throws Exception{
 		org.json.simple.JSONObject json = service.getMaterialPaymentDetailList(material_payment_no);
 		return json;
 	}
 	
+	/**
+	  * @author ì†í˜„ë¯¼
+	  *	ì›¹ì„œë¹„ìŠ¤ì— ì ‘ì†í•œ ë©¤ë²„ê°€ ì¬ë£Œì£¼ë¬¸ì„ í•˜ê¸°ì „ì— í˜„ì¬ ì¹´íŠ¸ì— ë‹´ê²¨ì ¸ ìˆëŠ” ì¬ë£Œë¦¬ìŠ¤íŠ¸ë¥¼ í˜¸ì¶œ
+	  */ 
 	@RequestMapping(value = "/delivery/Order")
 	public void setStorePOST(HttpServletRequest req, Model model) throws Exception{
 		StoreDTO storeDto = (StoreDTO)req.getSession().getAttribute("store_dto");
@@ -83,8 +98,8 @@ public class DeliveryController {
 	}
 	
 	/**
-	  * @author ¼ÕÇö¹Î
-	  *	 
+	  * @author ì†í˜„ë¯¼
+	  *	DBì— ìˆëŠ” ì»¤í”¼,ì¼€ì´í¬ ì¬ë£Œë¥¼ í˜¸ì¶œ í•´ì„œ ë¿Œë ¤ì¤€ë‹¤.
 	  */
 	@RequestMapping(value="/delivery/Delivery")
 	public String Delivery(Model model, HttpServletRequest req) throws Exception {	
@@ -94,12 +109,11 @@ public class DeliveryController {
 	}
 	
 	/**
-	  * @author ¼ÕÇö¹Î
-	  *	 
+	  * @author ì†í˜„ë¯¼
+	  *	ì¹´íŠ¸ì— ë‹´ì€ ì¬ë£Œ ë¦¬ìŠ¤íŠ¸ë¥¼ í˜¸ì¶œ(ì¥ë°”êµ¬ë‹ˆ ë¦¬ìŠ¤íŠ¸)
 	  */
 	@RequestMapping(value="/list.cart",method=RequestMethod.POST)
 	public @ResponseBody Object getCartList(HttpServletRequest req){
-		logger.info("¸®½ºÆ® µË´Ï±î??");
 		MemberDTO member_dto = (MemberDTO)(req.getSession().getAttribute("member_dto"));
 		MaterialCartDTO cartdto = new MaterialCartDTO();
 		cartdto.setMember_no(member_dto.getMember_no());
@@ -111,13 +125,11 @@ public class DeliveryController {
 	}
 	
 	/**
-	  * @author ¼ÕÇö¹Î
-	  *	 checkCart ¸®½ºÆ®¿¡ °°Àº ¸ñ·ÏÀÌ Á¸Àç ÇÒ ½Ã upDateCart·Î »Ñ·ÁÁÖ°í
-	  *	 °°Àº ¸ñ·ÏÀÌ Á¸Àç ÇÏÁö ¾ÊÀ» ¶§ insertCart·Î »Ñ·ÁÁØ´Ù.
+	  * @author ì†í˜„ë¯¼
+	  *	ë©¤ë²„ ë²ˆí˜¸ë¥¼ ë°›ì•„ì™€ ê°™ì€ ì¬ë£Œë¥¼ ì£¼ë¬¸ì‹œ CHECK í•˜ì—¬ FALSEì¼ë•Œ INSERTí•˜ê³  TRUEì¼ë•ŒëŠ” UPDATE í˜¸ì¶œ
 	  */
 	@RequestMapping(value="/insert.cart", method=RequestMethod.POST)
 	public @ResponseBody Object insertCart(HttpServletRequest req, int material_no, int material_cnt){
-		logger.info("ÀÎ¼­Æ® µË´Ï±î?");
 		MemberDTO member_dto = (MemberDTO)(req.getSession().getAttribute("member_dto"));
 		MaterialCartDTO cartdto = new MaterialCartDTO();
 		cartdto.setMember_no(member_dto.getMember_no());
@@ -126,11 +138,11 @@ public class DeliveryController {
 		System.out.println(cartdto.toString());
 		boolean check = cartservice.checkCart(cartdto);
 	
-		//ÀÎ¼­Æ®ÇÒ ¶§
+		//insert ì¼ë•Œ
 		if(check == false){
 			cartservice.insertCart(cartdto);
 		}
-		//updateÇÒ ¶§
+		//update ì¼ë•Œ
 		else{
 			cartservice.updateCart(cartdto);
 		}
@@ -144,12 +156,11 @@ public class DeliveryController {
 	}   
 	
 	/**
-	  * @author ¼ÕÇö¹Î
-	  *	 
+	  * @author ì†í˜„ë¯¼
+	  *	ì¹´íŠ¸ëª©ë¡ì— ìˆëŠ” ì¬ë£Œë¥¼ MINUSì‹œ -1í•´ì„œ UPDATEí•´ì£¼ê³  PLUSì‹œ +1í•´ì„œ ì—…ë°ì´íŠ¸ í˜¸ì¶œ
 	  */
 	@RequestMapping("/update.cart")
 	public @ResponseBody Object updateCart(HttpServletRequest req){
-		logger.info("¾÷µ¥ÀÌÆ® µË´Ï±î?");
 		MemberDTO member_dto = (MemberDTO)(req.getSession().getAttribute("member_dto"));
 		String param = req.getParameter("param");
 		int material_no = Integer.parseInt(req.getParameter("material_no"));
@@ -176,12 +187,11 @@ public class DeliveryController {
 	}
 	
 	/**
-	  * @author ¼ÕÇö¹Î
-	  *	 
+	  * @author ì†í˜„ë¯¼
+	  *	ì¹´íŠ¸ëª©ë¡ì— ìˆëŠ” ì¬ë£Œë¥¼ ì‚­ì œí•  ìˆ˜ ìˆê²Œ í˜¸ì¶œ
 	  */
 	@RequestMapping("/delete.cart")
 	public @ResponseBody Object deleteCart(HttpServletRequest req){
-		logger.info("»èÁ¦ µË´Ï±î?");
 		MemberDTO member_dto = (MemberDTO)(req.getSession().getAttribute("member_dto"));
 		int material_no = Integer.parseInt(req.getParameter("material_no"));
 		MaterialCartDTO cartdto = new MaterialCartDTO();
@@ -196,12 +206,12 @@ public class DeliveryController {
 	}
 	
 	/**
-	  * @author ¼ÕÇö¹Î
-	  *	 
+	  * @author ì†í˜„ë¯¼
+	  * ì›¹ì„œë¹„ìŠ¤ì— ì ‘ì†í•œ ë©¤ë²„ê°€ ì£¼ë¬¸í•œ ë‚´ì—­ì„ INSERTí•˜ì—¬ í˜¸ì¶œ
 	  */
 	@RequestMapping("insert/materialpayment")
 	public String insertmaterialpayment(HttpServletRequest req,Model model, MaterialPaymentDTO paymentDto, MaterialOrderDTO orderDto) throws Exception{
-		System.out.println("¿©±âµé¾î¿Í**************************************************************************");
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½**************************************************************************");
 		System.out.println(orderDto.getMaterial_nos().length+ "*************************************");
 		System.out.println(paymentDto.getMaterial_total_price());
 		MemberDTO member_dto = (MemberDTO)(req.getSession().getAttribute("member_dto"));

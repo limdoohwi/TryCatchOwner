@@ -52,6 +52,10 @@ public class OrderDAOImpl implements OrderDAO {
 			return null;
 		}
 	}
+	/**
+	 * @author 손현민
+	 * 재료주문내역를 저장하는 함수
+	 */
 	@Override
 	public boolean insertMaterial_Payment(MaterialPaymentDTO dto) {
 		System.out.println(dto.getMaterial_total_price() + ",,,,," + dto.getMember_no() + ",,,," + dto.getStore_no());
@@ -62,7 +66,10 @@ public class OrderDAOImpl implements OrderDAO {
 			return false;
 		}
 	}	
-	
+	/**
+	 * @author 손현민
+	 * 주문한 재료를 저장하는 함수
+	 */
 	@Override
 	public boolean insertMaterial_Order(MaterialOrderDTO dto) {
 		Map map = new HashMap();
@@ -82,7 +89,10 @@ public class OrderDAOImpl implements OrderDAO {
 			return false;
 		}
 	}
-	
+	/**
+	 * @author 손현민
+	 * 재료주문내역를 확인하기위해 받아오는 함수
+	 */
 	@Override
 	public List<MaterialPaymentDTO> getMaterialPaymentList(int store_no, String date, int start_page) {
 		Map map = new HashMap();
@@ -96,7 +106,10 @@ public class OrderDAOImpl implements OrderDAO {
 			return null;
 		}
 	}
-	
+	/**
+	 * @author 손현민
+	 * 재료주문내역의 재료들을 가져오는 함수
+	 */
 	@Override
 	public List<MaterialPaymentDetailDTO> getMaterialPaymentDetailList(int material_payment_no) {
 		try {

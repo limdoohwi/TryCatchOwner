@@ -1,4 +1,12 @@
-
+<!-- 
+/*
+ * 	JSP: Order.jsp
+ *  Description: 주문을 할 수 있게 진행해주는 JSP 페이지 
+ *  Created: 2016­08­04
+ *	Author: 손현민
+ * 
+ */
+ -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -37,7 +45,7 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="/owner/resources/bootstrab_order_confirm/js/freelancer.js"></script>
-
+<!-- 점장의 매장을 찾아서 주문 -->
 <script>
 	$(
 		function(){

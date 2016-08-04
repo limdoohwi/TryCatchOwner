@@ -1,3 +1,12 @@
+<!-- 
+/*
+ * 	JSP: Order.jsp
+ *  Description: DB에 저장되어 있는 커피,케이크 재료 리스트를 확인하고 카트에 추가,변경,삭제하고 주문내역페이지로 이동할 수 있게  진행해주는 JSP 페이지 
+ *  Created: 2016­08­04
+ *	Author: 손현민
+ * 
+ */
+ -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>

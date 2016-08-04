@@ -1,3 +1,9 @@
+/*
+ * 	Class: MaterialOrderDTO
+ *  Description: MaterialOrder table에 관련된 값을 가지는 DTO
+ *  Created: 2016­08­04
+ *	Author: 손현민
+ */
 package com.trycatch.owner.domain;
 
 public class MaterialOrderDTO {

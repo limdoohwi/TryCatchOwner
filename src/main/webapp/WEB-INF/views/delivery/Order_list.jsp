@@ -1,4 +1,12 @@
-
+<!-- 
+/*
+ * 	JSP: Order.jsp
+ *  Description: 주문내역을 볼 수 있게 진행해주는 JSP 페이지 
+ *  Created: 2016­08­04
+ *	Author: 손현민
+ * 
+ */
+ -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
