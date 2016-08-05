@@ -1,3 +1,14 @@
+/*
+ * 	Class: NoticeDAOImpl
+ *  Description: NoticeDAO 를 상속 받는 클래스로서 DB에 직접적인 연결을 담당하는 클래스
+ *  Created: 2016­07­26
+ *	Author: 이준영
+ *  Mail: 13nfri@naver.com
+ * 	Copyrights 2016-07-21 by Try{}Catch
+ *
+ * 
+ */
+
 package com.trycatch.owner.persistence;
 
 import java.util.List;
@@ -70,9 +81,20 @@ public class NoticeDAOImpl implements NoticeDAO {
 	public void deleteReply(Integer notice_no) throws Exception {
 		sqlSession.delete(NAMESPACE + ".reply_delete", notice_no);
 	}
-
+	/**
+	 * @author LimDooHwi
+	 * 해당 공지사항의 댓글의 갯수를 확인하는 함수
+	 */
 	@Override
 	public int getReplyCount(int notice_parent_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+".get_reply_count", notice_parent_no);
+	}
+	/**
+	 * @author LimDooHwi
+	 * 오늘 등록된 공지사항이 있는지 확인하는 함수
+	 */
+	@Override
+	public int get_Notice_Count_New() {
+		return sqlSession.selectOne(NAMESPACE+".get_Notice_Count_New");
 	}
 }

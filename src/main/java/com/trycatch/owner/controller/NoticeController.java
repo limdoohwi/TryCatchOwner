@@ -1,5 +1,5 @@
 /*
- * 	Class: MessengerController
+ * 	Class: NoticeController
  *  Description: Notice에 관련된 메서드를 관리하는 컨트롤러
  *  Created: 2016­07­20
  *	Author: 이준영

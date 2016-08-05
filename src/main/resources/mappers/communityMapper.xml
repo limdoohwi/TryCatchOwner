@@ -108,6 +108,8 @@
 	
 		delete from community where community_no = #{community_no}
 	</delete>
-	
+	<select id="get_Community_Count_New" resultType="int">
+       select count(*) from community where date(community_regdate) = curdate()
+   </select>
 	
 </mapper>    

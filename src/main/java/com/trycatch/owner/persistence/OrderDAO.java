@@ -1,5 +1,5 @@
 /*
- * 	Class: OrderDAO
+ * 	Interface: OrderDAO
  *  Description: Menu_Payment(음료 예약 주문 결제 내역 테이블), Material_Payment(재료 주문 결제 내역 테이블)과의 DB작업을 하기 위한 인터페이스
  *  Created: 2016­07­29
  *	Author: 김준혁
@@ -31,4 +31,5 @@ public interface OrderDAO {
 	public List<MaterialPaymentDetailDTO> getMaterialPaymentDetailList(int material_payment_no);
 	public List<Menu_OrderDTO> getMenuOrder_withMenu_Payment_no(int menu_payment_no);
 	public List<Order_AlarmDTO> getOrderAlarmList(int member_no);
+	public int getordertodayCount(int store_no);
 }

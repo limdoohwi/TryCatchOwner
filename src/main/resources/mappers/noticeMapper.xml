@@ -26,4 +26,7 @@
    <delete id="notice_delete">
    		delete from notice where notice_no=#{notice_no} or notice_parent_no=#{notice_no}
    </delete>
+   <select id="get_Notice_Count_New" resultType="int">
+       select count(*) from notice where date(notice_regdate) = curdate() and notice_parent_no=0
+   </select>
 </mapper>

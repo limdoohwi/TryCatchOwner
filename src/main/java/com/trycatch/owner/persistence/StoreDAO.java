@@ -1,5 +1,5 @@
 /*
- * 	Class: StoreDAO
+ * 	Interface: StoreDAO
  *  Description: Store Table과 DB작업을 하기 위한 인터페이스
  *  Created: 2016­07­27
  *	Author: 김준혁

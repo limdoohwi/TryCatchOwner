@@ -10,7 +10,7 @@ public class MaterialPaymentDTO {
 	private int material_payment_no;
 	private int material_total_price;
 	private String material_payment_date;
-	private String material_oreder_date;
+	private String material_order_date;
 	private int member_no;
 	private int store_no;
 	private String member_name;
@@ -56,12 +56,12 @@ public class MaterialPaymentDTO {
 		this.material_payment_date = material_payment_date;
 	}
 
-	public String getMaterial_oreder_date() {
-		return material_oreder_date;
+	public String getMaterial_order_date() {
+		return material_order_date;
 	}
 
 	public void setMaterial_oreder_date(String material_oreder_date) {
-		this.material_oreder_date = material_oreder_date;
+		this.material_order_date = material_oreder_date;
 	}
 
 	public int getMember_no() {

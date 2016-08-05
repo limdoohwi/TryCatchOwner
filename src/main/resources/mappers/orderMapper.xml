@@ -43,7 +43,9 @@
 				</if>
 	    </if>
 	</select>
-	
+	<select id="getOrder_Today_Count" resultType="int">
+	    select count(*) from menu_payment where store_no=#{store_no} and date(menu_reserve_time)=curdate()
+	</select>
 	<select id="getMenuOrder_withMenu_Payment_no" parameterType="int" resultType="Menu_OrderDTO">
 	      select m.menu_name, o.menu_count, o.menu_option from menu_order o, menu m 
    			where o.menu_no = m.menu_num and o.menu_payment_no = #{menu_payment_no}

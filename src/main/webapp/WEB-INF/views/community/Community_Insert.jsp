@@ -1,4 +1,5 @@
-<!-- *
+<!-- 
+ *
  * 	JSP: Community_Insert
  *  Description: 커뮤니티 업로드 하는 JSP
  *  Created: 2016­07­31
@@ -9,7 +10,8 @@
  * 	Revisions:
  * 		1. When & Who : 2016-07-31 by 박완석
  * 		2. What		  : Naver스마트에디터를 사용하여 사진 업로드 기능 구현
- *-->
+ *
+ -->
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -52,12 +54,16 @@ $(function(){
     });
     $("#community_submit").click(function(){
         editor_object.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
+        msgsendcommunity();
         $("#frm").submit();
     });
     $("#recipe_goback").click(function(){
     	location.href="/owner/community_list?limit=0";
     })
 });
+function msgsendcommunity() {
+	socket.send(JSON.stringify({'type':'NewContent'}));
+}
 
 
 </script>

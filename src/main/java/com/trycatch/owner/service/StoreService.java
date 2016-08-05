@@ -1,5 +1,5 @@
 /*
- * 	Class: StoreService
+ * 	Interface: StoreService
  *  Description: StoreDAOImpl에서 받아온 Data를 가공하기 위한 인터페이스
  *  Created: 2016­07­27
  *	Author: 김준혁

@@ -1,3 +1,11 @@
+/*
+ * 	Interface: NoticeDAO 
+ *  Description: Notice에 관련된 DB연결을 담당하는 Interface
+ *  Created: 2016­07­28
+ *	Author: 이준영
+ *  Mail: 13nfri@naver.com
+ * 	Copyrights 2016-07-21 by Try{}Catch
+ */
 package com.trycatch.owner.persistence;
 
 import java.util.List;
@@ -14,4 +22,5 @@ public interface NoticeDAO {
 	public void insertNoticeReply(NoticeDTO notice ) throws Exception;
 	public void deleteReply(Integer notice_num) throws Exception;
 	public int getReplyCount(int notice_parent_no) throws Exception;
+	public int get_Notice_Count_New();
 }

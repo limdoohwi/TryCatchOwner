@@ -1,3 +1,18 @@
+/*
+ * 	Class: NoticeServiceImpl
+ *  Description: NoticeService 를 상속 받는 클래스로서 MessengerDAO에 직접적인 연결을 담당하는 클래스
+ *  Created: 2016­07­28
+ *	Author: 이준영
+ *  Mail: 13nfri@naver.com
+ * 	Copyrights 2016-07-21 by Try{}Catch
+ *
+ *  Revisions:
+ * 		1. When & Who : 2016-08-02 by 임두휘
+ * 		2. What		  : 댓글 개수를 읽어 오는 함수 추가
+ * 		
+ * 		1. When & Who : 2016-08-04 by 임두휘
+ * 		2. What		  : 오늘 등록된 공지사항이 있는지 확인하는 함수 추가 
+ */
 package com.trycatch.owner.service;
 
 import java.util.ArrayList;
@@ -79,10 +94,21 @@ public class NoticeServiceImpl implements NoticeService {
 	public void deleteReply(Integer notice_no) throws Exception {
 		dao.deleteReply(notice_no);
 	}
-
+	/**
+	 * @author LimDooHwi
+	 * 해당 공지사항에 해당하는 댓글의 갯수를 새오는 함수
+	 */
 	@Override
 	public int getReplyCount(int notice_parent_no) throws Exception {
 		return dao.getReplyCount(notice_parent_no);
+	}
+	/**
+	 * @author LimDooHwi
+	 * 오늘 등록된 공지사항이 있는지 확인하는 함수
+	 */
+	@Override
+	public int get_Notice_Count_New() {
+		return dao.get_Notice_Count_New();
 	}
 
 }

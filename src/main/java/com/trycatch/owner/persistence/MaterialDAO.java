@@ -1,5 +1,5 @@
 /*
- * 	Interfate: MaterialDAO 
+ * 	Interface: MaterialDAO 
  *  Description: Material에 관련된 DB연결을 담당하는 Interface
  *  Created: 2016­08­04
  *	Author: 손현민

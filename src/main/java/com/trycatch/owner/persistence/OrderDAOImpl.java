@@ -10,6 +10,9 @@
  *  1. When & Who : 2016-07-31 by 손현민
  *  2. What		  : insertMaterial_Payment(), insertMaterial_Order(),
  *  				getMaterialPaymentList(),	getMaterialPaymentDetailList() 추가
+ *
+ *  1. When & Who : 2016-08-04 by 임두휘
+ *  2. What		  : getordertodayCount() 추가
  */
 
 package com.trycatch.owner.persistence;
@@ -143,5 +146,13 @@ public class OrderDAOImpl implements OrderDAO {
 	@Override
 	public List<Order_AlarmDTO> getOrderAlarmList(int member_no) {
 		return sqlSession.selectList(NAMESPACE+".getOrderAlarmList", member_no);
+	}
+	/**
+	 * @author LimDooHwi
+	 * 오늘의 예약 건수를 가져오는 함수
+	 */
+	@Override
+	public int getordertodayCount(int store_no) {
+		return sqlSession.selectOne(NAMESPACE+".getOrder_Today_Count", store_no);
 	}
 }

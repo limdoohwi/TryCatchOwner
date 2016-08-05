@@ -1,3 +1,9 @@
+/*
+ * 	Interface: CommunityDAO 
+ *  Description: CommunityDAO 를 상속 받는 클래스로서 DB에 직접적인 연결을 담당하는 클래스
+ *  Created: 2016­07-31
+ *	Author: 박완석
+ */
 package com.trycatch.owner.persistence;
 
 import java.util.List;
@@ -23,4 +29,5 @@ public interface CommunityDAO {
 	public List<CommunityLikeDTO> getCommunityLikeList(Integer member_no);
 	public boolean insertLikeCommunity(CommunityLikeDTO dto);
 	public List<CommunityDTO> getCommunitySearch(String community_search);
+	public int get_Community_Count_New();
 }

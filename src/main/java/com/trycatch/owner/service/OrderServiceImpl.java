@@ -9,6 +9,12 @@
  *	Revisions:
  *  1. When & Who : 2016-07-31 by 손현민
  *  2. What		  : insertMaterial_Payment() 추가
+ *  
+ *  1. When & Who : 2016-08-03 by 임두휘
+ *  2. What		  : getOrderAlarmList() 추가
+ *  
+ *  1. When & Who : 2016-08-04 by 임두휘
+ *  2. What		  : getordertodayCount() 추가
  */
 
 
@@ -75,6 +81,7 @@ public class OrderServiceImpl implements OrderService {
 					menu_total_list +=  orderList.get(j).getMenu_name() + "/" + orderList.get(j).getMenu_count() + "잔/" + orderList.get(j).getMenu_option() + ", ";
 				}
 				orderInfoList.get(i).setMenu_total_list(menu_total_list);
+				System.out.println(orderInfoList.get(i).getMenu_reserve_time());
 			}
 			transactionManager.commit(status);
 			return orderInfoList;
@@ -103,9 +110,21 @@ public class OrderServiceImpl implements OrderService {
 			return false;
 		}
 	}
-
+	/**
+	 * @author LimDooHwi
+	 * 알람 리스트를 가져오는 함수
+	 */
 	@Override
 	public List<Order_AlarmDTO> getOrderAlarmList(int member_no) {
 		return dao.getOrderAlarmList(member_no);
+	}
+	
+	/**
+	 * @author LimDooHwi
+	 * 오늘의 예약 건수 확인하는 함수
+	 */
+	@Override
+	public int getordertodayCount(int store_no) {
+		return dao.getordertodayCount(store_no);
 	}
 }

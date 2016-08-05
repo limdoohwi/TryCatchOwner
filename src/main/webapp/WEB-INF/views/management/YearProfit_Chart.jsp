@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<%@ page contentType="text/html; charset=UTF-8"%>
-<script type="text/javascript"
-	src="https://www.gstatic.com/charts/loader.js"></script>
-=======
 <!-- 
 /*
  * 	JSP: YearProfit_Chart
@@ -17,11 +12,9 @@
  *  2. What		  : 설정된 매장의 이번 연도 매출액을 호출하는 ajax 생성
  */
  -->
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
->>>>>>> refs/remotes/origin/juns
+<%@ page contentType="text/html; charset=UTF-8"%>
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="/owner/resources/Owner_js/ListAjax.js"></script>
 <script type="text/javascript">
 	var finalYearRow = new Array();

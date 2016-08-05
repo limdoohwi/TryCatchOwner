@@ -1,9 +1,9 @@
 <!-- 
 /*
  * 	JSP: Order.jsp
- *  Description: DB¿¡ ÀúÀåµÇ¾î ÀÖ´Â Ä¿ÇÇ,ÄÉÀÌÅ© Àç·á ¸®½ºÆ®¸¦ È®ÀÎÇÏ°í Ä«Æ®¿¡ Ãß°¡,º¯°æ,»èÁ¦ÇÏ°í ÁÖ¹®³»¿ªÆäÀÌÁö·Î ÀÌµ¿ÇÒ ¼ö ÀÖ°Ô  ÁøÇàÇØÁÖ´Â JSP ÆäÀÌÁö 
- *  Created: 2016¡©08¡©04
- *	Author: ¼ÕÇö¹Î
+ *  Description: DBì— ì €ìž¥ë˜ì–´ ìžˆëŠ” ì»¤í”¼, ì¼€ì´í¬ ìž¬ë£Œ ë¦¬ìŠ¤íŠ¸ë¥¼ í™•ì¸í•˜ê³  ì¹´íŠ¸ì— ì¶”ê°€ ë³€ê²½ ì‚­ì œí•˜ê³  ì£¼ë¬¸ë‚´ì—­ íŽ˜ì´ì§€ë¡œ ì´ë™í•  ìˆ˜ ìžˆê²Œ ì§„í–‰í•´ì£¼ëŠ” Jsp íŽ˜ì´ì§€
+ *  Created: 2016-08-04
+ *	Author: ì†í˜„ë¯¼
  * 
  */
  -->
@@ -52,7 +52,7 @@
 				cart_list(data);
 			},
 			error : function() {
-				alert("ë¦¬ì?¤í??  ?¤í??")
+				alert("ë¦¬ï¿½?ï¿½ï¿½??  ?ï¿½ï¿½??")
 			}
 		});
 
@@ -60,7 +60,7 @@
 			var index = $(".btn-cart-material").index(this);
 			var material_no = $(".btn-cart-material").eq(index).val();
 			if ($(".form-count").eq(index).val() == '') {
-				alert("?????? ???¥í???¸ì??.");
+				alert("?????? ???ï¿½ï¿½???ï¿½ï¿½??.");
 			} else {
 				var material_cnt = $(".material_cnt").eq(index).val();
 				$.ajax({
@@ -74,7 +74,7 @@
 						cart_list(data);
 					},
 					error : function() {
-						alert("?¸ì???? ?¤í??")
+						alert("?ï¿½ï¿½???? ?ï¿½ï¿½??")
 						return false;
 					}
 				});
@@ -83,7 +83,7 @@
 		//
 		function cart_list(data) {
 
-			var html = "<h4>?¥ë?êµ¬ë??</h4>";
+			var html = "<h4>?ï¿½ï¿½?êµ¬ï¿½??</h4>";
 			$
 					.each(
 							data.cartlist,
@@ -98,7 +98,7 @@
 								html += '</li>'
 								html += '<a data-toggle="tooltip" data-placement="top" title="???? +1" class="Material-Quantity-Plus-Btn btn btn-success"><em class="fa fa-plus-circle" aria-hidden="true"></em></a>'
 								html += '<a data-toggle="tooltip" data-placement="top" title="???? -1" class="Material-Quantity-Minus-Btn btn btn-primary"><em class="fa fa-minus-circle" aria-hidden="true"></em></a>'
-								html += '<a data-toggle="tooltip" data-placement="top" title="???? ì·¨ì??" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>'
+								html += '<a data-toggle="tooltip" data-placement="top" title="???? ì·¨ï¿½??" class="Material-Cart-List-Remove-Btn btn btn-danger"><em class="fa fa-times" aria-hidden="true"></em></a>'
 								html += '</div>'
 								html += '</ul>'
 							});
@@ -158,17 +158,17 @@
 		$("#Coffee-Product-Order-Btn").click(function() {
 			var size = $(".list-group").length;
 			if (size == 0) {
-				alert("?¥ë?êµ¬ë?? ?????? ???µë????.");
+				alert("?ï¿½ï¿½?êµ¬ï¿½?? ?????? ???ï¿½ï¿½????.");
 				return false;
 			}
-			if (confirm("?´ë??ë¡? ì£¼ë¬¸????ê²??µë??ê¹??")) {
+			if (confirm("?ï¿½ï¿½??ï¿½? ì£¼ë¬¸????ï¿½??ï¿½ï¿½??ï¿½??")) {
 				location.href = "/owner/delivery/Order";
 			}
 		});
 		//Cake-Product-Order-Btn Click Show Confrim Order
 		$("#Cake-Product-Order-Btn").click(function() {
-			if (confirm("?´ë??ë¡? ì£¼ë¬¸????ê²??µë??ê¹??")) {
-				//alert("?? ????ë¯¿ì???")
+			if (confirm("?ï¿½ï¿½??ï¿½? ì£¼ë¬¸????ï¿½??ï¿½ï¿½??ï¿½??")) {
+				//alert("?? ????ë¯¿ï¿½???")
 				$(this).attr("href", "front?cmd=material_order_confirm")
 			}
 		});
@@ -186,7 +186,7 @@
 					cart_list(data);
 				},
 				error : function() {
-					alert("plus update ?¤í??");
+					alert("plus update ?ï¿½ï¿½??");
 					return false;
 				}
 			});
@@ -206,7 +206,7 @@
 					cart_list(data);
 				},
 				error : function() {
-					alert("update ?¤ë?");
+					alert("update ?ï¿½ï¿½?");
 					return false;
 				}
 			});
@@ -217,7 +217,7 @@
 		$(document).on('click', ".Material-Quantity-Minus-Btn", function() {
 			var eq = $(".Material-Quantity-Minus-Btn").index(this);
 			if ($(".Material-Quantity").eq(eq).text() == '1') {
-				alert("?? ?´ì?? ì¤??? ?? ???µë????.");
+				alert("?? ?ï¿½ï¿½?? ï¿½??? ?? ???ï¿½ï¿½????.");
 				return false;
 			} else {
 				$.ajax({
@@ -231,7 +231,7 @@
 						cart_list(data);
 					},
 					error : function() {
-						alert("minus update ?¤ë?");
+						alert("minus update ?ï¿½ï¿½?");
 						return false;
 					}
 				});
@@ -250,10 +250,10 @@
 				},
 				success : function(data) {
 					cart_list(data);
-					alert("ë¬¼í???? ???? ?????µë????.")
+					alert("ë¬¼ï¿½???? ???? ?????ï¿½ï¿½????.")
 				},
 				error : function() {
-					alert("delet ?¤ë?");
+					alert("delet ?ï¿½ï¿½?");
 					return false;
 				}
 			});
@@ -293,25 +293,25 @@
 					class="fa fa-times"></i>
 			</a>
 			<li class="sidebar-brand"><a href="#top">TryCatch Delivery</a></li>
-			<li><a href="/owner/delivery/Order_list">ì£¼ë¬¸ ?´ì?? ë³´ê¸°</a></li>
+			<li><a href="/owner/delivery/Order_list">ì£¼ë¬¸ ?ï¿½ï¿½?? ë³´ê¸°</a></li>
 			<li>
 				<div class="dropdown">
 					<a id="Select-Store-Btn" href="#" data-toggle="dropdown"
-						aria-haspopup="ture" aria-expanded="true">ë§¤ì?? ????<span
+						aria-haspopup="ture" aria-expanded="true">ë§¤ï¿½?? ????<span
 						class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu"
 						aria-labelledby="Select-Store-Btn"
 						style="color: white; background-color: black;">
-						<li><a href="#">?¸ì???</a></li>
-						<li><a href="#">??ì²???</a></li>
-						<li><a href="#">?°ì????</a></li>
+						<li><a href="#">?ï¿½ï¿½???</a></li>
+						<li><a href="#">??ï¿½???</a></li>
+						<li><a href="#">?ï¿½ï¿½????</a></li>
 					</ul>
 				</div>
 			</li>
-			<li><a href="#services">??ë¹??? ????</a></li>
+			<li><a href="#services">??ï¿½??? ????</a></li>
 			<li><a href="#contact">Contact</a></li>
-			<li><a href="#top">ë§? ??ë¡?</a></li>
-			<li><a href="/owner">ë©??¸ì?¼ë?</a></li>
+			<li><a href="#top">ï¿½? ??ï¿½?</a></li>
+			<li><a href="/owner">ï¿½??ï¿½ï¿½?ï¿½ï¿½?</a></li>
 		</ul>
 	</nav>
 
@@ -319,7 +319,7 @@
 	<header id="top" class="header">
 		<div class="text-vertical-center">
 			<h1>TryCatch Delivery</h1>
-			<h3>ê³?ê°???ê²? ìµ?ê³??? ì»¤í?? ?¬ë?ë¥? ??ê³µí?©ë????</h3>
+			<h3>ï¿½?ï¿½???ï¿½? ï¿½?ï¿½??? ì»¤ï¿½?? ?ï¿½ï¿½?ï¿½? ??ê³µï¿½?ï¿½ï¿½????</h3>
 			<h4>
 				<em class="fa fa-male fa-lg" aria-hidden="true"></em>
 			</h4>
@@ -329,13 +329,13 @@
 			<h4>
 				<a id="Change-Store-Btn" class="btn btn-success"
 					style="margin-left: 12px" data-toggle="tooltip"
-					data-placement="right" title="ë§¤ì?¥ì?? ë°?ê¿? ?? ???µë????."><em
+					data-placement="right" title="ë§¤ï¿½?ï¿½ï¿½?? ï¿½?ï¿½? ?? ???ï¿½ï¿½????."><em
 					class="fa fa-bank" aria-hidden="true"></em></a>&nbsp;&nbsp;&nbsp;&nbsp;
 			</h4>
 			<h4>
-				<span style="font-size: 13pt; font-weight: bold;">ì¢?ê°???</span>
+				<span style="font-size: 13pt; font-weight: bold;">ï¿½?ï¿½???</span>
 			</h4>
-			<br> <a href="#services" class="btn btn-dark btn-lg">ì£¼ë¬¸ ??????ê¸?</a>
+			<br> <a href="#services" class="btn btn-dark btn-lg">ì£¼ë¬¸ ??????ï¿½?</a>
 		</div>
 	</header>
 	<!-- Services -->
@@ -354,9 +354,9 @@
 									class="fa fa-coffee fa-stack-1x text-primary"></i>
 								</span>
 								<h4>
-									<strong>ì»¤í?? ?¬ë?</strong>
+									<strong>ì»¤ï¿½?? ?ï¿½ï¿½?</strong>
 								</h4>
-								<p>ê³??¼ê?ë£?, ???? ?? ?¬ë?¬ê?ì§? ?¬ë?ë¥? ì£¼ë¬¸ ?? ?? ???µë????.</p>
+								<p>ï¿½??ï¿½ï¿½?ï¿½?, ???? ?? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½? ?ï¿½ï¿½?ï¿½? ì£¼ë¬¸ ?? ?? ???ï¿½ï¿½????.</p>
 								<button id="Coffee-Material-Btn" class="btn btn-light">????</button>
 							</div>
 						</div>
@@ -367,9 +367,9 @@
 									class="fa fa-birthday-cake fa-stack-1x text-primary"></i>
 								</span>
 								<h4>
-									<strong>ì¼??´í?? ?¬ë?</strong>
+									<strong>ï¿½??ï¿½ï¿½?? ?ï¿½ï¿½?</strong>
 								</h4>
-								<p>???¬ë¦¼, ë°?ê°?ë£? ?? ?¬ë?¬ê?ì§? ?¬ë?ë¥? ì£¼ë¬¸ ?? ?? ???µë????.</p>
+								<p>???ï¿½ë¦¼, ï¿½?ï¿½?ï¿½? ?? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½? ?ï¿½ï¿½?ï¿½? ì£¼ë¬¸ ?? ?? ???ï¿½ï¿½????.</p>
 								<button id="Cake-Material-Btn" class="btn btn-light">????</button>
 							</div>
 						</div>
@@ -394,7 +394,7 @@
 						<!-- Material -->
 						<div class="col-md-4">
 							<div class="portfolio-item">
-								<!-- ?´ê¸° -->
+								<!-- ?ï¿½ê¸° -->
 								<div class="row" style="margin-top: 5px">
 									<c:set var="material_coffee" value="${materialcoffee}" />
 									<c:forEach items="${material_coffee}" var="coffeelist"
@@ -417,12 +417,12 @@
 													</div>
 												</div>
 
-												<!-- ?´ê¸° button -->
+												<!-- ?ï¿½ê¸° button -->
 												<div class="form-group">
 													<div class="col-sm-2 col-sm-offset-2">
 														<button id="Cart-add-btn" type="button"
 															class="btn btn-danger btn-cart-material"
-															value="${coffeelist.material_no}">?´ê¸°</button>
+															value="${coffeelist.material_no}">?ï¿½ê¸°</button>
 														&nbsp;&nbsp;
 													</div>
 												</div>
@@ -437,7 +437,7 @@
 						</div>
 					</div>
 					<a id="Coffee-Product-Order-Btn" class="btn btn-success btn-lg">ì£¼ë¬¸</a>
-					<button id="Coffee-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ì??</button>
+					<button id="Coffee-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ï¿½??</button>
 				</div>
 				<!-- /.col-lg-10 -->
 			</div>
@@ -456,7 +456,7 @@
 						<!-- Material -->
 						<div class="col-md-4">
 							<div class="portfolio-item">
-								<!-- ?´ê¸° -->
+								<!-- ?ï¿½ê¸° -->
 								<div class="row" style="margin-top: 5px">
 									<c:set var="material_cake" value="${materialcake}" />
 									<c:forEach items="${material_cake}" var="cakelist"
@@ -478,13 +478,13 @@
 														id="inputEmail3" placeholder="???? ????">
 												</div>
 											</div>
-											<!-- ?´ê¸° button -->
+											<!-- ?ï¿½ê¸° button -->
 											<div class="form-group">
 												<div style="margin-left: 95px"
 													class="col-sm-2 col-sm-offset-2">
 													<button id="Cart-add-btn" type="button"
 														class="btn btn-danger btn-cart-material"
-														value="${cakelist.material_no}">?´ê¸°</button>
+														value="${cakelist.material_no}">?ï¿½ê¸°</button>
 													&nbsp;&nbsp;
 												</div>
 											</div>
@@ -495,7 +495,7 @@
 						</div>
 					</div>
 					<a id="Cake-Product-Order-Btn" class="btn btn-success btn-lg">ì£¼ë¬¸</a>
-					<button id="Cake-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ì??</button>
+					<button id="Cake-Order-Cancel-Btn" class="btn btn-dark btn-lg">ì·¨ï¿½??</button>
 				</div>
 				<!-- /.col-lg-10 -->
 			</div>

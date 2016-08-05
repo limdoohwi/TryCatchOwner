@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-<%@ page contentType="text/html; charset=UTF-8"%>
-=======
 <!-- 
 /*
  * 	JSP: Profit_Owner
@@ -14,11 +11,7 @@
  *	Revisions:
  */
  -->
-
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
->>>>>>> refs/remotes/origin/juns
+<%@ page contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>

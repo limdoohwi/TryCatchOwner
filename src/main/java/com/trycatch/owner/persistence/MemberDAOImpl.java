@@ -7,6 +7,9 @@
  * 	Copyrights 2016-07-26 by Try{}Catch
  *
  *	Revisions:
+ *
+ *	1.When & Who : 2016-08-04 by 임두휘
+ *  2.What       : 점주 수를 계산하는 함수 추가
  */
 
 package com.trycatch.owner.persistence;
@@ -40,5 +43,13 @@ public class MemberDAOImpl implements MemberDAO {
 		} catch (Exception err) {
 			return null;
 		}
+	}
+	/**
+	 * @author LimDooHwi
+	 * 점주의 수를 세는 함수
+	 */
+	@Override
+	public int getMember_Count() {
+		return sqlSession.selectOne(NAMESPACE+".getMember_Count");
 	}
 }

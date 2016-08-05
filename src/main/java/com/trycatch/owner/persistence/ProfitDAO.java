@@ -1,5 +1,5 @@
 /*
- * 	Class: ProfitDAO
+ * 	Interface: ProfitDAO
  *  Description: Menu_Payment, Menu_Order Table를 join하여  DB작업을 하기 위한 인터페이스
  *  Created: 2016­07­30
  *	Author: 김준혁

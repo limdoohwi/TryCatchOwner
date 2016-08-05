@@ -28,6 +28,9 @@
  *
  *	1. When & Who : 2016-08-03 by 임두휘
  *  2. What		  : Meeting룸 예약에 따른 알람 기능 추가 
+ *
+ *	1. When & Who : 2016-08-04 by 임두휘
+ *  2. What		  : Content추가와 새로운 주문에 따른 페이지 변화 기능 추가  
  */
  -->
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false"%>
@@ -84,6 +87,8 @@
 			connect();
 			//현재 온 알람을 띄워주는 함수
 			callList_Ajax("/owner/order/alarm", showOrderAlarmList, null, {member_no:'${member_dto.member_no}'});
+			callList_Ajax("/owner/websocket/list", updatepage, null, {member_no:'${member_dto.member_no}',store_no:'${store_dto.store_no}'});
+			callList_Ajax("/owner/websocket/new", updateNew, null, null);
 			//읽지않은 음료주문 알람을 띄움
 			noReadMsgList();
 			$(".Select-Store-Btn").click(function(){
@@ -139,7 +144,8 @@
 					console.log(received_msg);
 					console.log('message received!');
 					var msg = JSON.parse(received_msg);
-					if(msg.type="orderalarm"){
+					alert(msg.type);
+					if(msg.type=="orderalarm"){
 						alert("새로운 주문이 들어왔습니다 확인 하세요");
 						callList_Ajax("/owner/order/alarm", showOrderAlarmList, null, {member_no:'${member_dto.member_no}'});
 						var pageNumber = 1;
@@ -148,8 +154,9 @@
 						};
 						//주문 내역 불러옴
 						callList_Ajax("/owner/client_order_list/order", orderListSuccess, null, jsonData);
+						callList_Ajax("/owner/websocket/list", updatepage, null, {member_no:'${member_dto.member_no}',store_no:'${store_dto.store_no}'});
 					}
-					else{
+					else if(msg.type=="messenger"){
 						if (msg.connect == "true") {
 							msgshowMessage(msg.message, msg.member_no, msg.member_name,
 									msg.content_regdate);
@@ -158,6 +165,9 @@
 							msgshowAlarm(msg.message, msg.member_no, msg.member_name,
 									msg.content_regdate);
 						}
+					}
+					else if(msg.type=="NewContent"){
+						callList_Ajax("/owner/websocket/new", updateNew, null, null);
 					}
 				}
 			} else {
@@ -224,7 +234,24 @@
 			}
 			$("#Notification-Header-li").html(count+"개의 예약이 있습니다.");	
 		}
+		/*
+			예약이나 미팅룸 매출액등이 갱신될 때 불러와지는 함수
+		*/
+		function updatepage(data){
+			
+			$("#todayorder").html(data.todayorder+'<span style="font-size: 0.8em">건</span>');
+			$("#ownercount").html(data.ownercount+'<span style="font-size: 0.8em">명</span>');
+			$("#todaymeetingroom").html(data.todaymeetingroom+'<span style="font-size: 0.8em">건</span>');
+			$("#monthprofit").html(data.thisMonthProfit + '<span style="font-size: 0.8em">원</span>')
+		}
 		
+		/*
+			새로운 Content가 들록되면 New메시지를 띄워준다.
+		*/
+		function updateNew(data){
+			if(data.noticeNew==true){$("#NoticeNew").html('<small class="label pull-right bg-green">new</small>');}
+			if(data.communityNew==true){$("#CommunityNew").html('<small class="label pull-right bg-green">new</small>');}
+		}
   </script>
 
 <header class="main-header">
@@ -311,12 +338,12 @@
 			<li class="header">MAIN</li>
 			<!-- 공지 사항 Menu -->
 			<li><a href="/owner/notice/Notice"> <i
-					class="fa fa-newspaper-o"></i> <span>공지 사항</span> <i
-					class="fa fa-angle-left pull-right"></i>
+					class="fa fa-newspaper-o"></i> <span>공지 사항</span> <span id="NoticeNew" class="pull-right"><i
+					class="fa fa-angle-left"></i>&nbsp;&nbsp;&nbsp;</span>
 			</a></li>
 			<!-- My Store Menu -->
 			<li class="treeview"><a href="#"> <i class="fa fa-bank"></i>
-					<span>My Store</span> <span class="label label-primary pull-right">4</span>
+					<span>My Store</span> <span class="label label-primary pull-right">${fn:length(storeList)}</span>
 			</a>
 				<ul id="My-Store-Ul" class="treeview-menu">
 					<c:forEach var="storeDto" items="${storeList}"
@@ -340,13 +367,13 @@
 				</ul></li>
 			<!-- Community Menu -->
 			<li><a href="/owner/community_list?limit=0"> <i
-					class="fa fa-commenting"></i> <span>Community</span> <small
-					class="label pull-right bg-green">new</small>
+					class="fa fa-commenting"></i> <span>Community</span> <span id="CommunityNew" class="pull-right"><i
+					class="fa fa-angle-left"></i>&nbsp;&nbsp;&nbsp;</span>
 			</a></li>
 			<!-- Coffee Order Menu : 사용자가 온라인 상에서 주문한 커피 내역을 확인  -->
 			<li><a href="/owner/management/TryCoffee_Order"> <i
-					class="fa fa-check-square"></i> <span>Coffee Order</span> <small
-					class="label pull-right bg-green">new</small>
+					class="fa fa-check-square"></i> <span>Coffee Order</span> <i
+					class="fa fa-angle-left pull-right"></i>
 			</a></li>
 			<!-- TryCoffee Owner : TryCoffee 매장을 갖고있는 점장들을 조회 및 chat -->
 			<li class="treeview"><a href="/owner/messenger/TryCoffee_Owner">
@@ -366,8 +393,8 @@
 			</li>
 			<!-- MeetingRoom -->
 			<li><a href="/owner/management/MeetingRoom"> <i
-					class="fa fa-calendar"></i> <span>MeetingRoom</span> <small
-					class="label pull-right bg-red">3</small>
+					class="fa fa-calendar"></i> <span>MeetingRoom</span> <i
+					class="fa fa-angle-left pull-right"></i>
 			</a></li>
 		</ul>
 	</section>
@@ -394,11 +421,12 @@
 				<div class="small-box bg-aqua">
 					<div class="inner">
 						<!-- Not Receive Count Number -->
-						<h3>
-							15<span style="font-size: 0.8em">건</span>
+						<h3 id="todayorder">
+						<!-- 오늘의 음료 주문 건 추가 -->
+							0<span style="font-size: 0.8em">건</span>
 						</h3>
 						<!-- Title -->
-						<p>Not Receive</p>
+						<p>오늘의 음료 주문</p>
 					</div>
 					<div class="icon">
 						<i class="ion ion-bag"></i>
@@ -407,18 +435,19 @@
 						class="fa fa-arrow-circle-right"></i></a>
 				</div>
 			</div>
-			<!-- 이번 연도 총매출액을 나타내 주는 box -->
+			<!-- 이번 달 총매출액을 나타내 주는 box -->
 			<div class="col-lg-3 col-xs-6">
 				<!-- small box -->
 				<div class="small-box bg-green">
 					<div class="inner">
 						<!-- Total Profit Amount -->
-						<h3>
-							530,000,000<span style="">원</span>
+						<h3 id="monthprofit">
+							<!-- 이번달 총 매출액 -->
+							0<span style="">원</span>
 						</h3>
 						<!-- Title -->
 						<p>
-							<span>2016&nbsp;</span>Total Profit
+							<span>이번 달 &nbsp;</span>매출액
 						</p>
 					</div>
 					<div class="icon">
@@ -434,11 +463,12 @@
 				<div class="small-box bg-yellow">
 					<div class="inner">
 						<!-- TryCoffee Owner Count Number -->
-						<h3>
-							44<span style="font-size: 0.8em">명</span>
+						<h3 id="ownercount">
+						<!-- 총 점장 수 -->
+							0<span style="font-size: 0.8em">명</span>
 						</h3>
 						<!-- Title -->
-						<p>TryCoffee Onwer</p>
+						<p>총 점장 수</p>
 					</div>
 					<div class="icon">
 						<i class="ion ion-person-stalker"></i>
@@ -453,11 +483,12 @@
 				<div class="small-box bg-red">
 					<div class="inner">
 						<!-- Today MeetingRoom Reservation Count Number -->
-						<h3>
-							2<span style="font-size: 0.8em">건</span>
+						<h3 id="todaymeetingroom">
+						<!--  미팅룸 예약 받아오기 -->
+							0<span style="font-size: 0.8em">건</span>
 						</h3>
 						<!-- Title -->
-						<p>Today's MeetingRoom</p>
+						<p>오늘의 미팅룸 예약 건수</p>
 					</div>
 					<div class="icon">
 						<i class="ion ion-calendar"></i>

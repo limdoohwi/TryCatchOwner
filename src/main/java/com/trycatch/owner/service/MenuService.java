@@ -1,5 +1,5 @@
 /*
- * 	Class: MenuService
+ * 	Interface: MenuService
  *  Description: MenuDAOImpl에서 받아온 Data를 가공하기 위한 인터페이스
  *  Created: 2016­07­29
  *	Author: 김준혁

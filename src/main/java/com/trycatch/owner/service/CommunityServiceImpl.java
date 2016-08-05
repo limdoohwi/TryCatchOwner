@@ -9,6 +9,9 @@
  * 	Revisions:
  * 		1. When & Who : 2016-07-31 by 박완석
  * 		2. What		  : DAO에 접근하는 Service 기능 
+ * 		
+ * 		1. When & Who : 2016-08-04 by 임두휘
+ * 		2. What		  : 오늘 등록된 게시판 내용이 있는지 확인하는 함수 
  */
 package com.trycatch.owner.service;
 
@@ -195,6 +198,14 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public List<CommunityDTO> getCommunitySearch(String community_search) {
 		return dao.getCommunitySearch(community_search);
+	}
+	/**
+	 * @author LimDooHwi
+	 * 오늘 등록되 있는 게시판이 있는지 확인하는 함수
+	 */
+	@Override
+	public int get_Community_Count_New() {
+		return dao.get_Community_Count_New();
 	}
 
 }

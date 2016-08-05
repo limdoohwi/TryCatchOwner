@@ -1,5 +1,5 @@
 /*
- * 	Interfate: MaterialCartDAO 
+ * 	Interface: MaterialCartDAO 
  *  Description: MaterialCartDAO 를 상속 받는 클래스로서 DB에 직접적인 연결을 담당하는 클래스
  *  Created: 2016­08­04
  *	Author: 손현민

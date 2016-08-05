@@ -63,7 +63,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				}
 			}
 		}
-		else{
+		else if(obj.get("type").equals("messenger")){
 			// 메신져 기능
 			String member_no = String.valueOf(obj.get("send_member_no"));
 			Map<String, Object> mymap = session.getAttributes();
@@ -93,6 +93,11 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 					returnMessage = new TextMessage(obj.toJSONString());
 					sessions.get(i).sendMessage(returnMessage);
 				}
+			}
+		}
+		else if(obj.get("type").equals("NewContent")){
+			for(int i=0; i<sessions.size();i++){
+				sessions.get(i).sendMessage(returnMessage);
 			}
 		}
 	}

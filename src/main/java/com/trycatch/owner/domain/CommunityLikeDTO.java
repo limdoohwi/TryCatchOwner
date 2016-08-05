@@ -1,3 +1,9 @@
+/*
+ * 	Class: CommunityLikeDTO
+ *  Description: Community 즐겨찾기 table에 관련된 값을 가지는 DTO
+ *  Created: 2016­07-21
+ *	Author: 박완석
+ */
 package com.trycatch.owner.domain;
 
 public class CommunityLikeDTO {

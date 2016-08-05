@@ -9,6 +9,9 @@
  * 	Revisions:
  * 		1. When & Who : 2016-07-31 by 박완석
  * 		2. What		  : 커뮤니티 DB처리를 도와주는 DAO 
+ * 
+ * 		1. When & Who : 2016-08-04 by 임두휘
+ * 		2. What		  : 오늘 등록된 내용이 있는지 확인해주는 함수 추가 
  */
 package com.trycatch.owner.persistence;
 
@@ -198,7 +201,6 @@ public class CommunityDAOImpl implements CommunityDAO {
 		try{
 			int i = sqlSession.selectOne(NAMESPACE+".communitylikecheck",dto);
 			if(i==0){
-				System.out.println("�μ�Ʈ");
 				sqlSession.insert(NAMESPACE+".communityLikeInsert",dto);
 				return true;
 				}
@@ -223,6 +225,11 @@ public class CommunityDAOImpl implements CommunityDAO {
 	@Override
 	public List<CommunityDTO> getCommunitySearch(String community_search) {
 		return sqlSession.selectList(NAMESPACE+".communitySearch",community_search);
+	}
+
+	@Override
+	public int get_Community_Count_New() {
+		return sqlSession.selectOne(NAMESPACE+".get_Community_Count_New");
 	}
 
 }

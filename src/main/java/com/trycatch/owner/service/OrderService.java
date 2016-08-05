@@ -1,5 +1,5 @@
 /*
- * 	Class: OrderService
+ * 	Interface: OrderService
  *  Description: OrderDAOImpl에서 받아온 Data를 가공하기 위한 인터페이스
  *  Created: 2016­07­29
  *	Author: 김준혁
@@ -24,4 +24,5 @@ public interface OrderService {
 	public List<Order_InformationDTO> getOrder_Information(int store_no, int start_Page, boolean asce, String search_order_info);
 	public boolean insertMaterial_Payment(MaterialPaymentDTO dto, MaterialOrderDTO orderDto);
 	public List<Order_AlarmDTO> getOrderAlarmList(int member_no);
+	public int getordertodayCount(int store_no);
 }

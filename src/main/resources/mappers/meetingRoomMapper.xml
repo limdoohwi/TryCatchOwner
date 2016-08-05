@@ -8,12 +8,10 @@
 	<select id="getMeetingResrevationLIst_withStore_no" parameterType="int" resultType="MeetingRoomDTO">
 		select m.meeting_reservation_date, m.meeting_no, mem.member_name,
 		mem.member_tel, m.meeting_reservation_time from
-		meeting_reservation m, member mem, meeting_room mr where m.member_no = mem.member_no and
-		mr.store_no = #{store_no}
+		meeting_reservation m, member mem where m.member_no = mem.member_no and m.store_no = #{store_no}
 	</select>
 	<select id="getMeetingResrevationLIstToday_withStore_no" parameterType="hashMap" resultType="MeetingRoomDTO">
 		select m.meeting_reservation_date, m.meeting_reservation_time, m.meeting_no, mem.member_name, mem.member_tel from
-		meeting_reservation m, member mem, meeting_room mr where m.member_no = mem.member_no and
-		mr.store_no = #{store_no} and date(m.meeting_reservation_date) = curdate() and m.meeting_reservation_time = #{time}
+		meeting_reservation m, member mem where m.member_no = mem.member_no and m.store_no = #{store_no} and date(m.meeting_reservation_date) = curdate() and m.meeting_reservation_time = #{time}
 	</select>
 </mapper>

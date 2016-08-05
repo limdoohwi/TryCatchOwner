@@ -7,6 +7,8 @@
  * 	Copyrights 2016-07-26 by Try{}Catch
  *
  *	Revisions:
+ *		1. When & Who : 2016-08-04 by 임두휘
+ *		2. What		  : 점주의 수를 계산하는 함수 추가
  */
 
 package com.trycatch.owner.service;
@@ -30,5 +32,13 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberDTO getMember_Member_no(int member_no) throws Exception {
 		return dao.getMember_no(member_no);
+	}
+	/**
+	 * @author LimDooHwi
+	 * 점주의 수 계산하는 함수
+	 */
+	@Override
+	public int getMember_Count() {
+		return dao.getMember_Count();
 	}
 }

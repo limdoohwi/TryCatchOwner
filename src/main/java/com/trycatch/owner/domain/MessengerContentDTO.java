@@ -9,8 +9,6 @@
  */
 package com.trycatch.owner.domain;
 
-import java.sql.Timestamp;
-
 public class MessengerContentDTO {
 	private int messenger_no;
 	private int member_no;

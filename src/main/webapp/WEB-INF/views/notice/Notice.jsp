@@ -123,6 +123,7 @@
 												"#Notice-Content-Text-Area")
 												.val()
 									});
+							msgsendNotice();
 						}
 					});
 
@@ -243,6 +244,10 @@
 						}
 					}
 				});
+		
+		function msgsendNotice() {
+			socket.send(JSON.stringify({'type':'NewContent'}));
+		}
 	</script>
 	<!-- Footer -->
 	<jsp:include page="../layout/Footer.jsp" />

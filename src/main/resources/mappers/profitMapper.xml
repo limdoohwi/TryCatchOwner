@@ -6,7 +6,7 @@
 <mapper namespace="com.trycatch.owner.mappers.profitMapper">
 	<select id="getMonthProfit" resultType="ProfitMonthDTO">
 		select month(p.menu_payment_date) as month, c.menu_category_name,
-		sum(m.menu_price) as total_price
+		sum(m.menu_price * o.menu_count) as total_price
 		from menu_order o, menu m, menu_category c, menu_payment p , store s where
 		o.menu_no = m.menu_num
 		and c.menu_category_num = m.menu_category_num and o.menu_payment_no =
@@ -18,7 +18,7 @@
 	
 	<select id="getYearProfit" resultType="ProfitYearDTO">
 		select year(p.menu_payment_date) as year, c.menu_category_name,
-		sum(m.menu_price) as total_price
+		sum(m.menu_price * o.menu_count) as total_price
 		from menu_order o, menu m, menu_category c, menu_payment p , store s where
 		o.menu_no = m.menu_num
 		and c.menu_category_num = m.menu_category_num and o.menu_payment_no =

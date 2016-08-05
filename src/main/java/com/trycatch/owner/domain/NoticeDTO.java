@@ -1,3 +1,9 @@
+/*
+ * 	Class: NoticDTO
+ *  Description: Notice table에 관련된 값을 가지는 DTO
+ *  Created: 2016­07-22
+ *	Author: 이준영
+ */
 package com.trycatch.owner.domain;
 
 public class NoticeDTO {
