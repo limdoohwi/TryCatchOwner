@@ -17,7 +17,7 @@ public interface CommunityService {
 	public List<CommunityDTO> getCommunityList(Integer limit);
 	public List<CommunityDTO> getCommunityAll();
 	public void insertCommunity(CommunityDTO dto);
-	public void updateCommunity(Integer community_no);
+	public void updateCommunity(Map map);
 	public void deleteCommunity(Integer community_no);
 	public CommunityDTO readCommunity(Integer community_no);
 	public List<CommunityDTO> myCommunityList(String community_name);

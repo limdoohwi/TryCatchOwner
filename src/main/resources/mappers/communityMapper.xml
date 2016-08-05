@@ -99,7 +99,7 @@
 	</select>
 
 	
-	<update id="communityUpdate">
+	<update id="communityUpdate" parameterType="map">
 		update community set community_title = #{community_title},
 		community_content = #{community_content} where community_no = #{community_no}
 	</update>

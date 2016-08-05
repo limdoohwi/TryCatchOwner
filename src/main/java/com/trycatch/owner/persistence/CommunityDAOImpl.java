@@ -68,8 +68,8 @@ public class CommunityDAOImpl implements CommunityDAO {
 	 * 
 	 */
 	@Override
-	public void updateCommunity(Integer community_no) {
-		sqlSession.update(NAMESPACE+".communityUpdate", community_no);
+	public void updateCommunity(Map map) {
+		sqlSession.update(NAMESPACE+".communityUpdate", map);
 	}
 	
 	/**

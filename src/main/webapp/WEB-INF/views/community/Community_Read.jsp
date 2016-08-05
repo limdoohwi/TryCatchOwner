@@ -98,10 +98,9 @@
 											<i class="fa fa-star text-yellow"></i>
 										</div>
 									</button>
-									<button type="button" class="btn btn-default btn-sm"
-										id="refresh">
-										<i class="fa fa-refresh"></i>
-									</button>
+									<button type="button" class="btn btn-default btn-sm" id="refresh"><i class="glyphicon glyphicon-home"></i>
+									<button type="button" class="btn btn-default btn-sm" id="community_update"><i class="fa fa-refresh"></i></button>
+									
 								</div>
 							</div>
 						</div>
@@ -207,8 +206,13 @@
 			$("#refresh").click(function() {
 				location.href = "/owner/community_list?limit=0";
 			});
+			
+			$("#community_update").click(function(){
+			var community_no = "${communityDTO.community_no}";
+			location.href="/owner/community_update?community_no="+community_no;			
+		  });
 		})
-
+		
 		//댓글 쓰기
 		$(document)
 				.on(
